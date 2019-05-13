@@ -168,7 +168,7 @@ class _HomeState extends State<Home> {
     http.Response source = await http.get(url);
     List body = json.decode(source.body);
     body.forEach((map) async {
-      await _databaseHelper.insertCategory(Category.fromMap(map));
+      await _databaseHelper.insertCategory(map: map);
     });
 
     //The code bellow get the entity json and fill it's db table.

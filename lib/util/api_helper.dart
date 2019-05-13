@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:events_flutter/util/database_helper.dart';
 import 'package:http/http.dart' as http;
 
 //This class to manage the data that have been fetched by the APIs and needed
@@ -24,6 +25,10 @@ class APIHelper {
   // the methods, this URL is for the events web app.
   final String appUrl = "http://$_ip/apps/myapps/events/mobile/apis";
 
+  //This is field store an instance of the DatabaseHelper class so I can deal
+  // with the local DB.
+  DatabaseHelper _databaseHelper = DatabaseHelper();
+
   //This function will fetch the data related to the category and inserted in
   // the local DB.
   fillCategoryDBTable() async {
@@ -33,5 +38,9 @@ class APIHelper {
     http.Response response = await http.get(url);
     //This list will contain the JSON fetched from the API.
     List body = json.decode(response.body);
+    //Here I'll loop over the list maps to store them in the local DB.
+    body.forEach((map) async {
+//      await
+    });
   }
 }
