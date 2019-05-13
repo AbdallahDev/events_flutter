@@ -10,14 +10,22 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
+  //The purpose of this field to be a singleton, so can't be two objects of the
+  // database_helper created.
   static final DatabaseHelper _databaseHelper = DatabaseHelper.internal();
 
-  //these are the fields that related to the category table.
+  DatabaseHelper.internal();
+
+  factory DatabaseHelper() => _databaseHelper;
+
+  //These are the fields that related to the category table.
+  //And I made the column names identical to the ones in the remote DB.
   var categoryTable = 'category';
   var categoryIdColumn = 'event_entity_category_id';
   var categoryNameColumn = 'event_entity_category_name';
 
-  //these are the fields that related to the entity (eg. committees) table.
+  //These are the fields that related to the entity (eg. committees) table.
+  //And I made the column names identical to the ones in the remote DB.
   var entityTable = 'entity';
   var entityIdColumn = 'committee_id';
   var entityNameColumn = 'committee_name';
@@ -25,12 +33,13 @@ class DatabaseHelper {
   var committeeRank = "committee_rank";
 
   //Event_entity table related fields.
+  //And I made the column names identical to the ones in the remote DB.
   var eventEntityTable = "event_event_entity";
   var eventEntityEventId = "event_id";
   var eventEntityId = "event_entity_id";
 
-  //Those are the fields related to the event table, there values should be
-  //the same as the ones in the remote db, specially the column names.
+  //Those are the fields related to the event table
+  //And I made the column names identical to the ones in the remote DB.
   var eventTable = "event";
   var eventIdColumn = "id";
   var eventEntityNameColumn = "event_entity_name";
@@ -41,45 +50,45 @@ class DatabaseHelper {
   var eventHallIdColumn = "hall_id";
   var eventPlaceColumn = "event_place";
 
-  DatabaseHelper.internal();
-
-  factory DatabaseHelper() => _databaseHelper;
-
   Database _database;
 
+  //I used the get method for the database field to make sure that it can't be
+  // created twice in the memory.
   Future<Database> get database async {
     if (_database != null) return _database;
     return await initDb();
   }
 
+  //This method will initialize the DB.
   Future<Database> initDb() async {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path, "events.db");
     Database database =
-    await openDatabase(path, version: 1, onCreate: onCreate);
+        await openDatabase(path, version: 1, onCreate: onCreate);
     return database;
   }
 
-  //bellow are the crud methods related to the category table.
+  //Bellow are the crud methods related to the category table.
+  //This method will create all the local DB tables.
   void onCreate(Database db, int version) {
-    //create the category table
+    //Creating the category table
     String sql =
         "CREATE TABLE $categoryTable ($categoryIdColumn INTEGER PRIMARY KEY, "
         "$categoryNameColumn TEXT)";
     db.execute(sql);
 
-    //crete the entity table
+    //Creating the entity table
     sql = "CREATE TABLE $entityTable ($entityIdColumn INTEGER PRIMARY KEY, "
         "$entityNameColumn TEXT, $entityCategoryId INTEGER, $committeeRank INTEGER)";
     db.execute(sql);
 
-    //create the event_entity table.
+    //creating the event_entity table.
     sql = "CREATE TABLE $eventEntityTable ("
         "$eventEntityEventId INTEGER, "
         "$eventEntityId INTEGER)";
     db.execute(sql);
 
-    //create the event table.
+    //creating the event table.
     sql = "CREATE TABLE $eventTable ("
         "$eventIdColumn INTEGER PRIMARY KEY, "
         "$eventEntityNameColumn TEXT, "
@@ -130,7 +139,7 @@ class DatabaseHelper {
   Future<List> getEvent({@required eventId}) async {
     Database database = await this.database;
     List result =
-    await database.query(eventTable, where: "id = ?", whereArgs: [eventId]);
+        await database.query(eventTable, where: "id = ?", whereArgs: [eventId]);
     return result;
   }
 
