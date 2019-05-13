@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 
+//This class is for the category object model.
 class Category {
   int _id;
   String _name;
