@@ -12,5 +12,7 @@ class APIHelper {
   //This factory instructor will return the class instance.
   factory APIHelper() => _apiHelper;
 
-
+  //This function will fetch the data related to the category and inserted in
+  // the local DB.
+  fillCategoryDBTable(){}
 }
