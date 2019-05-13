@@ -1,3 +1,5 @@
+import 'package:http/http.dart' as http;
+
 //This class to manage the data that have been fetched by the APIs and needed
 // to be stored in the local DB.
 class APIHelper {
@@ -21,5 +23,7 @@ class APIHelper {
 
   //This function will fetch the data related to the category and inserted in
   // the local DB.
-  fillCategoryDBTable() {}
+  fillCategoryDBTable() {
+
+  }
 }
