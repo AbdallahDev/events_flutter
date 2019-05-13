@@ -102,9 +102,12 @@ class DatabaseHelper {
   }
 
   //the bellow are the methods related to the category table
-  Future<int> insertCategory(Category category) async {
+  //This method will insert the category maps from the API to the local DB.
+  Future<int> insertCategory({@required Map map}) async {
     Database database = await this.database;
-    int id = await database.insert(categoryTable, category.toMap());
+    int id = await database.insert(categoryTable, map);
+    //I'll return the id just in case I want to make sure that the value has been
+    // inserted in the local DB.
     return id;
   }
 
