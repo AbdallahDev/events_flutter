@@ -1,5 +1,16 @@
 //This class to manage the data that have been fetched by the APIs and needed
 // to be stored in the local DB.
-class APIHelper{
+class APIHelper {
+  //This field is the singleton of the class instance.
+  //Because I don't want multiple instances created for the same class,
+  // so they don't occupy much space in the mobile memory.
+  static final APIHelper _apiHelper = APIHelper.internal();
+
+  //This named constructor will instantiate the class instance.
+  APIHelper.internal();
+
+  //This factory instructor will return the class instance.
+  factory APIHelper() => _apiHelper;
+
 
 }
