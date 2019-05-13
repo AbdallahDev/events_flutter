@@ -21,6 +21,8 @@ class Category {
   Map<String, dynamic> toMap() {
     //Here I'll return a map with the key names identical the column names
     // from the remote DB for the category table.
+    //Because if I don't do that I'll get errors because the keys for the maps
+    // that I get from the API JSON will different from the object map keys.
     return {
       "event_entity_category_id": _id,
       "event_entity_category_name": _name
