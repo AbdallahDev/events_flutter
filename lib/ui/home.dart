@@ -158,7 +158,6 @@ class _HomeState extends State<Home> {
         });
       }
     });
-    print(_events);
   }
 
   void _fillDbTables() async {
