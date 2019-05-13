@@ -11,6 +11,8 @@ class Category {
       : _id = id,
         _name = name;
 
+  //I'll use just getters because I'll not try to modify the objects in the database,
+  // I'll just fetch them from the remote DB and I'll store them in the local DB.
   int get id => _id;
 
   String get name => _name;
