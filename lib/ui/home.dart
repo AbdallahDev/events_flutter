@@ -42,6 +42,7 @@ class _HomeState extends State<Home> {
           hallId: 0,
           eventPlace: "")
     ];
+    _fillEventsList(categoryId: 0);
 //    _fillDbTables();
   }
 
@@ -66,7 +67,7 @@ class _HomeState extends State<Home> {
                   setState(() {
                     _selectedCategory = category;
                     _handleEntityMenu(category.id);
-                    _fillEventsList(category.id);
+                    _fillEventsList(categoryId: category.id);
                   });
                 },
                 value: _selectedCategory,
@@ -138,7 +139,7 @@ class _HomeState extends State<Home> {
   }
 
   //bellow are the methods related to the event data.
-  Future _fillEventsList(categoryId) async {
+  Future _fillEventsList({@required categoryId}) async {
     //First I should get the entities that belong to the specified category.
     //here i should get just the ids of the entities not all the data.
     //i should change it next time.
@@ -148,11 +149,11 @@ class _HomeState extends State<Home> {
     //Next, I'll loop over those entities to get the events that belong to each one of them.
     entities.forEach((map) async {
       List<Map> eventIds =
-      await _databaseHelper.getEventIds(entityId: map["committee_id"]);
+          await _databaseHelper.getEventIds(entityId: map["committee_id"]);
       if (eventIds.length != 0) {
         eventIds.forEach((value) async {
           List event =
-          await _databaseHelper.getEvent(eventId: value['event_id']);
+              await _databaseHelper.getEvent(eventId: value['event_id']);
           _events.add(Event.fromMap(event.first));
         });
       }
@@ -172,7 +173,7 @@ class _HomeState extends State<Home> {
 
     //The code bellow get the entity json and fill it's db table.
     url =
-    "http://${utils.ip}/apps/myapps/events/mobile/apis/get_committees.php?categoryId=0";
+        "http://${utils.ip}/apps/myapps/events/mobile/apis/get_committees.php?categoryId=0";
     source = await http.get(url);
     body = await json.decode(source.body);
     body.forEach((map) async {
@@ -181,7 +182,7 @@ class _HomeState extends State<Home> {
 
     //The code bellow get the event entity json and fill it's db table.
     url =
-    "http://${utils.ip}/apps/myapps/events/mobile/apis/event_entity_get.php";
+        "http://${utils.ip}/apps/myapps/events/mobile/apis/event_entity_get.php";
     source = await http.get(url);
     body = json.decode(source.body);
     body.forEach((map) async {
