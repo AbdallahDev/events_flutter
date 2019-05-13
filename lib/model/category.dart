@@ -5,6 +5,8 @@ class Category {
   int _id;
   String _name;
 
+  /*I've made the parameters required so they can appear when the object created,
+   it will make things easier.*/
   Category({@required id, @required name})
       : _id = id,
         _name = name;
