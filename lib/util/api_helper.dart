@@ -19,7 +19,7 @@ class APIHelper {
 
   //This field will store the IP of the computer that hosts the xampp server,
   // and most of the time it will be my computer IP.
-  static final String _ip = "10.152.160.74";
+  static final String _ip = "192.168.0.29";
 
   //I've created this field just to make the URL shorter when it's used inside
   // the methods, this URL is for the events web app.
@@ -40,7 +40,7 @@ class APIHelper {
     List body = json.decode(response.body);
     //Here I'll loop over the list maps to store them in the local DB.
     body.forEach((map) async {
-//      await
+     await _databaseHelper.insertCategory(map: map);
     });
   }
 }
