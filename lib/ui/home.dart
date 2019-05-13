@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:events_flutter/util/utils.dart' as utils;
 
+//This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
