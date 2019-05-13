@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
+import 'package:events_flutter/util/api_helper.dart';
 import 'package:events_flutter/util/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +16,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  //This field is for the APIHelper class that deals with the APIs.
+  APIHelper _apiHelper;
   DatabaseHelper _databaseHelper;
   List<Category> _categories;
   Category _selectedCategory;
@@ -44,7 +47,8 @@ class _HomeState extends State<Home> {
           eventPlace: "")
     ];
     _fillEventsList(categoryId: 0);
-//    _fillDbTables();
+    _apiHelper = APIHelper();
+    _apiHelper.fillCategoryDBTable();
   }
 
   @override
