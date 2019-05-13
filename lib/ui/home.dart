@@ -29,6 +29,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    _apiHelper = APIHelper();
+    _apiHelper.fillCategoryDBTable();
     _databaseHelper = DatabaseHelper();
     _categories = [Category(id: 0, name: "جميع الفئات")];
     fillCategoryList();
@@ -47,8 +49,6 @@ class _HomeState extends State<Home> {
           eventPlace: "")
     ];
     _fillEventsList(categoryId: 0);
-    _apiHelper = APIHelper();
-    _apiHelper.fillCategoryDBTable();
   }
 
   @override
