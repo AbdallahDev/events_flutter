@@ -12,7 +12,14 @@ class APIHelper {
   //This factory instructor will return the class instance.
   factory APIHelper() => _apiHelper;
 
+  //This field will store the IP of the computer that hosts the xampp server,
+  // and most of the time it will be my computer IP.
+  static final String _ip = "10.152.160.74";
+  //I've created this field just to make the URL shorter when it's used inside
+  // the methods, this URL is for the events web app.
+  final String appUrl = "http://$_ip/apps/myapps/events/mobile/apis";
+
   //This function will fetch the data related to the category and inserted in
   // the local DB.
-  fillCategoryDBTable(){}
+  fillCategoryDBTable() {}
 }
