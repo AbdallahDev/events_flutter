@@ -1,6 +1,7 @@
 # events_flutter
 
 This new flutter application to view the events from the web events app using the APIs, and That for the android and the ios apps.
+It's an enhancement for the Android app that has been built for the same reason but only on the Android os.
 
 ## Getting Started
 
