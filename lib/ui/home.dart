@@ -1,7 +1,6 @@
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
-import 'package:events_flutter/ui/event_list_view.dart';
 import 'package:events_flutter/util/api_helper.dart';
 import 'package:events_flutter/util/database_helper.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +48,6 @@ class _HomeState extends State<Home> {
           hallId: 0,
           eventPlace: "")
     ];
-    _fillEventsList(categoryId: 0);
   }
 
   @override
@@ -73,7 +71,6 @@ class _HomeState extends State<Home> {
                   setState(() {
                     _selectedCategory = category;
                     _handleEntityMenu(category.id);
-                    _fillEventsList(categoryId: category.id);
                   });
                 },
                 value: _selectedCategory,
@@ -98,8 +95,18 @@ class _HomeState extends State<Home> {
                   ),
                 )),
             Flexible(
-              child: EventListView(),
+              child: ListView.builder(
+                  itemCount: _events.length,
+                  itemBuilder: (context, position) {
+                    return ListTile(
+                      title: Text(_events[position].subject),
+                    );
+                  }),
             ),
+            //This is a test container.
+            Container(
+              child: Text(""),
+            )
           ],
         ),
       ),
@@ -136,27 +143,5 @@ class _HomeState extends State<Home> {
       _entities.add(Entity.fromMap(map));
     });
     setState(() {});
-  }
-
-  //bellow are the methods related to the event data.
-  Future _fillEventsList({@required categoryId}) async {
-    //First I should get the entities that belong to the specified category.
-    //here i should get just the ids of the entities not all the data.
-    //i should change it next time.
-    List entities = await _databaseHelper.getEntities(categoryId: categoryId);
-    //here i'll empty the _events list so it dose not stack the new result over the old ones
-//    _events.clear();
-    //Next, I'll loop over those entities to get the events that belong to each one of them.
-    entities.forEach((map) async {
-      List<Map> eventIds =
-          await _databaseHelper.getEventIds(entityId: map["committee_id"]);
-      if (eventIds.length != 0) {
-        eventIds.forEach((value) async {
-          List event =
-              await _databaseHelper.getEvent(eventId: value['event_id']);
-          _events.add(Event.fromMap(event.first));
-        });
-      }
-    });
   }
 }
