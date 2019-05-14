@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:events_flutter/model/event.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -113,6 +112,15 @@ class DatabaseHelper {
     Database database = await this.database;
     List categories = await database.query(categoryTable);
     return categories;
+  }
+
+  //This function will get the count of the category in the local DB.
+  Future<int> getCategoryCount() async {
+    Database database = await this.database;
+    List result =
+        await database.rawQuery("SELECT COUNT(*) FROM $categoryTable");
+    int count = Sqflite.firstIntValue(result);
+    return count;
   }
 
   //Bellow are the methods related to the entity table
