@@ -131,6 +131,16 @@ class DatabaseHelper {
     return id;
   }
 
+  //This function will get all the entity ids that belong to the specified category.
+  Future<List> getEntityIds({@required int categoryId}) async {
+    Database database = await this.database;
+    List ids = await database.query(entityTable,
+        columns: [entityIdColumn],
+        where: "$entityCategoryId = ?",
+        whereArgs: [categoryId]);
+    return ids;
+  }
+
   //this method gets all the entities belong to a specific category.
   Future<List> getEntities({@required categoryId}) async {
     Database database = await this.database;
