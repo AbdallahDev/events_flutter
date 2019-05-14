@@ -32,11 +32,14 @@ class APIHelper {
   //This function will call all the functions that will take care of filling the
   // local DB tables from the API data.
   //I've called them in one function to make things easier.
-  fillDBTables(){
-    _fillCategoryDBTable();
-    _fillEntityDBTable();
-    _fillEventEntityDBTable();
-    _fillEventDBTable();
+  fillDBTables() async {
+    var count = await _databaseHelper.getCategoryCount();
+    if (count == 0) {
+      _fillCategoryDBTable();
+      _fillEntityDBTable();
+      _fillEventEntityDBTable();
+      _fillEventDBTable();
+    }
   }
 
   //This function will fetch the data related to the category and inserted in
