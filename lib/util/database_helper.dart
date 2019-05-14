@@ -157,7 +157,8 @@ class DatabaseHelper {
     return id;
   }
 
-  Future<List> getEvent({@required eventId}) async {
+  //This function will get the event details from the local events table.
+  Future<List> getEvent({@required int eventId}) async {
     Database database = await this.database;
     List result =
         await database.query(eventTable, where: "id = ?", whereArgs: [eventId]);
