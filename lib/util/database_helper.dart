@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:events_flutter/model/category.dart';
-import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
@@ -118,9 +116,10 @@ class DatabaseHelper {
   }
 
   //Bellow are the methods related to the entity table
-  Future<int> insertEntity(Entity entity) async {
+  //This function will insert the maps related to the entity in the local DB.
+  Future<int> insertEntity({@required Map map}) async {
     Database database = await this.database;
-    int id = await database.insert(entityTable, entity.toMap());
+    int id = await database.insert(entityTable, map);
     return id;
   }
 
