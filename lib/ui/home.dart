@@ -26,8 +26,9 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _apiHelper = APIHelper();
-    //This line is just for testing.
-//    _apiHelper.fillDBTables();
+    //This function will call the function that deals with the API data and fills
+    // it in the local DB.
+    _apiHelper.fillDBTables();
     _databaseHelper = DatabaseHelper();
     _categories = [Category(id: 0, name: "جميع الفئات")];
     fillCategoryList();
