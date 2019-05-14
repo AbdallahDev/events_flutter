@@ -1,6 +1,7 @@
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
+import 'package:events_flutter/ui/event_list_view.dart';
 import 'package:events_flutter/util/api_helper.dart';
 import 'package:events_flutter/util/database_helper.dart';
 import 'package:flutter/material.dart';
@@ -97,13 +98,7 @@ class _HomeState extends State<Home> {
                   ),
                 )),
             Flexible(
-              child: ListView.builder(
-                  itemCount: _events.length,
-                  itemBuilder: (context, position) {
-                    return ListTile(
-                      title: Text(_events[position].subject),
-                    );
-                  }),
+              child: EventListView(),
             ),
           ],
         ),
