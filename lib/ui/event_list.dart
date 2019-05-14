@@ -10,17 +10,16 @@ class EventList {
   // database.
   static DatabaseHelper _databaseHelper = DatabaseHelper();
 
-  //This function will get the event ids that belong to a specific entity from
-  // the table event entity.
-  //Then it will fill the events list with the event objects that contain the
-  // details of the event.
+  //This method will return the events for all the entities that belong to the
+  // specified category.
   //I made it separate to make the code more concise.
   static Future getEvents({@required int categoryId}) async {
-    //This list will contain the events objects to be returned to the home page.
+    //This list will contain the events objects to be returned to the home page
+    // as a list.
     List<Event> events = List();
     //This list will store the entity ids that I got from the function _getEntityIds.
     List entityIds = await _getEntityIds(categoryId: categoryId);
-    //Next, I'll loop over those entities to get the events that belong to each
+    //Next, I'll loop over those entity ids to get the events that belong to each
     // one of them.
     entityIds.forEach((entityId) async {
       //This list contains the event ids that belong to a specific entity.
