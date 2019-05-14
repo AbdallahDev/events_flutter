@@ -22,6 +22,8 @@ class _HomeState extends State<Home> {
   bool _entityVisibility;
   List<Event> _events;
 
+  //I need the initState function to run some of the code just the first time
+  // the app runs.
   @override
   void initState() {
     super.initState();
