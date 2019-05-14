@@ -36,11 +36,28 @@ class APIHelper {
     String url = "$appUrl/get_categories.php";
     //Here I'll get all the data source.
     http.Response response = await http.get(url);
-    //This list will contain the JSON fetched from the API.
+    //This list will contain the category data as maps from the API.
     List body = json.decode(response.body);
     //Here I'll loop over the list maps to store them in the local DB.
     body.forEach((map) async {
-     await _databaseHelper.insertCategory(map: map);
+      await _databaseHelper.insertCategory(map: map);
+    });
+  }
+
+  //This function will get the data related to the entity from the API and insert
+  // it in the local DB.
+  _fillEntityDBTable() async {
+    //This is the URL for the entity API,
+    //For now, I've appended the category id because the API need it to decide
+    // which data to get, but later on I'll remove it.
+    String url = "$appUrl/get_committees.php?categoryId=0";
+    http.Response response = await http.get(url);
+    //This list will contain the entity data as maps from the API.
+    List body = json.decode(response.body);
+    //Here I'll loop over the entity maps to store them in the local DB.
+    body.forEach((map) async {
+      var id = await _databaseHelper.insertEntity(map: map);
+      print(id);
     });
   }
 }
