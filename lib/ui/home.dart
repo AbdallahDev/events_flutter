@@ -1,13 +1,9 @@
-import 'dart:convert';
-
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
 import 'package:events_flutter/util/api_helper.dart';
 import 'package:events_flutter/util/database_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:events_flutter/util/utils.dart' as utils;
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
@@ -30,7 +26,8 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _apiHelper = APIHelper();
-    _apiHelper.fillCategoryDBTable();
+    //This line is just for testing.
+//    _apiHelper.fillDBTables();
     _databaseHelper = DatabaseHelper();
     _categories = [Category(id: 0, name: "جميع الفئات")];
     fillCategoryList();
@@ -162,43 +159,6 @@ class _HomeState extends State<Home> {
           _events.add(Event.fromMap(event.first));
         });
       }
-    });
-  }
-
-  void _fillDbTables() async {
-    //The code bellow get the category json and fill it's db table.
-    String url =
-        "http://${utils.ip}/apps/myapps/events/mobile/apis/get_categories.php";
-    http.Response source = await http.get(url);
-    List body = json.decode(source.body);
-    body.forEach((map) async {
-      await _databaseHelper.insertCategory(map: map);
-    });
-
-    //The code bellow get the entity json and fill it's db table.
-    url =
-        "http://${utils.ip}/apps/myapps/events/mobile/apis/get_committees.php?categoryId=0";
-    source = await http.get(url);
-    body = await json.decode(source.body);
-    body.forEach((map) async {
-      await _databaseHelper.insertEntity(Entity.fromMap(map));
-    });
-
-    //The code bellow get the event entity json and fill it's db table.
-    url =
-        "http://${utils.ip}/apps/myapps/events/mobile/apis/event_entity_get.php";
-    source = await http.get(url);
-    body = json.decode(source.body);
-    body.forEach((map) async {
-      await _databaseHelper.insertEventEntity(values: map);
-    });
-
-    //The code bellow get the event json and fill it's db table.
-    url = "http://${utils.ip}/apps/myapps/events/mobile/apis/get_events.php";
-    source = await http.get(url);
-    body = json.decode(source.body);
-    body.forEach((map) async {
-      await _databaseHelper.insertEvent(event: Event.fromMap(map));
     });
   }
 }
