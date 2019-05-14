@@ -19,7 +19,7 @@ class APIHelper {
 
   //This field will store the IP of the computer that hosts the xampp server,
   // and most of the time it will be my computer IP.
-  static final String _ip = "192.168.0.29";
+  static final String _ip = "10.152.160.74";
 
   //I've created this field just to make the URL shorter when it's used inside
   // the methods, this URL is for the events web app.
@@ -31,7 +31,7 @@ class APIHelper {
 
   //This function will fetch the data related to the category and inserted in
   // the local DB.
-  fillCategoryDBTable() async {
+  _fillCategoryDBTable() async {
     //This the URL of the API related to the category.
     String url = "$appUrl/get_categories.php";
     //Here I'll get all the data source.
@@ -56,8 +56,7 @@ class APIHelper {
     List body = json.decode(response.body);
     //Here I'll loop over the entity maps to store them in the local DB.
     body.forEach((map) async {
-      var id = await _databaseHelper.insertEntity(map: map);
-      print(id);
+      await _databaseHelper.insertEntity(map: map);
     });
   }
 }
