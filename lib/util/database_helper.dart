@@ -132,9 +132,10 @@ class DatabaseHelper {
   }
 
   //Bellow are the methods related to the event table.
-  Future<int> insertEvent({@required Event event}) async {
+  //This method will get the event as a map and insert it in the local DB.
+  Future<int> insertEvent({@required Map map}) async {
     Database database = await this.database;
-    var id = await database.insert(eventTable, event.toMap());
+    var id = await database.insert(eventTable, map);
     return id;
   }
 
@@ -146,9 +147,10 @@ class DatabaseHelper {
   }
 
   //Below are the methods related to the event entity table.
-  Future<int> insertEventEntity({@required Map values}) async {
+  //This method will get the event entity as a map and insert it in the local DB.
+  Future<int> insertEventEntity({@required Map map}) async {
     Database database = await this.database;
-    int id = await database.insert(eventEntityTable, values);
+    int id = await database.insert(eventEntityTable, map);
     return id;
   }
 
