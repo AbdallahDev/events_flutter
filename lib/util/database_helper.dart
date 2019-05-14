@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:events_flutter/model/category.dart';
-import 'package:events_flutter/model/entity.dart';
-import 'package:events_flutter/model/event.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -102,9 +99,12 @@ class DatabaseHelper {
   }
 
   //the bellow are the methods related to the category table
-  Future<int> insertCategory(Category category) async {
+  //This method will insert the category maps from the API to the local DB.
+  Future<int> insertCategory({@required Map map}) async {
     Database database = await this.database;
-    int id = await database.insert(categoryTable, category.toMap());
+    int id = await database.insert(categoryTable, map);
+    //I'll return the id just in case I want to make sure that the value has been
+    // inserted in the local DB.
     return id;
   }
 
@@ -114,10 +114,20 @@ class DatabaseHelper {
     return categories;
   }
 
-  //Bellow are the methods related to the entity table
-  Future<int> insertEntity(Entity entity) async {
+  //This function will get the count of the category in the local DB.
+  Future<int> getCategoryCount() async {
     Database database = await this.database;
-    int id = await database.insert(entityTable, entity.toMap());
+    List result =
+        await database.rawQuery("SELECT COUNT(*) FROM $categoryTable");
+    int count = Sqflite.firstIntValue(result);
+    return count;
+  }
+
+  //Bellow are the methods related to the entity table
+  //This function will insert the maps related to the entity in the local DB.
+  Future<int> insertEntity({@required Map map}) async {
+    Database database = await this.database;
+    int id = await database.insert(entityTable, map);
     return id;
   }
 
@@ -130,9 +140,10 @@ class DatabaseHelper {
   }
 
   //Bellow are the methods related to the event table.
-  Future<int> insertEvent({@required Event event}) async {
+  //This method will get the event as a map and insert it in the local DB.
+  Future<int> insertEvent({@required Map map}) async {
     Database database = await this.database;
-    var id = await database.insert(eventTable, event.toMap());
+    var id = await database.insert(eventTable, map);
     return id;
   }
 
@@ -144,9 +155,10 @@ class DatabaseHelper {
   }
 
   //Below are the methods related to the event entity table.
-  Future<int> insertEventEntity({@required Map values}) async {
+  //This method will get the event entity as a map and insert it in the local DB.
+  Future<int> insertEventEntity({@required Map map}) async {
     Database database = await this.database;
-    int id = await database.insert(eventEntityTable, values);
+    int id = await database.insert(eventEntityTable, map);
     return id;
   }
 
