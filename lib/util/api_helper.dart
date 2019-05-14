@@ -29,6 +29,16 @@ class APIHelper {
   // with the local DB.
   DatabaseHelper _databaseHelper = DatabaseHelper();
 
+  //This function will call all the functions that will take care of filling the
+  // local DB tables from the API data.
+  //I've called them in one function to make things easier.
+  fillDBTables(){
+    _fillCategoryDBTable();
+    _fillEntityDBTable();
+    _fillEventEntityDBTable();
+    _fillEventDBTable();
+  }
+
   //This function will fetch the data related to the category and inserted in
   // the local DB.
   _fillCategoryDBTable() async {
@@ -76,7 +86,7 @@ class APIHelper {
 
   //This function will get the data related to the event from the API and insert
   // it in the local DB.
-  fillEventDBTable() async {
+  _fillEventDBTable() async {
     //This is the URL for the API,
     String url = "$appUrl/get_events.php";
     http.Response response = await http.get(url);
