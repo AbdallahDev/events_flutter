@@ -173,6 +173,7 @@ class DatabaseHelper {
   }
 
   //I'll get the event ids that belong to a specific entity.
+  //And that from the table "event entity".
   Future<List> getEventIds({@required int entityId}) async {
     Database database = await this.database;
     List ids = await database.query(eventEntityTable,
