@@ -59,4 +59,18 @@ class APIHelper {
       await _databaseHelper.insertEntity(map: map);
     });
   }
+
+  //This function will get the data related to the event entity from the API and insert
+  // it in the local DB.
+  _fillEventEntityDBTable() async {
+    //This is the URL for the API,
+    String url = "$appUrl/event_entity_get.php";
+    http.Response response = await http.get(url);
+    //This list will contain the event entity data as maps from the API.
+    List body = json.decode(response.body);
+    //Here I'll loop over the event entity maps to store them in the local DB.
+    body.forEach((map) async {
+      await _databaseHelper.insertEventEntity(map: map);
+    });
+  }
 }
