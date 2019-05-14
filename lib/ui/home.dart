@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
     _apiHelper.fillDBTables();
     _databaseHelper = DatabaseHelper();
     _categories = [Category(id: 0, name: "جميع الفئات")];
-    fillCategoryList();
+    _fillCategoryList();
     _selectedCategory = _categories[0];
     _entities = List();
     _entityVisibility = false;
@@ -114,7 +114,7 @@ class _HomeState extends State<Home> {
   //bellow are the methods related to the category object data
   //i'll get the categories data from the local db.
   //and fill the required data in the needed lists
-  Future fillCategoryList() async {
+  Future _fillCategoryList() async {
     List categories = await _databaseHelper.getCategories();
     categories.forEach((category) {
       this._categories.add(Category.fromMap(category));
