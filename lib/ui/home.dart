@@ -1,6 +1,7 @@
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
+import 'package:events_flutter/ui/event_list.dart';
 import 'package:events_flutter/util/api_helper.dart';
 import 'package:events_flutter/util/database_helper.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   //This field is for the APIHelper class that deals with the APIs.
   APIHelper _apiHelper;
+
+  //This field to store the databaseHelper class instance.
   DatabaseHelper _databaseHelper;
+
+  //This list to store the category objects.
   List<Category> _categories;
+
+  //This field to store the selected category object from the dropdown menu.
   Category _selectedCategory;
   List<Entity> _entities;
   Entity _selectedEntity;
@@ -48,7 +55,7 @@ class _HomeState extends State<Home> {
           hallId: 0,
           eventPlace: "")
     ];
-    _fillEventsList(categoryId: 0);
+    _fillEventList(_selectedCategory.id);
   }
 
   @override
@@ -72,7 +79,7 @@ class _HomeState extends State<Home> {
                   setState(() {
                     _selectedCategory = category;
                     _handleEntityMenu(category.id);
-                    _fillEventsList(categoryId: category.id);
+                    _fillEventList(_selectedCategory.id);
                   });
                 },
                 value: _selectedCategory,
@@ -96,7 +103,7 @@ class _HomeState extends State<Home> {
                     value: _selectedEntity,
                   ),
                 )),
-            Flexible(
+            /*Flexible(
               child: ListView.builder(
                   itemCount: _events.length,
                   itemBuilder: (context, position) {
@@ -104,7 +111,11 @@ class _HomeState extends State<Home> {
                       title: Text(_events[position].subject),
                     );
                   }),
-            ),
+            ),*/
+            //This is a test container.
+            Container(
+              child: Text(_events.length.toString()),
+            )
           ],
         ),
       ),
@@ -143,25 +154,9 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
-  //bellow are the methods related to the event data.
-  Future _fillEventsList({@required categoryId}) async {
-    //First I should get the entities that belong to the specified category.
-    //here i should get just the ids of the entities not all the data.
-    //i should change it next time.
-    List entities = await _databaseHelper.getEntities(categoryId: categoryId);
-    //here i'll empty the _events list so it dose not stack the new result over the old ones
-//    _events.clear();
-    //Next, I'll loop over those entities to get the events that belong to each one of them.
-    entities.forEach((map) async {
-      List<Map> eventIds =
-          await _databaseHelper.getEventIds(entityId: map["committee_id"]);
-      if (eventIds.length != 0) {
-        eventIds.forEach((value) async {
-          List event =
-              await _databaseHelper.getEvent(eventId: value['event_id']);
-          _events.add(Event.fromMap(event.first));
-        });
-      }
-    });
+  _fillEventList(id) async {
+    _events.clear();
+    print("10 = ${await EventList.getEvents(categoryId: id)}");
+    _events= await EventList.getEvents(categoryId: id);
   }
 }

@@ -131,6 +131,16 @@ class DatabaseHelper {
     return id;
   }
 
+  //This function will get all the entity ids that belong to the specified category.
+  Future<List> getEntityIds({@required int categoryId}) async {
+    Database database = await this.database;
+    List ids = await database.query(entityTable,
+        columns: [entityIdColumn],
+        where: "$entityCategoryId = ?",
+        whereArgs: [categoryId]);
+    return ids;
+  }
+
   //this method gets all the entities belong to a specific category.
   Future<List> getEntities({@required categoryId}) async {
     Database database = await this.database;
@@ -147,7 +157,8 @@ class DatabaseHelper {
     return id;
   }
 
-  Future<List> getEvent({@required eventId}) async {
+  //This function will get the event details from the local events table.
+  Future<List> getEvent({@required int eventId}) async {
     Database database = await this.database;
     List result =
         await database.query(eventTable, where: "id = ?", whereArgs: [eventId]);
@@ -163,6 +174,7 @@ class DatabaseHelper {
   }
 
   //I'll get the event ids that belong to a specific entity.
+  //And that from the table "event entity".
   Future<List> getEventIds({@required int entityId}) async {
     Database database = await this.database;
     List ids = await database.query(eventEntityTable,
