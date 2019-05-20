@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
-import 'package:events_flutter/ui/event_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,7 +14,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //This is the API base URL.
-  var apiURL = "http://10.152.134.193/apps/myapps/events/mobile/apis/";
+  var apiURL = "http://192.168.0.29/apps/myapps/events/mobile/apis/";
 
   //This list to store the category objects.
   List<Category> _categories;
@@ -51,7 +50,10 @@ class _HomeState extends State<Home> {
           hallId: 0,
           eventPlace: "")
     ];
-    _fillEventList(_selectedCategory.id);
+    //I'll call this method to fill the listView with all the events in the
+    // remote DB for all the categories and that just for the first time the
+    // app runs.
+    _fillEventList(categoryId: _selectedCategory.id);
   }
 
   @override
@@ -73,9 +75,11 @@ class _HomeState extends State<Home> {
                 }).toList(),
                 onChanged: (Category category) {
                   setState(() {
+                    //All the below code will run each time the user chooses a
+                    // new category.
                     _selectedCategory = category;
                     _showEntityMenu(categoryId: category.id);
-                    _fillEventList(_selectedCategory.id);
+                    _fillEventList(categoryId: _selectedCategory.id);
                   });
                 },
                 value: _selectedCategory,
@@ -120,9 +124,12 @@ class _HomeState extends State<Home> {
     // to be valid.
     var url = apiURL + "get_categories.php";
     http.Response response = await http.get(url);
-    List categories = List();
-    categories = json.decode(response.body);
-    categories.forEach((map) {
+    //This list will contain the JSON list of categories as maps that fetched
+    // from the API.
+    List list = json.decode(response.body);
+    //I'll loop over each category map in the list to create a category object
+    // from it then add it to categories list.
+    list.forEach((map) {
       _categories.add(Category.fromMap(map));
     });
     setState(() {});
@@ -150,8 +157,9 @@ class _HomeState extends State<Home> {
     // id of the selected category.
     var url = apiURL + "get_committees.php?categoryId=$categoryId";
     http.Response response = await http.get(url);
-    List entities = List();
-    entities = json.decode(response.body);
+    //This list will contain the JSON list of entities as maps that fetched
+    // from the API.
+    List list = json.decode(response.body);
     //I'll initialize the list because I want to view the default first choice
     // on the list.
     _entities = _entities = [
@@ -161,14 +169,47 @@ class _HomeState extends State<Home> {
     // because I want to show the default value "جميع الجهات" as the first value
     // in the menu.
     _selectedEntity = _entities[0];
-    entities.forEach((map) {
+    //I'll loop over each entity map in the list to create an entity object
+    // from it then add it to entities list.
+    list.forEach((map) {
       _entities.add(Entity.fromMap(map));
     });
     setState(() {});
   }
 
-  _fillEventList(id) async {
-    _events.clear();
-    _events = await EventList.getEvents(categoryId: id);
+  //This method will fill the events list with events from the API to viewed on
+  // the events listView and that based on the id of the selected category and
+  // the selected entity.
+  _fillEventList({@required categoryId}) async {
+    //This is the URL of the required API, I'll concatenate it with the base URL
+    // to be valid.
+    //I'll provide the category id, to know which events to get based on the
+    // id of the selected category.
+    var url = apiURL + "get_events.php?categoryId=$categoryId";
+    http.Response response = await http.get(url);
+    //This list will contain the JSON list of events as maps that fetched
+    // from the API.
+    List list = json.decode(response.body);
+    //I'll initialize the list with a default event object, and that for
+    // reinitializing the list from the beginning, because I don't want the new
+    // values to be added to the old ones, and also in case I don't get anything
+    // from the API I'll view in the listView the default empty event object.
+    _events = [
+      Event(
+          id: 0,
+          eventEntityName: "",
+          time: "",
+          eventAppointment: "",
+          subject: "",
+          eventDate: "",
+          hallId: 0,
+          eventPlace: "")
+    ];
+    //I'll loop over each event map in the list to create an event object
+    // from it then add it to events list.
+    list.forEach((map) {
+      _events.add(Event.fromMap(map));
+    });
+    setState(() {});
   }
 }
