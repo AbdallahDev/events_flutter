@@ -14,6 +14,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  //This is the API base URL.
+  var apiURL = "http://10.152.134.193/apps/myapps/events/mobile/apis/";
+
   //This list to store the category objects.
   List<Category> _categories;
 
@@ -71,7 +74,7 @@ class _HomeState extends State<Home> {
                 onChanged: (Category category) {
                   setState(() {
                     _selectedCategory = category;
-                    _handleEntityMenu(category.id);
+                    _showEntityDropDown(category.id);
                     _fillEventList(_selectedCategory.id);
                   });
                 },
@@ -113,8 +116,9 @@ class _HomeState extends State<Home> {
 
   //I'll fill the category list directly from the API.
   Future _fillCategories() async {
-    var url =
-        "http://10.152.134.193/apps/myapps/events/mobile/apis/get_categories.php";
+    //This is the URL of the required API, I'll concatenate it with the base URL
+    // to be valid.
+    var url = apiURL + "get_categories.php";
     http.Response response = await http.get(url);
     List categories = List();
     categories = json.decode(response.body);
@@ -124,17 +128,22 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
-  //bellow are the methods related to the entity object data
-  void _handleEntityMenu(categoryId) {
+  //This method will view the entity list depending on the selected category.
+  void _showEntityDropDown(categoryId) {
+    //I'll check if the category id is not 0 "All the categories" and
+    // 5: "Permanent office" 6: "Executives office", in that case,
+    // I'll show the entity list and fill it otherwise I'll not,
+    // because the other categories don't have entities that belong to them.
     if (categoryId != 0 && categoryId != 5 && categoryId != 6) {
-      _fillEntityList(categoryId: categoryId);
+      _fillEntities(categoryId: categoryId);
       _entityVisibility = true;
     } else
       _entityVisibility = false;
   }
 
-  //i'll fill the entities list from entities local db table.
-  Future _fillEntityList({@required categoryId}) async {
+  //I'll fill the entity list directly from the API depending on the id of the
+  // selected category.
+  Future _fillEntities({@required categoryId}) async {
 //    List entities = await _databaseHelper.getEntities(categoryId: categoryId);
     _entities.clear();
     _entities.add(Entity(id: 0, name: "جميع الجهات", categoryId: 0, rank: 0));
