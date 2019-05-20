@@ -1,10 +1,11 @@
+import 'dart:convert';
+
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
 import 'package:events_flutter/ui/event_list.dart';
-import 'package:events_flutter/util/api_helper.dart';
-import 'package:events_flutter/util/database_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
@@ -13,34 +14,26 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  //This field is for the APIHelper class that deals with the APIs.
-  APIHelper _apiHelper;
-
-  //This field to store the databaseHelper class instance.
-  DatabaseHelper _databaseHelper;
-
   //This list to store the category objects.
   List<Category> _categories;
 
-  //This field to store the selected category object from the dropdown menu.
+  //This field to store the selected category object from the category dropdown menu.
   Category _selectedCategory;
   List<Entity> _entities;
   Entity _selectedEntity;
   bool _entityVisibility;
   List<Event> _events;
 
-  //I need the initState function to run some of the code just the first time
+  //I need the initState function to run some of the code just at the first time
   // the app runs.
   @override
   void initState() {
     super.initState();
-    _apiHelper = APIHelper();
-    //This function will call the function that deals with the API data and fills
-    // it in the local DB.
-    _apiHelper.fillDBTables();
-    _databaseHelper = DatabaseHelper();
+    //I'll initialize some of the fields with values so the app doesn't face an
+    // error for the first time it runs.
     _categories = [Category(id: 0, name: "جميع الفئات")];
-    _fillCategoryList();
+    //This function will fill the category list with values from the API.
+    _fillCategories();
     _selectedCategory = _categories[0];
     _entities = List();
     _entityVisibility = false;
@@ -103,7 +96,7 @@ class _HomeState extends State<Home> {
                     value: _selectedEntity,
                   ),
                 )),
-            /*Flexible(
+            Flexible(
               child: ListView.builder(
                   itemCount: _events.length,
                   itemBuilder: (context, position) {
@@ -111,24 +104,22 @@ class _HomeState extends State<Home> {
                       title: Text(_events[position].subject),
                     );
                   }),
-            ),*/
-            //This is a test container.
-            Container(
-              child: Text(_events.length.toString()),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 
-  //bellow are the methods related to the category object data
-  //i'll get the categories data from the local db.
-  //and fill the required data in the needed lists
-  Future _fillCategoryList() async {
-    List categories = await _databaseHelper.getCategories();
-    categories.forEach((category) {
-      this._categories.add(Category.fromMap(category));
+  //I'll fill the category list directly from the API.
+  Future _fillCategories() async {
+    var url =
+        "http://10.152.134.193/apps/myapps/events/mobile/apis/get_categories.php";
+    http.Response response = await http.get(url);
+    List categories = List();
+    categories = json.decode(response.body);
+    categories.forEach((map) {
+      _categories.add(Category.fromMap(map));
     });
     setState(() {});
   }
@@ -144,19 +135,18 @@ class _HomeState extends State<Home> {
 
   //i'll fill the entities list from entities local db table.
   Future _fillEntityList({@required categoryId}) async {
-    List entities = await _databaseHelper.getEntities(categoryId: categoryId);
+//    List entities = await _databaseHelper.getEntities(categoryId: categoryId);
     _entities.clear();
     _entities.add(Entity(id: 0, name: "جميع الجهات", categoryId: 0, rank: 0));
     _selectedEntity = _entities[0];
-    entities.forEach((map) {
-      _entities.add(Entity.fromMap(map));
-    });
+//    entities.forEach((map) {
+//      _entities.add(Entity.fromMap(map));
+//    });
     setState(() {});
   }
 
   _fillEventList(id) async {
     _events.clear();
-    print("10 = ${await EventList.getEvents(categoryId: id)}");
-    _events= await EventList.getEvents(categoryId: id);
+    _events = await EventList.getEvents(categoryId: id);
   }
 }
