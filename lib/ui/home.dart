@@ -35,10 +35,10 @@ class _HomeState extends State<Home> {
     //I'll initialize some of the fields with values so the app doesn't face an
     // error for the first time it runs.
     _categories = [Category(id: 0, name: "جميع الفئات")];
+    _selectedCategory = _categories[0];
     //This function will fill the category list with values from the API.
     _fillCategories();
-    _selectedCategory = _categories[0];
-    _entities = List();
+    _entities = [Entity(id: 0, name: "جميع الجهات", categoryId: 0, rank: 0)];
     _entityVisibility = false;
     _events = [
       Event(
@@ -74,7 +74,7 @@ class _HomeState extends State<Home> {
                 onChanged: (Category category) {
                   setState(() {
                     _selectedCategory = category;
-                    _showEntityDropDown(category.id);
+                    _showEntityMenu(categoryId: category.id);
                     _fillEventList(_selectedCategory.id);
                   });
                 },
@@ -129,7 +129,7 @@ class _HomeState extends State<Home> {
   }
 
   //This method will view the entity list depending on the selected category.
-  void _showEntityDropDown(categoryId) {
+  void _showEntityMenu({@required categoryId}) {
     //I'll check if the category id is not 0 "All the categories" and
     // 5: "Permanent office" 6: "Executives office", in that case,
     // I'll show the entity list and fill it otherwise I'll not,
@@ -144,13 +144,26 @@ class _HomeState extends State<Home> {
   //I'll fill the entity list directly from the API depending on the id of the
   // selected category.
   Future _fillEntities({@required categoryId}) async {
-//    List entities = await _databaseHelper.getEntities(categoryId: categoryId);
-    _entities.clear();
-    _entities.add(Entity(id: 0, name: "جميع الجهات", categoryId: 0, rank: 0));
+    //This is the URL of the required API, I'll concatenate it with the base URL
+    // to be valid.
+    //I'll provide the category id, to know which categories to get based on the
+    // id of the selected category.
+    var url = apiURL + "get_committees.php?categoryId=$categoryId";
+    http.Response response = await http.get(url);
+    List entities = List();
+    entities = json.decode(response.body);
+    //I'll initialize the list because I want to view the default first choice
+    // on the list.
+    _entities = _entities = [
+      Entity(id: 0, name: "جميع الجهات", categoryId: 0, rank: 0)
+    ];
+    //I'll assign the first element of the list to the _selectedEntity var
+    // because I want to show the default value "جميع الجهات" as the first value
+    // in the menu.
     _selectedEntity = _entities[0];
-//    entities.forEach((map) {
-//      _entities.add(Entity.fromMap(map));
-//    });
+    entities.forEach((map) {
+      _entities.add(Entity.fromMap(map));
+    });
     setState(() {});
   }
 
