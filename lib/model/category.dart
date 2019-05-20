@@ -17,18 +17,6 @@ class Category {
 
   String get name => _name;
 
-  //I'll use this method when I try to save the object to the local DB.
-  Map<String, dynamic> toMap() {
-    //Here I'll return a map with the key names identical the column names
-    // from the remote DB for the category table.
-    //Because if I don't do that I'll get errors because the keys for the maps
-    // that I get from the API JSON will different from the object map keys.
-    return {
-      "event_entity_category_id": _id,
-      "event_entity_category_name": _name
-    };
-  }
-
   //This method will be used when the app creates a new category object using
   // values from the DB.
   Category.fromMap(Map<String, dynamic> map) {

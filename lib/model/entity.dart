@@ -25,21 +25,6 @@ class Entity {
 
   int get rank => _rank;
 
-  //I'll use this method when I try to save the object to the local DB.
-  Map toMap() {
-    //Here I'll return a map with the key names identical the column names
-    // from the remote DB for the entity table.
-    //Because if I don't do that I'll get errors because the keys for the maps
-    // that I get from the API JSON will different from the object map keys.
-    Map<String, dynamic> map = Map();
-    map['committee_id'] = _id;
-    map['committee_name'] = _name;
-    map['event_entity_category_id'] = _categoryId;
-    map['committee_rank'] = _rank;
-
-    return map;
-  }
-
   //This method will be used when the app creates a new entity object using
   // values from the DB.
   Entity.fromMap(Map map) {
