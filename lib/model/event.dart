@@ -49,25 +49,6 @@ class Event {
 
   int get id => _id;
 
-  //I'll use this method when I try to save the object to the local DB.
-  Map<String, dynamic> toMap() {
-    //Here I'll return a map with the key names identical the column names
-    // from the remote DB for the event table.
-    //Because if I don't do that I'll get errors because the keys for the maps
-    // that I get from the API JSON will different from the object map keys.
-    var map = Map<String, dynamic>();
-    map['id'] = id;
-    map['event_entity_name'] = eventEntityName;
-    map['time'] = time;
-    map['event_appointment'] = eventAppointment;
-    map['subject'] = subject;
-    map['event_date'] = eventDate;
-    map['hall_id'] = hallId;
-    map['event_place'] = eventPlace;
-
-    return map;
-  }
-
   //This method will be used when the app creates a new event object using
   // values from the DB.
   Event.fromMap(Map map) {
