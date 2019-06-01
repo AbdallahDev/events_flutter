@@ -58,4 +58,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation("androidx.arch.core:core-common:2.0.0")
+    implementation("androidx.lifecycle:lifecycle-common:2.0.0")
+    implementation("androidx.lifecycle:lifecycle-runtime:2.0.0")
+    implementation("androidx.annotation:annotation:1.0.0")
+    implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.0.0")
+    implementation("androidx.collection:collection:1.0.0")
+    implementation("androidx.versionedparcelable:versionedparcelable:1.0.0")
+    implementation("androidx.core:core:1.0.1")
 }
