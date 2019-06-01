@@ -2,7 +2,6 @@ This file contains the steps that I should do every time.
 
 The steps to send the event notification from the web app to mobile app.
 - Connect the app properly with the firebase plugin.
-- Writing the right code in the web app to send the title and the body of the event.
 - Receive the notification in the mobile app.
 - Run the local notification properly.
 - After pressing in the notification open a window in the app showing the event details.
