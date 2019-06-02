@@ -22,6 +22,20 @@ class _NotificationReceiverState extends State<NotificationReceiver> {
     var initializationSettings = InitializationSettings(android, ios);
 
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    //Firebase message receiving configuration.
+    _firebaseMessaging.configure(
+      onLaunch: (Map<String, dynamic> msg) {
+        print(" onLaunch called ${(msg)}");
+      },
+      onResume: (Map<String, dynamic> msg) {
+        print(" onResume called ${(msg)}");
+      },
+      onMessage: (Map<String, dynamic> msg) {
+//        showNotification(msg);
+        print(" onMessage called ${(msg)}");
+      },
+    );
   }
 
   @override
