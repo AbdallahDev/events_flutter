@@ -12,10 +12,14 @@ class _NotificationReceiverState extends State<NotificationReceiver> {
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
 
-
   @override
   void initState() {
     super.initState();
+
+    //Flutter local notification initialization settings for both Android and IOS.
+    var android = AndroidInitializationSettings('mipmap/ic_launcher');
+    var ios = IOSInitializationSettings();
+    var platform = InitializationSettings(android, ios);
   }
 
   @override
