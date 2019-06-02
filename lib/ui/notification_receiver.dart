@@ -36,6 +36,18 @@ class _NotificationReceiverState extends State<NotificationReceiver> {
         print(" onMessage called ${(msg)}");
       },
     );
+
+    //firebase request notification permission.
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, alert: true, badge: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings setting) {
+      print('IOS Setting Registed');
+    });
+    _firebaseMessaging.getToken().then((token) {
+//      update(token);
+      print(token);
+    });
   }
 
   @override
