@@ -1,4 +1,7 @@
-This file contains the steps that I should do every time.
+This file contains notes needed for the project.
+
+The cmd command need to make the sha-1:
+keytool -list -v -keystore C:\Users\abdallah.sarayrah\.android\debug.keystore -alias androiddebugkey -storepass android -keypass android
 
 The steps to send the event notification from the web app to mobile app.
 - Connect the app properly with firebase.
