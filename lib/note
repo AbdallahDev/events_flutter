@@ -5,6 +5,7 @@ keytool -list -v -keystore C:\Users\abdallah.sarayrah\.android\debug.keystore -a
 
 The steps to send the event notification from the web app to mobile app.
 - Connect the app properly with firebase ... done
-- Receive the notification in the mobile app from the web app in all the scenarios (Foreground, Background, Terminated)
+- Receive the notification in the mobile app from the web app in all the scenarios
+(Foreground, Background, Terminated)
 - Run the local notification properly.
 - After pressing in the notification open a window in the app showing the event details.
