@@ -8,6 +8,10 @@ class NotificationReceiver extends StatefulWidget {
 }
 
 class _NotificationReceiverState extends State<NotificationReceiver> {
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
+
   @override
   Widget build(BuildContext context) {
     return Container();
