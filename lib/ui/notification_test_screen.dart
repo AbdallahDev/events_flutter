@@ -11,7 +11,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   String textValue = 'Hello World !';
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  new FlutterLocalNotificationsPlugin();
+      new FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
