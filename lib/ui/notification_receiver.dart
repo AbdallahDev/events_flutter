@@ -20,7 +20,6 @@ class _NotificationReceiverState extends State<NotificationReceiver> {
     var android = AndroidInitializationSettings('mipmap/ic_launcher');
     var ios = IOSInitializationSettings();
     var initializationSettings = InitializationSettings(android, ios);
-
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
     //Firebase message receiving configuration.
@@ -32,7 +31,6 @@ class _NotificationReceiverState extends State<NotificationReceiver> {
         print(" onResume called ${(msg)}");
       },
       onMessage: (Map<String, dynamic> msg) {
-//        showNotification(msg);
         print(" onMessage called ${(msg)}");
       },
     );
@@ -45,13 +43,19 @@ class _NotificationReceiverState extends State<NotificationReceiver> {
       print('IOS Setting Registed');
     });
     _firebaseMessaging.getToken().then((token) {
-//      update(token);
       print(token);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return new MaterialApp(
+      home: new Scaffold(
+        appBar: new AppBar(
+          title: new Text('Push Notification'),
+        ),
+        body: new Center(),
+      ),
+    );
   }
 }
