@@ -11,6 +11,8 @@ class _NotificationReceiverState extends State<NotificationReceiver> {
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -31,11 +33,11 @@ class _NotificationReceiverState extends State<NotificationReceiver> {
         print(" onResume called ${(msg)}");
       },
       onMessage: (Map<String, dynamic> msg) {
+        _showNotification(msg);
         print(" onMessage called ${(msg)}");
       },
     );
 
-    //firebase request notification permission.
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, alert: true, badge: true));
     _firebaseMessaging.onIosSettingsRegistered
@@ -47,13 +49,28 @@ class _NotificationReceiverState extends State<NotificationReceiver> {
     });
   }
 
+  //This method will show a notification when a message received.
+  void _showNotification(Map<String, dynamic> msg) async {
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+        'ONE', "EVENTS", "This is the event notifications channel",
+        importance: Importance.Max, priority: Priority.High);
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      msg['data']['title'],
+      msg['data']['body'],
+      platformChannelSpecifics,
+      payload: 'Default_Sound',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
       home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Push Notification'),
-        ),
+        appBar: new AppBar(),
         body: new Center(),
       ),
     );
