@@ -1,3 +1,4 @@
+import 'package:events_flutter/ui/home.dart';
 import 'package:events_flutter/ui/notification_receiver.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: NotificationReceiver(),
+      home: Home(),
     );
   }
 }

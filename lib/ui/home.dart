@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 
 //This class is to view the dropDown buttons and the events list view.
@@ -25,6 +27,13 @@ class _HomeState extends State<Home> {
   Entity _selectedEntity;
   bool _entityVisibility;
   List<Event> _events;
+
+  //Message notification related fields (firebase, local notification)
+  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+  FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   //I need the initState function to run some of the code just at the first time
   // the app runs.
