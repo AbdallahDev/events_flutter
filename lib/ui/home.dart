@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
         print(" onResume called ${(msg)}");
       },
       onMessage: (Map<String, dynamic> msg) {
-//        _showNotification(msg);
+        _showNotification(msg);
         print(" onMessage called ${(msg)}");
       },
     );
@@ -91,6 +91,25 @@ class _HomeState extends State<Home> {
     var ios = IOSInitializationSettings();
     var initializationSettings = InitializationSettings(android, ios);
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  //This method will show a notification when a message received.
+  //and it will be called just when the app in the foreground and the background
+  // state, but when the app terminated a firebase method will be called.
+  void _showNotification(Map<String, dynamic> msg) async {
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+        'ONE', "EVENTS", "This is the event notifications channel",
+        importance: Importance.Max, priority: Priority.High);
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await _flutterLocalNotificationsPlugin.show(
+      0,
+      msg['data']['title'],
+      msg['data']['body'],
+      platformChannelSpecifics,
+      payload: 'Default_Sound',
+    );
   }
 
   @override
