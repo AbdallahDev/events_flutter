@@ -11,15 +11,13 @@ class _NotificationReceiverState extends State<NotificationReceiver> {
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
     super.initState();
 
     //Flutter local notification initialization settings for both Android and IOS.
-    var android = AndroidInitializationSettings('mipmap/ic_launcher');
+    var android = AndroidInitializationSettings('@mipmap/ic_launcher');
     var ios = IOSInitializationSettings();
     var initializationSettings = InitializationSettings(android, ios);
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
@@ -57,7 +55,7 @@ class _NotificationReceiverState extends State<NotificationReceiver> {
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
+    await _flutterLocalNotificationsPlugin.show(
       0,
       msg['data']['title'],
       msg['data']['body'],
