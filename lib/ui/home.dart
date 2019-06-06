@@ -31,8 +31,6 @@ class _HomeState extends State<Home> {
   //Message notification related fields (firebase, local notification)
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
-      new FlutterLocalNotificationsPlugin();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   //I need the initState function to run some of the code just at the first time
