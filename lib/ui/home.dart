@@ -61,6 +61,29 @@ class _HomeState extends State<Home> {
     // remote DB for all the categories and that just for the first time the
     // app runs.
     _fillEventList(categoryId: _selectedCategory.id);
+
+    //firebase related code.
+    _firebaseMessaging.configure(
+      onLaunch: (Map<String, dynamic> msg) {
+        print(" onLaunch called ${(msg)}");
+      },
+      onResume: (Map<String, dynamic> msg) {
+        print(" onResume called ${(msg)}");
+      },
+      onMessage: (Map<String, dynamic> msg) {
+//        _showNotification(msg);
+        print(" onMessage called ${(msg)}");
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, alert: true, badge: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings setting) {
+      print('IOS Setting Registed');
+    });
+    _firebaseMessaging.getToken().then((token) {
+      print(token);
+    });
   }
 
   @override
