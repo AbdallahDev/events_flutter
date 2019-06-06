@@ -7,5 +7,5 @@ The steps to send the event notification from the web app to mobile app.
 - Connect the app properly with firebase ... done
 - Receive the notification in the mobile app from the web app in all the scenarios
 (Foreground, Background, Terminated) ... done
-- Run the local notification properly.
+- Run the local notification properly ... done
 - After pressing in the notification open a window in the app showing the event details.
