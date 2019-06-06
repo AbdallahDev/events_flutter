@@ -84,6 +84,12 @@ class _HomeState extends State<Home> {
     _firebaseMessaging.getToken().then((token) {
       print(token);
     });
+
+    //local notification related code
+    var android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    var ios = IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(android, ios);
+    _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
   @override
