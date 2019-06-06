@@ -86,6 +86,7 @@ class _HomeState extends State<Home> {
     });
 
     //local notification related code
+    //For the app official launch, This notification icon should be changed.
     var android = AndroidInitializationSettings('@mipmap/ic_launcher');
     var ios = IOSInitializationSettings();
     var initializationSettings = InitializationSettings(android, ios);
