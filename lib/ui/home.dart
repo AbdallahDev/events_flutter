@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 
 //This class is to view the dropDown buttons and the events list view.
@@ -25,6 +27,11 @@ class _HomeState extends State<Home> {
   Entity _selectedEntity;
   bool _entityVisibility;
   List<Event> _events;
+
+  //Message notification related fields (firebase, local notification)
+  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+  FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   //I need the initState function to run some of the code just at the first time
   // the app runs.
@@ -54,6 +61,55 @@ class _HomeState extends State<Home> {
     // remote DB for all the categories and that just for the first time the
     // app runs.
     _fillEventList(categoryId: _selectedCategory.id);
+
+    //firebase related code.
+    _firebaseMessaging.configure(
+      onLaunch: (Map<String, dynamic> msg) {
+        print(" onLaunch called ${(msg)}");
+      },
+      onResume: (Map<String, dynamic> msg) {
+        print(" onResume called ${(msg)}");
+      },
+      onMessage: (Map<String, dynamic> msg) {
+        _showNotification(msg);
+        print(" onMessage called ${(msg)}");
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, alert: true, badge: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings setting) {
+      print('IOS Setting Registed');
+    });
+    _firebaseMessaging.getToken().then((token) {
+      print(token);
+    });
+
+    //local notification related code
+    //For the app official launch, This notification icon should be changed.
+    var android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    var ios = IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(android, ios);
+    _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  //This method will show a notification when a message received.
+  //and it will be called just when the app in the foreground and the background
+  // state, but when the app terminated a firebase method will be called.
+  void _showNotification(Map<String, dynamic> msg) async {
+    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+        'ONE', "EVENTS", "This is the event notifications channel",
+        importance: Importance.Max, priority: Priority.High);
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await _flutterLocalNotificationsPlugin.show(
+      0,
+      msg['data']['title'],
+      msg['data']['body'],
+      platformChannelSpecifics,
+      payload: 'Default_Sound',
+    );
   }
 
   @override
