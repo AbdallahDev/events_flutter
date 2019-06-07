@@ -1,5 +1,4 @@
 import 'package:events_flutter/ui/home.dart';
-import 'package:events_flutter/ui/notification_receiver.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
