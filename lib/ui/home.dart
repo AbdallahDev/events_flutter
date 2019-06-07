@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //This is the API base URL.
-  var apiURL = "http://192.168.0.29/apps/myapps/events/mobile/apis/";
+  var apiURL = "http://193.188.88.148/apps/myapps/events/mobile/apis/";
 
   //This list to store the category objects.
   List<Category> _categories;
@@ -83,6 +83,7 @@ class _HomeState extends State<Home> {
     });
     _firebaseMessaging.getToken().then((token) {
       print(token);
+      _saveToken(token);
     });
 
     //local notification related code
@@ -91,6 +92,12 @@ class _HomeState extends State<Home> {
     var ios = IOSInitializationSettings();
     var initializationSettings = InitializationSettings(android, ios);
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  //This method will save the device token when the app launched for the first time.
+  void _saveToken(String token) async {
+    var url = apiURL + "save_device_token.php?deviceToken=$token";
+    await http.get(url);
   }
 
   //This method will show a notification when a message received.
