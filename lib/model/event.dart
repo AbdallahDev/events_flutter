@@ -3,8 +3,15 @@ import 'package:meta/meta.dart';
 //This class is for the event object model.
 class Event {
   int _id;
+  //This is the name of the entity when it's typed as a text in the entity name
+  // textField in the web app.
   String _eventEntityName;
+  //This is the name of the entity when it's chosen from the entity drop down
+  // menu in the web app.
+  String _entityName;
   String _time;
+  //This represents when the event will behold as it's typed as a text in the
+  // event appointment textField in the web app.
   String _eventAppointment;
   String _subject;
   String _eventDate;
