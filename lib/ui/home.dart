@@ -174,7 +174,23 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.all(11),
                   itemCount: _events.length,
                   itemBuilder: (context, position) {
-                    return _eventWidget(position);
+                    return Container(
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            textDirection: _rtlTextDirection,
+                            children: <Widget>[
+                              Text(
+                                ":جهة النشاط ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(" "),
+                              Text(_events[position].eventEntityName)
+                            ],
+                          )
+                        ],
+                      ),
+                    );
                   }),
             ),
           ],
@@ -277,28 +293,5 @@ class _HomeState extends State<Home> {
       print(map);
     });
     setState(() {});
-  }
-
-  //This method will return the widget that views the event details.
-  //I've created it because I want to make some code in it, and I can't do that
-  // in the child property.
-  Widget _eventWidget(position) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Row(
-            textDirection: _rtlTextDirection,
-            children: <Widget>[
-              Text(
-                ":جهة النشاط ",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(" "),
-              Text(_events[position].eventEntityName)
-            ],
-          )
-        ],
-      ),
-    );
   }
 }
