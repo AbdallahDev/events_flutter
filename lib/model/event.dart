@@ -52,12 +52,14 @@ class Event {
   //This method will be used when the app creates a new event object using
   // values from the DB.
   Event.fromMap(Map map) {
+    //Here the map keys should be the same as the one in the fetched JSON from
+    // the API.
     _id = map['id'];
-    _eventEntityName = map['eventEntityName'];
+    _eventEntityName = map['event_entity_name'];
     _time = map['time'];
     _eventAppointment = map['eventAppointment'];
     _subject = map['subject'];
-    _eventDate = map['eventDate'];
+    _eventDate = map['event_date'];
     _hallId = map['hallId'];
     _eventPlace = map['eventPlace'];
   }
