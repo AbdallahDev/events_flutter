@@ -256,7 +256,10 @@ class _HomeState extends State<Home> {
     // to be valid.
     //I'll provide the category id, to know which events to get based on the
     // id of the selected category.
-    var url = apiURL + "get_events.php?categoryId=$categoryId";
+    //And also I'll provide the entityId to get the events for that entity if
+    // it's chosen.
+    var url =
+        apiURL + "get_events.php?categoryId=$categoryId&entityId=$entityId";
     http.Response response = await http.get(url);
     //This list will contain the JSON list of events as maps that fetched
     // from the API.
