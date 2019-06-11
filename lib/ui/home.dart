@@ -33,6 +33,9 @@ class _HomeState extends State<Home> {
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
+  //This is the rtl textDirection field
+  TextDirection _rtlTextDirection = TextDirection.rtl;
+
   //I need the initState function to run some of the code just at the first time
   // the app runs.
   @override
@@ -175,6 +178,7 @@ class _HomeState extends State<Home> {
                       child: Column(
                         children: <Widget>[
                           Row(
+                            textDirection: _rtlTextDirection,
                             children: <Widget>[
                               Text(_events[position].eventEntityName)
                             ],
