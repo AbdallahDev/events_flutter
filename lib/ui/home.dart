@@ -301,9 +301,25 @@ class _HomeState extends State<Home> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(" "),
-                Text(_events[position].eventEntityName)
+                Text(_events[position].eventEntityName),
               ],
-            )
+            ),
+            Row(
+              textDirection: _rtlTextDirection,
+              children: <Widget>[
+                Text(
+                  ":الموضوع ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(" "),
+                Text(_events[position].subject),
+              ],
+            ),
+            Divider(
+              height: 20,
+              color: Colors.black,
+              indent: 20,
+            ),
           ],
         ),
       );
