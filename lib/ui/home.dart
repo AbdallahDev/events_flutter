@@ -180,6 +180,11 @@ class _HomeState extends State<Home> {
                           Row(
                             textDirection: _rtlTextDirection,
                             children: <Widget>[
+                              Text(
+                                ":جهة النشاط ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(" "),
                               Text(_events[position].eventEntityName)
                             ],
                           )
