@@ -164,6 +164,12 @@ class _HomeState extends State<Home> {
                     onChanged: (Entity entity) {
                       setState(() {
                         _selectedEntity = entity;
+                        //Here I'll call the method that will fill the event
+                        // list with the events that belong to the chosen entity,
+                        // and that based on its id.
+                        _fillEventList(
+                            categoryId: _selectedCategory.id,
+                            entityId: entity.id);
                       });
                     },
                     value: _selectedEntity,
@@ -245,12 +251,15 @@ class _HomeState extends State<Home> {
   //This method will fill the events list with events from the API to viewed on
   // the events listView and that based on the id of the selected category and
   // the selected entity.
-  _fillEventList({@required categoryId}) async {
+  _fillEventList({@required categoryId, entityId}) async {
     //This is the URL of the required API, I'll concatenate it with the base URL
     // to be valid.
     //I'll provide the category id, to know which events to get based on the
     // id of the selected category.
-    var url = apiURL + "get_events.php?categoryId=$categoryId";
+    //And also I'll provide the entityId to get the events for that entity if
+    // it's chosen.
+    var url =
+        apiURL + "get_events.php?categoryId=$categoryId&entityId=$entityId";
     http.Response response = await http.get(url);
     //This list will contain the JSON list of events as maps that fetched
     // from the API.
