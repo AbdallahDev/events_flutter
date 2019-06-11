@@ -274,7 +274,6 @@ class _HomeState extends State<Home> {
     // from it then add it to events list.
     list.forEach((map) {
       _events.add(Event.fromMap(map));
-      print(map);
     });
     setState(() {});
   }
