@@ -315,6 +315,28 @@ class _HomeState extends State<Home> {
                 Text(_events[position].subject),
               ],
             ),
+            Row(
+              textDirection: _rtlTextDirection,
+              children: <Widget>[
+                Text(
+                  ":الـتـاريـــخ ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(" "),
+                Text(_events[position].eventDate),
+              ],
+            ),
+            Row(
+              textDirection: _rtlTextDirection,
+              children: <Widget>[
+                Text(
+                  ":الــــوقـــت ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(" "),
+                Text(_events[position].time),
+              ],
+            ),
             Divider(
               height: 20,
               color: Colors.black,
