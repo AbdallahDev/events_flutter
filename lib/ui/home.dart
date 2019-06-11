@@ -280,25 +280,37 @@ class _HomeState extends State<Home> {
   }
 
   //This method will return the widget that views the event details.
-  //I've created it because I want to make some code in it, and I can't do that
-  // in the child property.
+  //I've created it because I don't want to view the first element in the event
+  // list because it has empty values because it is a default element.
   Widget _eventWidget(position) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Row(
-            textDirection: _rtlTextDirection,
-            children: <Widget>[
-              Text(
-                ":جهة النشاط ",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(" "),
-              Text(_events[position].eventEntityName)
-            ],
-          )
-        ],
-      ),
-    );
+    //Here I'll check if the position is not 0, because that position represents
+    // the first element in the event list.
+    //Here I'll check if the position is not 0, because that position represents
+    // the first element in the event list.
+    // In that case, if the condition is true I'll return a container views the
+    // event list element details.
+    if (position != 0) {
+      return Container(
+        child: Column(
+          children: <Widget>[
+            Row(
+              textDirection: _rtlTextDirection,
+              children: <Widget>[
+                Text(
+                  ":جهة النشاط ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(" "),
+                Text(_events[position].eventEntityName)
+              ],
+            )
+          ],
+        ),
+      );
+    }
+    //Here I'll return an empty container because I don't want to view the
+    // default element in the event list that has an empty values.
+    else
+      return Container();
   }
 }
