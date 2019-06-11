@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //This is the API base URL.
-  var apiURL = "http://193.188.88.148/apps/myapps/events/mobile/apis/";
+  var apiURL = "http://10.152.241.210/apps/myapps/events/mobile/apis/";
 
   //This list to store the category objects.
   List<Category> _categories;
@@ -168,10 +168,19 @@ class _HomeState extends State<Home> {
                 )),
             Flexible(
               child: ListView.builder(
+                  padding: EdgeInsets.all(11),
                   itemCount: _events.length,
                   itemBuilder: (context, position) {
-                    return ListTile(
-                      title: Text(_events[position].subject),
+                    return Container(
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(_events[position].eventEntityName)
+                            ],
+                          )
+                        ],
+                      ),
                     );
                   }),
             ),
@@ -272,6 +281,7 @@ class _HomeState extends State<Home> {
     // from it then add it to events list.
     list.forEach((map) {
       _events.add(Event.fromMap(map));
+      print(map);
     });
     setState(() {});
   }
