@@ -3,12 +3,26 @@ import 'package:meta/meta.dart';
 //This class is for the event object model.
 class Event {
   int _id;
+
+  //This is the name of the entity, it will hold the name of the entity if it's
+  // chosen from the entity drop down menu in the web app, or it will hold the
+  // name of the entity if it's typed as a text in the event entity textField in
+  // the web app.
   String _eventEntityName;
   String _time;
+
+  //This represents when the event will behold as it's typed as a text in the
+  // event appointment textField in the web app.
   String _eventAppointment;
   String _subject;
   String _eventDate;
+
+  //This is the id of the hall the event will happen in it, it will be chosen
+  // from the hall drop down menu in the web app.
   int _hallId;
+
+  //This is the name of the place where the event will be held, and it will be
+  // typed in the event place textField in the web app.
   String _eventPlace;
 
   /*I've made the parameters required so they can appear when the object created,
@@ -52,12 +66,21 @@ class Event {
   //This method will be used when the app creates a new event object using
   // values from the DB.
   Event.fromMap(Map map) {
+    //Here the map keys should be the same as the one in the fetched JSON from
+    // the API.
     _id = map['id'];
-    _eventEntityName = map['eventEntityName'];
+    //Here I'll assign the event entity name from the entity_name map value if
+    // the event_entity_name map value is empty, else I'll assign from the
+    // event_entity_name map value.
+    if (map['event_entity_name'] == "")
+      _eventEntityName = map['entity_name'];
+    else
+      _eventEntityName = map['event_entity_name'];
+
     _time = map['time'];
     _eventAppointment = map['eventAppointment'];
     _subject = map['subject'];
-    _eventDate = map['eventDate'];
+    _eventDate = map['event_date'];
     _hallId = map['hallId'];
     _eventPlace = map['eventPlace'];
   }

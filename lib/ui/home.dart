@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //This is the API base URL.
-  var apiURL = "http://193.188.88.148/apps/myapps/events/mobile/apis/";
+  var apiURL = "http://10.152.241.210/apps/myapps/events/mobile/apis/";
 
   //This list to store the category objects.
   List<Category> _categories;
@@ -32,6 +32,9 @@ class _HomeState extends State<Home> {
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+
+  //This is the rtl textDirection field
+  TextDirection _rtlTextDirection = TextDirection.rtl;
 
   //I need the initState function to run some of the code just at the first time
   // the app runs.
@@ -168,11 +171,10 @@ class _HomeState extends State<Home> {
                 )),
             Flexible(
               child: ListView.builder(
+                  padding: EdgeInsets.all(11),
                   itemCount: _events.length,
                   itemBuilder: (context, position) {
-                    return ListTile(
-                      title: Text(_events[position].subject),
-                    );
+                    return _eventWidget(position);
                   }),
             ),
           ],
@@ -272,7 +274,81 @@ class _HomeState extends State<Home> {
     // from it then add it to events list.
     list.forEach((map) {
       _events.add(Event.fromMap(map));
+      print(map);
     });
     setState(() {});
+  }
+
+  //This method will return the widget that views the event details.
+  //I've created it because I don't want to view the first element in the event
+  // list because it has empty values because it is a default element.
+  Widget _eventWidget(position) {
+    //Here I'll check if the position is not 0, because that position represents
+    // the first element in the event list.
+    //Here I'll check if the position is not 0, because that position represents
+    // the first element in the event list.
+    // In that case, if the condition is true I'll return a container views the
+    // event list element details.
+    if (position != 0) {
+      return Container(
+        child: Column(
+          children: <Widget>[
+            Row(
+              textDirection: _rtlTextDirection,
+              children: <Widget>[
+                Text(
+                  ":جهة النشاط ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(" "),
+                Text(_events[position].eventEntityName),
+              ],
+            ),
+            Row(
+              textDirection: _rtlTextDirection,
+              children: <Widget>[
+                Text(
+                  ":الـمـوضـــوع ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(" "),
+                Text(_events[position].subject),
+              ],
+            ),
+            Row(
+              textDirection: _rtlTextDirection,
+              children: <Widget>[
+                Text(
+                  ":الـتـاريـــخ ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(" "),
+                Text(_events[position].eventDate),
+              ],
+            ),
+            Row(
+              textDirection: _rtlTextDirection,
+              children: <Widget>[
+                Text(
+                  ":الــــوقـــت ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(" "),
+                Text(_events[position].time),
+              ],
+            ),
+            Divider(
+              height: 20,
+              color: Colors.black,
+              indent: 20,
+            ),
+          ],
+        ),
+      );
+    }
+    //Here I'll return an empty container because I don't want to view the
+    // default element in the event list that has an empty values.
+    else
+      return Container();
   }
 }
