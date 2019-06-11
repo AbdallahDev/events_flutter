@@ -308,7 +308,7 @@ class _HomeState extends State<Home> {
               textDirection: _rtlTextDirection,
               children: <Widget>[
                 Text(
-                  ":الموضوع ",
+                  ":الـمـوضـــوع ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(" "),
