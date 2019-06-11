@@ -18,7 +18,13 @@ class Event {
   String _eventAppointment;
   String _subject;
   String _eventDate;
+
+  //This is the id of the hall the event will happen in it, it will be chosen
+  // from the hall drop down menu in the web app.
   int _hallId;
+
+  //This is the name of the place where the event will be held, and it will be
+  // typed in the event place textField in the web app.
   String _eventPlace;
 
   /*I've made the parameters required so they can appear when the object created,
