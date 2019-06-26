@@ -301,8 +301,10 @@ class _HomeState extends State<Home> {
     if (position != 0) {
       return Container(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            Row(
+            Wrap(
+              runAlignment: WrapAlignment.spaceAround,
               textDirection: _rtlTextDirection,
               children: <Widget>[
                 Text(
@@ -310,10 +312,13 @@ class _HomeState extends State<Home> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(" "),
-                Text(_events[position].eventEntityName),
+                Text(
+                  _events[position].eventEntityName,
+                  textDirection: TextDirection.rtl,
+                ),
               ],
             ),
-            Row(
+            Wrap(
               textDirection: _rtlTextDirection,
               children: <Widget>[
                 Text(
@@ -321,7 +326,10 @@ class _HomeState extends State<Home> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(" "),
-                Text(_events[position].subject),
+                Text(
+                  _events[position].subject,
+                  textDirection: TextDirection.rtl,
+                ),
               ],
             ),
             Row(
