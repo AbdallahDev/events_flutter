@@ -67,13 +67,13 @@ class _HomeState extends State<Home> {
 
     //firebase related code.
     _firebaseMessaging.configure(
-      onLaunch: (Map<String, dynamic> msg) {
+      onLaunch: (Map<String, dynamic> msg) async {
         print(" onLaunch called ${(msg)}");
       },
-      onResume: (Map<String, dynamic> msg) {
+      onResume: (Map<String, dynamic> msg) async {
         print(" onResume called ${(msg)}");
       },
-      onMessage: (Map<String, dynamic> msg) {
+      onMessage: (Map<String, dynamic> msg) async {
         _showNotification(msg);
         print(" onMessage called ${(msg)}");
       },
