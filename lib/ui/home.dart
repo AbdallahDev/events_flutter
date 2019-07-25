@@ -5,8 +5,10 @@ import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:unique_identifier/unique_identifier.dart';
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
@@ -16,7 +18,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //This is the API base URL.
-  var apiURL = "http://193.188.88.148/events/mobile/apis/";
+  var apiURL = "http://10.152.168.198/apps/myapps/events/mobile/apis/";
 
   //This list to store the category objects.
   List<Category> _categories;
@@ -36,11 +38,20 @@ class _HomeState extends State<Home> {
   //This is the rtl textDirection field
   TextDirection _rtlTextDirection = TextDirection.rtl;
 
+  //This field stores the device identifier, I'll use it to avoid tokens
+  // duplication in the DB, And I've made the default value as "Unknown" in case
+  // I couldn't get its value.
+  String _deviceIdentifier = "unknown";
+
   //I need the initState function to run some of the code just at the first time
   // the app runs.
   @override
   void initState() {
     super.initState();
+
+    //I've called the function that will get the device identifier.
+    initUniqueIdentifierState();
+
     //I'll initialize some of the fields with values so the app doesn't face an
     // error for the first time it runs.
     _categories = [Category(id: 0, name: "جميع الفئات")];
@@ -84,9 +95,11 @@ class _HomeState extends State<Home> {
         .listen((IosNotificationSettings setting) {
       print('IOS Setting Registed');
     });
-    _firebaseMessaging.getToken().then((token) {
-      print(token);
-      _saveToken(token);
+    _firebaseMessaging.getToken().then((deviceToken) {
+      print(deviceToken);
+      print(_deviceIdentifier);
+
+      _saveToken(deviceToken, _deviceIdentifier);
     });
 
     //local notification related code
@@ -97,9 +110,28 @@ class _HomeState extends State<Home> {
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
+  //This function will get the device identifier.
+  Future<void> initUniqueIdentifierState() async {
+    String deviceIdentifier;
+    try {
+      deviceIdentifier = await UniqueIdentifier.serial;
+    } on PlatformException {
+      deviceIdentifier = 'Failed to get Unique Identifier';
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _deviceIdentifier = deviceIdentifier;
+    });
+  }
+
   //This method will save the device token when the app launched for the first time.
-  void _saveToken(String token) async {
-    var url = apiURL + "save_device_token.php?deviceToken=$token";
+  //And also I'll include the device identifier to distinguish the token, so it
+  // will not be duplicated in the DB.
+  void _saveToken(String deviceToken, deviceIdentifier) async {
+    var url = apiURL +
+        "save_device_token.php?deviceToken=$deviceToken&deviceIdentifier=$deviceIdentifier";
     await http.get(url);
   }
 
