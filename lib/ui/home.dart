@@ -36,6 +36,10 @@ class _HomeState extends State<Home> {
   //This is the rtl textDirection field
   TextDirection _rtlTextDirection = TextDirection.rtl;
 
+  //This field stores the device identifier, I'll use it to avoid tokens
+  // duplication in the DB.
+  var _deviceIdentifier;
+
   //I need the initState function to run some of the code just at the first time
   // the app runs.
   @override
