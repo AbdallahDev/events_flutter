@@ -18,7 +18,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //This is the API base URL.
-  var apiURL = "http://193.188.88.148/events/mobile/apis/";
+  var apiURL = "http://10.152.168.198/apps/myapps/events/mobile/apis/";
 
   //This list to store the category objects.
   List<Category> _categories;
@@ -95,9 +95,11 @@ class _HomeState extends State<Home> {
         .listen((IosNotificationSettings setting) {
       print('IOS Setting Registed');
     });
-    _firebaseMessaging.getToken().then((token) {
-      print(token);
-      _saveToken(token);
+    _firebaseMessaging.getToken().then((deviceToken) {
+      print(deviceToken);
+      print(_deviceIdentifier);
+
+      _saveToken(deviceToken, _deviceIdentifier);
     });
 
     //local notification related code
@@ -125,8 +127,11 @@ class _HomeState extends State<Home> {
   }
 
   //This method will save the device token when the app launched for the first time.
-  void _saveToken(String token) async {
-    var url = apiURL + "save_device_token.php?deviceToken=$token";
+  //And also I'll include the device identifier to distinguish the token, so it
+  // will not be duplicated in the DB.
+  void _saveToken(String deviceToken, deviceIdentifier) async {
+    var url = apiURL +
+        "save_device_token.php?deviceToken=$deviceToken&deviceIdentifier=$deviceIdentifier";
     await http.get(url);
   }
 
