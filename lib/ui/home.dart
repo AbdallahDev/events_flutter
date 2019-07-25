@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
 
   //This field stores the device identifier, I'll use it to avoid tokens
   // duplication in the DB.
-  var _deviceIdentifier;
+  String _deviceIdentifier;
 
   //I need the initState function to run some of the code just at the first time
   // the app runs.
