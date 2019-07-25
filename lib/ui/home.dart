@@ -5,8 +5,10 @@ import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:unique_identifier/unique_identifier.dart';
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
@@ -46,6 +48,10 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+
+    //I've called the function that will get the device identifier.
+    initUniqueIdentifierState();
+
     //I'll initialize some of the fields with values so the app doesn't face an
     // error for the first time it runs.
     _categories = [Category(id: 0, name: "جميع الفئات")];
@@ -100,6 +106,22 @@ class _HomeState extends State<Home> {
     var ios = IOSInitializationSettings();
     var initializationSettings = InitializationSettings(android, ios);
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  //This function will get the device identifier.
+  Future<void> initUniqueIdentifierState() async {
+    String deviceIdentifier;
+    try {
+      deviceIdentifier = await UniqueIdentifier.serial;
+    } on PlatformException {
+      deviceIdentifier = 'Failed to get Unique Identifier';
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _deviceIdentifier = deviceIdentifier;
+    });
   }
 
   //This method will save the device token when the app launched for the first time.
