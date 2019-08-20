@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
-import 'package:unique_identifier/unique_identifier.dart';
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
@@ -50,7 +49,7 @@ class _HomeState extends State<Home> {
     super.initState();
 
     //I've called the function that will get the device identifier.
-    initUniqueIdentifierState();
+    //Here I should call the function that get the device info.
 
     //I'll initialize some of the fields with values so the app doesn't face an
     // error for the first time it runs.
@@ -111,20 +110,7 @@ class _HomeState extends State<Home> {
   }
 
   //This function will get the device identifier.
-  Future<void> initUniqueIdentifierState() async {
-    String deviceIdentifier;
-    try {
-      deviceIdentifier = await UniqueIdentifier.serial;
-    } on PlatformException {
-      deviceIdentifier = 'Failed to get Unique Identifier';
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      _deviceIdentifier = deviceIdentifier;
-    });
-  }
+  //Here I should create the function that gets the device info.
 
   //This method will save the device token when the app launched for the first time.
   //And also I'll include the device identifier to distinguish the token, so it
