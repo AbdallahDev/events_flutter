@@ -36,10 +36,12 @@ class _HomeState extends State<Home> {
   //This is the rtl textDirection field
   TextDirection _rtlTextDirection = TextDirection.rtl;
 
-  //This field stores the device identifier, I'll use it to avoid tokens
-  // duplication in the DB, And I've made the default value as "Unknown" in case
-  // I couldn't get its value.
+  //These fields store the device info (identifier, name, version), I'll use
+  // them to avoid tokens duplication in the DB, And I've made the default value
+  // as "unknown" in case I couldn't get them.
   String _deviceIdentifier = "unknown";
+  String _deviceName = "unknown";
+  String _deviceVersion = "unknown";
 
   //I need the initState function to run some of the code just at the first time
   // the app runs.
