@@ -5,7 +5,6 @@ import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 
@@ -91,8 +90,8 @@ class _HomeState extends State<Home> {
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, alert: true, badge: true));
     _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings setting) {
-      print('IOS Setting Registed');
+        .listen((IosNotificationSettings settings) {
+      print('IOS Settings Registered: $settings');
     });
     _firebaseMessaging.getToken().then((deviceToken) {
       print(deviceToken);
