@@ -7,6 +7,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:device_info/device_info.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
@@ -49,8 +52,8 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
 
-    //I've called the function that will get the device identifier.
-    //Here I should call the function that get the device info.
+    //I've called the function that will get the device info.
+    getDeviceInfo();
 
     //I'll initialize some of the fields with values so the app doesn't face an
     // error for the first time it runs.
@@ -110,8 +113,35 @@ class _HomeState extends State<Home> {
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  //This function will get the device identifier.
-  //Here I should create the function that gets the device info.
+  //This function will get the device info.
+  void getDeviceInfo() async {
+    String deviceIdentifier;
+    String deviceName;
+    String deviceVersion;
+    final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
+    try {
+      if (Platform.isAndroid) {
+        var build = await deviceInfoPlugin.androidInfo;
+        deviceIdentifier = build.androidId;
+        deviceName = build.model;
+        deviceVersion = build.version.toString();
+      } else if (Platform.isIOS) {
+        var data = await deviceInfoPlugin.iosInfo;
+        deviceIdentifier = data.identifierForVendor; //UUID for iOS
+        deviceName = data.name;
+        deviceVersion = data.systemVersion;
+      }
+
+      print(
+          "deviceName: $deviceName --- deviceVersion: $deviceVersion --- deviceIdentifier: $deviceIdentifier");
+
+      _deviceIdentifier = deviceIdentifier;
+      _deviceName = deviceName;
+      _deviceVersion = deviceVersion;
+    } on PlatformException {
+      print('Failed to get device info');
+    }
+  }
 
   //This method will save the device token when the app launched for the first time.
   //And also I'll include the device identifier to distinguish the token, so it
