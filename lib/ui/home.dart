@@ -5,10 +5,11 @@ import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
-import 'package:unique_identifier/unique_identifier.dart';
+import 'package:device_info/device_info.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
@@ -18,7 +19,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //This is the API base URL.
-  var apiURL = "http://193.188.88.148/events/mobile/apis/";
+  var apiURL = "http://193.188.88.148/apps/myapps/events/mobile/apis/";
 
   //This list to store the category objects.
   List<Category> _categories;
@@ -38,10 +39,12 @@ class _HomeState extends State<Home> {
   //This is the rtl textDirection field
   TextDirection _rtlTextDirection = TextDirection.rtl;
 
-  //This field stores the device identifier, I'll use it to avoid tokens
-  // duplication in the DB, And I've made the default value as "Unknown" in case
-  // I couldn't get its value.
+  //These fields store the device info (identifier, name, version), I'll use
+  // them to avoid tokens duplication in the DB, And I've made the default value
+  // as "unknown" in case I couldn't get them.
   String _deviceIdentifier = "unknown";
+  String _deviceName = "unknown";
+  String _deviceVersion = "unknown";
 
   //I need the initState function to run some of the code just at the first time
   // the app runs.
@@ -49,8 +52,8 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
 
-    //I've called the function that will get the device identifier.
-    initUniqueIdentifierState();
+    //I've called the function that will get the device info.
+    getDeviceInfo();
 
     //I'll initialize some of the fields with values so the app doesn't face an
     // error for the first time it runs.
@@ -92,8 +95,8 @@ class _HomeState extends State<Home> {
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, alert: true, badge: true));
     _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings setting) {
-      print('IOS Setting Registed');
+        .listen((IosNotificationSettings settings) {
+      print('IOS Settings Registered: $settings');
     });
     _firebaseMessaging.getToken().then((deviceToken) {
       print(deviceToken);
@@ -110,20 +113,34 @@ class _HomeState extends State<Home> {
     _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  //This function will get the device identifier.
-  Future<void> initUniqueIdentifierState() async {
+  //This function will get the device info.
+  void getDeviceInfo() async {
     String deviceIdentifier;
+    String deviceName;
+    String deviceVersion;
+    final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
     try {
-      deviceIdentifier = await UniqueIdentifier.serial;
-    } on PlatformException {
-      deviceIdentifier = 'Failed to get Unique Identifier';
-    }
+      if (Platform.isAndroid) {
+        var build = await deviceInfoPlugin.androidInfo;
+        deviceIdentifier = build.androidId;
+        deviceName = build.model;
+        deviceVersion = build.version.toString();
+      } else if (Platform.isIOS) {
+        var data = await deviceInfoPlugin.iosInfo;
+        deviceIdentifier = data.identifierForVendor; //UUID for iOS
+        deviceName = data.name;
+        deviceVersion = data.systemVersion;
+      }
 
-    if (!mounted) return;
+      print(
+          "deviceName: $deviceName --- deviceVersion: $deviceVersion --- deviceIdentifier: $deviceIdentifier");
 
-    setState(() {
       _deviceIdentifier = deviceIdentifier;
-    });
+      _deviceName = deviceName;
+      _deviceVersion = deviceVersion;
+    } on PlatformException {
+      print('Failed to get device info');
+    }
   }
 
   //This method will save the device token when the app launched for the first time.
