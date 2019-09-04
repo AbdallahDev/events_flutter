@@ -1,15 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:device_info/device_info.dart';
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
-import 'package:device_info/device_info.dart';
-import 'dart:io';
-import 'package:flutter/services.dart';
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
@@ -19,7 +19,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //This is the API base URL.
-  var apiURL = "http://193.188.88.148/apps/myapps/events/mobile/apis/";
+  var apiURL = "http://10.152.232.199/apps/myapps/events/mobile/apis/";
 
   //This list to store the category objects.
   List<Category> _categories;
@@ -43,8 +43,15 @@ class _HomeState extends State<Home> {
   // them to avoid tokens duplication in the DB, And I've made the default value
   // as "unknown" in case I couldn't get them.
   String _deviceIdentifier = "unknown";
+
+  //These 3 below instances are used to store the info that will distinguish the
+  // device in the database.
   String _deviceName = "unknown";
-  String _deviceVersion = "unknown";
+  String _deviceModel = "unknown";
+
+  //This var is used to store the value that determines if the device is a
+  // physical one or not (simulator).
+  String _deviceIsPhysical = "unknown";
 
   //I need the initState function to run some of the code just at the first time
   // the app runs.
@@ -102,7 +109,8 @@ class _HomeState extends State<Home> {
       print(deviceToken);
       print(_deviceIdentifier);
 
-      _saveToken(deviceToken, _deviceIdentifier);
+      _saveToken(deviceToken, _deviceIdentifier, _deviceName, _deviceModel,
+          _deviceIsPhysical);
     });
 
     //local notification related code
@@ -115,29 +123,21 @@ class _HomeState extends State<Home> {
 
   //This function will get the device info.
   void getDeviceInfo() async {
-    String deviceIdentifier;
-    String deviceName;
-    String deviceVersion;
     final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
     try {
       if (Platform.isAndroid) {
         var build = await deviceInfoPlugin.androidInfo;
-        deviceIdentifier = build.androidId;
-        deviceName = build.model;
-        deviceVersion = build.version.toString();
+        _deviceIdentifier = build.androidId;
+        _deviceName = build.device;
+        _deviceModel = build.model;
+        _deviceIsPhysical = build.isPhysicalDevice.toString();
       } else if (Platform.isIOS) {
-        var data = await deviceInfoPlugin.iosInfo;
-        deviceIdentifier = data.identifierForVendor; //UUID for iOS
-        deviceName = data.name;
-        deviceVersion = data.systemVersion;
+        var build = await deviceInfoPlugin.iosInfo;
+        _deviceIdentifier = build.identifierForVendor; //UUID for iOS
+        _deviceName = build.name;
+        _deviceModel = build.model;
+        _deviceIsPhysical = build.isPhysicalDevice.toString();
       }
-
-      print(
-          "deviceName: $deviceName --- deviceVersion: $deviceVersion --- deviceIdentifier: $deviceIdentifier");
-
-      _deviceIdentifier = deviceIdentifier;
-      _deviceName = deviceName;
-      _deviceVersion = deviceVersion;
     } on PlatformException {
       print('Failed to get device info');
     }
@@ -146,9 +146,10 @@ class _HomeState extends State<Home> {
   //This method will save the device token when the app launched for the first time.
   //And also I'll include the device identifier to distinguish the token, so it
   // will not be duplicated in the DB.
-  void _saveToken(String deviceToken, deviceIdentifier) async {
+  void _saveToken(String deviceToken, deviceIdentifier, deviceName, deviceModel,
+      deviceIsPhysical) async {
     var url = apiURL +
-        "save_device_token.php?deviceToken=$deviceToken&deviceIdentifier=$deviceIdentifier";
+        "save_device_token.php?deviceToken=$deviceToken&deviceIdentifier=$deviceIdentifier&deviceName=$deviceName&deviceModel=$deviceModel&deviceIsPhysical=$deviceIsPhysical";
     await http.get(url);
   }
 
