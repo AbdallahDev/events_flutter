@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
   //Message notification related fields (firebase, local notification)
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
   //This is the rtl textDirection field
   TextDirection _rtlTextDirection = TextDirection.rtl;
@@ -369,66 +369,64 @@ class _HomeState extends State<Home> {
     // event list element details.
     if (position != 0) {
       return Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Wrap(
-              runAlignment: WrapAlignment.spaceAround,
-              textDirection: _rtlTextDirection,
-              children: <Widget>[
-                Text(
-                  ":جهة النشاط ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(" "),
-                Text(
-                  _events[position].eventEntityName,
-                  textDirection: TextDirection.rtl,
-                ),
-              ],
-            ),
-            Wrap(
-              textDirection: _rtlTextDirection,
-              children: <Widget>[
-                Text(
-                  ":الـمـوضـــوع ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(" "),
-                Text(
-                  _events[position].subject,
-                  textDirection: TextDirection.rtl,
-                ),
-              ],
-            ),
-            Row(
-              textDirection: _rtlTextDirection,
-              children: <Widget>[
-                Text(
-                  ":الـتـاريـــخ ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(" "),
-                Text(_events[position].eventDate),
-              ],
-            ),
-            Row(
-              textDirection: _rtlTextDirection,
-              children: <Widget>[
-                Text(
-                  ":الــــوقـــت ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(" "),
-                Text(_events[position].time),
-              ],
-            ),
-            Divider(
-              height: 20,
-              color: Colors.black,
-              indent: 20,
-            ),
-          ],
+        child: Card(
+          elevation: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Wrap(
+                runAlignment: WrapAlignment.spaceAround,
+                textDirection: _rtlTextDirection,
+                children: <Widget>[
+                  Text(
+                    ":جهة النشاط ",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(" "),
+                  Text(
+                    _events[position].eventEntityName,
+                    textDirection: TextDirection.rtl,
+                  ),
+                ],
+              ),
+              Wrap(
+                textDirection: _rtlTextDirection,
+                children: <Widget>[
+                  Text(
+                    ":الـمـوضـــوع ",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(" "),
+                  Text(
+                    _events[position].subject,
+                    textDirection: TextDirection.rtl,
+                  ),
+                ],
+              ),
+              Row(
+                textDirection: _rtlTextDirection,
+                children: <Widget>[
+                  Text(
+                    ":الـتـاريـــخ ",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(" "),
+                  Text(_events[position].eventDate),
+                ],
+              ),
+              Row(
+                textDirection: _rtlTextDirection,
+                children: <Widget>[
+                  Text(
+                    ":الــــوقـــت ",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(" "),
+                  Text(_events[position].time),
+                ],
+              ),
+            ],
+          ),
         ),
       );
     }
