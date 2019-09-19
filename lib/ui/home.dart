@@ -176,10 +176,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text("نشاطات مجلس النواب"),
-        backgroundColor: Color.fromRGBO(196, 0, 0, 1)
-      ),
+          centerTitle: true,
+          title: Text("نشاطات مجلس النواب"),
+          backgroundColor: Color.fromRGBO(196, 0, 0, 1)),
       body: Container(
         child: Column(
           children: <Widget>[
@@ -284,10 +283,29 @@ class _HomeState extends State<Home> {
     // from the API.
     List list = json.decode(response.body);
     //I'll initialize the list because I want to view the default first choice
-    // on the list.
-    _entities = _entities = [
-      Entity(id: 0, name: "جميع الجهات", categoryId: 0, rank: 0)
-    ];
+    // on the list, and that value will be based on the selected category id.
+    switch (categoryId) {
+      case 1: //this case when the "اللجان الدائمة" chosen
+      case 3: //this case when the "لجان الاخوة" chosen
+      case 4: //this case when the "لجان الصداقة" chosen
+        {
+          _entities = _entities = [
+            //Here I'll set the categoryId and the rank to 0 to make the value
+            // appears as the first one in the array
+            Entity(id: 0, name: "جميع اللجان", categoryId: 0, rank: 0)
+          ];
+          break;
+        }
+      case 2: //this case when the "الكتل" chosen
+        {
+          _entities = _entities = [
+            //Here I'll set the categoryId and the rank to 0 to make the value
+            // appears as the first one in the array
+            Entity(id: 0, name: "جميع الكتل", categoryId: 0, rank: 0)
+          ];
+          break;
+        }
+    }
     //I'll assign the first element of the list to the _selectedEntity var
     // because I want to show the default value "جميع الجهات" as the first value
     // in the menu.
