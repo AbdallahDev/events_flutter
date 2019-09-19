@@ -19,7 +19,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //This is the API base URL.
-  var apiURL = "http://193.188.88.148/events/mobile/apis/";
+  var apiURL = "http://193.188.88.148/apps/myapps/events/mobile/apis/";
 
   //This list to store the category objects.
   List<Category> _categories;
@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
 
     //I'll initialize some of the fields with values so the app doesn't face an
     // error for the first time it runs.
-    _categories = [Category(id: 0, name: "جميع الفئات")];
+    _categories = [Category(id: 0, name: "الكل")];
     _selectedCategory = _categories[0];
     //This function will fill the category list with values from the API.
     _fillCategories();
