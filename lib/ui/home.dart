@@ -379,7 +379,7 @@ class _HomeState extends State<Home> {
                 textDirection: _rtlTextDirection,
                 children: <Widget>[
                   Text(
-                    ":جهة النشاط ",
+                    ": جهة النشاط ",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(" "),
@@ -393,7 +393,7 @@ class _HomeState extends State<Home> {
                 textDirection: _rtlTextDirection,
                 children: <Widget>[
                   Text(
-                    ":الـمـوضـــوع ",
+                    ": الـمـوضـــوع ",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(" "),
@@ -407,7 +407,7 @@ class _HomeState extends State<Home> {
                 textDirection: _rtlTextDirection,
                 children: <Widget>[
                   Text(
-                    ":الـتـاريـــخ ",
+                    ": الـتـاريـــخ ",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(" "),
@@ -418,7 +418,7 @@ class _HomeState extends State<Home> {
                 textDirection: _rtlTextDirection,
                 children: <Widget>[
                   Text(
-                    ":الــــوقـــت ",
+                    ": الــــوقـــت ",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(" "),
