@@ -178,6 +178,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("نشاطات مجلس النواب"),
+        backgroundColor: Color.fromRGBO(196, 0, 0, 1)
       ),
       body: Container(
         child: Column(
