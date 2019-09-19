@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
           eventAppointment: "",
           subject: "",
           eventDate: "",
-          hallId: 0,
+          hallName: "",
           eventPlace: "")
     ];
     //I'll call this method to fill the listView with all the events in the
@@ -346,7 +346,7 @@ class _HomeState extends State<Home> {
           eventAppointment: "",
           subject: "",
           eventDate: "",
-          hallId: 0,
+          hallName: "",
           eventPlace: "")
     ];
     //I'll loop over each event map in the list to create an event object
@@ -361,6 +361,13 @@ class _HomeState extends State<Home> {
   //I've created it because I don't want to view the first element in the event
   // list because it has empty values because it is a default element.
   Widget _eventWidget(position) {
+    //This local variable stores the event place where the event will behold,
+    // and I'll make the default value of it the value stored in the event place
+    // but if that value is empty I'll store in it the values stored in the hall
+    // name.
+    String eventPlace = _events[position].eventPlace;
+    if (_events[position].hallName.isNotEmpty)
+      eventPlace = _events[position].hallName;
     //Here I'll check if the position is not 0, because that position represents
     // the first element in the event list.
     //Here I'll check if the position is not 0, because that position represents
@@ -423,6 +430,17 @@ class _HomeState extends State<Home> {
                   ),
                   Text(" "),
                   Text(_events[position].time),
+                ],
+              ),
+              Row(
+                textDirection: _rtlTextDirection,
+                children: <Widget>[
+                  Text(
+                    ": مكان الاجتماع ",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(" "),
+                  Text(eventPlace),
                 ],
               ),
             ],
