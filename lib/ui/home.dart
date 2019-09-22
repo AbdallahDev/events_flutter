@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
   //Message notification related fields (firebase, local notification)
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   //This is the rtl textDirection field
   TextDirection _rtlTextDirection = TextDirection.rtl;
@@ -287,7 +287,6 @@ class _HomeState extends State<Home> {
     switch (categoryId) {
       case 1: //this case when the "اللجان الدائمة" chosen
       case 3: //this case when the "لجان الاخوة" chosen
-      case 4: //this case when the "لجان الصداقة" chosen
         {
           _entities = _entities = [
             //Here I'll set the categoryId and the rank to 0 to make the value
@@ -302,6 +301,15 @@ class _HomeState extends State<Home> {
             //Here I'll set the categoryId and the rank to 0 to make the value
             // appears as the first one in the array
             Entity(id: 0, name: "جميع الكتل", categoryId: 0, rank: 0)
+          ];
+          break;
+        }
+      case 4: //this case when the "جمعيات الصداقة" chosen
+        {
+          _entities = _entities = [
+            //Here I'll set the categoryId and the rank to 0 to make the value
+            // appears as the first one in the array
+            Entity(id: 0, name: "جميع الجمعيات", categoryId: 0, rank: 0)
           ];
           break;
         }
