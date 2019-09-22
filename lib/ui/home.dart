@@ -428,11 +428,9 @@ class _HomeState extends State<Home> {
                   ),
                   Text(" "),
                   Text(_events[position].eventDate),
-                ],
-              ),
-              Row(
-                textDirection: _rtlTextDirection,
-                children: <Widget>[
+                  Container(margin: EdgeInsets.only(right: 5),),
+                  Text(" / "),
+                  Container(margin: EdgeInsets.only(right: 5),),
                   Text(
                     ": الــــوقـــت ",
                     style: TextStyle(fontWeight: FontWeight.bold),
