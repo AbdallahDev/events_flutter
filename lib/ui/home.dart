@@ -386,6 +386,7 @@ class _HomeState extends State<Home> {
       return Container(
         child: Card(
           elevation: 2,
+          margin: EdgeInsets.only(top: 10, bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
