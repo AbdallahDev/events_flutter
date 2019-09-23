@@ -31,6 +31,10 @@ class _HomeState extends State<Home> {
   bool _entityVisibility;
   List<Event> _events;
 
+  //This variable will store the status that based on it will be decided to view
+  // the events of the current date or all the dates.
+  bool _eventsDateStatus;
+
   //Message notification related fields (firebase, local notification)
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
@@ -81,10 +85,15 @@ class _HomeState extends State<Home> {
           hallName: "",
           eventPlace: "")
     ];
+    //Here I've initialized the instance with the value "false" because the
+    // default state will be to show the events of the current date, not all the
+    // dates.
+    _eventsDateStatus = false;
     //I'll call this method to fill the listView with all the events in the
     // remote DB for all the categories and that just for the first time the
     // app runs.
-    _fillEventList(categoryId: _selectedCategory.id);
+    _fillEventList(
+        categoryId: _selectedCategory.id, eventsDateStatus: _eventsDateStatus);
 
     //firebase related code.
     _firebaseMessaging.configure(
@@ -196,7 +205,9 @@ class _HomeState extends State<Home> {
                     // new category.
                     _selectedCategory = category;
                     _showEntityMenu(categoryId: category.id);
-                    _fillEventList(categoryId: _selectedCategory.id);
+                    _fillEventList(
+                        categoryId: _selectedCategory.id,
+                        eventsDateStatus: _eventsDateStatus);
                   });
                 },
                 value: _selectedCategory,
@@ -220,12 +231,34 @@ class _HomeState extends State<Home> {
                         // and that based on its id.
                         _fillEventList(
                             categoryId: _selectedCategory.id,
-                            entityId: entity.id);
+                            entityId: entity.id,
+                            eventsDateStatus: _eventsDateStatus);
                       });
                     },
                     value: _selectedEntity,
                   ),
                 )),
+            Center(
+              child: Container(
+                width: 240,
+                child: CheckboxListTile(
+                  title: const Text('اظهار نشاطات جميع الايام'),
+                  value: _eventsDateStatus,
+                  onChanged: (bool value) {
+                    setState(() {
+                      if (_eventsDateStatus == false)
+                        _eventsDateStatus = true;
+                      else
+                        _eventsDateStatus = false;
+
+                      _fillEventList(
+                          categoryId: _selectedCategory.id,
+                          eventsDateStatus: _eventsDateStatus);
+                    });
+                  },
+                ),
+              ),
+            ),
             Flexible(
               child: ListView.builder(
                   padding: EdgeInsets.all(11),
@@ -326,22 +359,32 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
-  //This method will fill the events list with events from the API to viewed on
-  // the events listView and that based on the id of the selected category and
-  // the selected entity.
-  _fillEventList({@required categoryId, entityId}) async {
+  //This method will fill the events list with the events from the API to be
+  // viewed on the events listView, and that based on the id of the selected
+  // category and the selected entity.
+  _fillEventList(
+      {@required categoryId,
+      entityId,
+      //This parameter will be used to decide to fetch the events of the
+      // current date or all the dates, and I've specified it as a required
+      // because it's needed at all the times because I can't fetch the events
+      // without knowing if that is for the current date or all the dates.
+      @required eventsDateStatus}) async {
     //This is the URL of the required API, I'll concatenate it with the base URL
     // to be valid.
     //I'll provide the category id, to know which events to get based on the
     // id of the selected category.
     //And also I'll provide the entityId to get the events for that entity if
     // it's chosen.
-    var url =
-        apiURL + "get_events.php?categoryId=$categoryId&entityId=$entityId";
+    //And I've concatenated the eventsDateStatus value to decide to fetch the
+    // events of the current date or for all the dates.
+    var url = apiURL +
+        "get_events.php?categoryId=$categoryId&entityId=$entityId&eventsDateStatus=$eventsDateStatus";
     http.Response response = await http.get(url);
     //This list will contain the JSON list of events as maps that fetched
     // from the API.
     List list = json.decode(response.body);
+
     //I'll initialize the list with a default event object, and that for
     // reinitializing the list from the beginning, because I don't want the new
     // values to be added to the old ones, and also in case I don't get anything
@@ -386,71 +429,78 @@ class _HomeState extends State<Home> {
       return Container(
         child: Card(
           elevation: 2,
-          margin: EdgeInsets.only(top: 10, bottom: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Wrap(
-                runAlignment: WrapAlignment.spaceAround,
-                textDirection: _rtlTextDirection,
-                children: <Widget>[
-                  Text(
-                    ": جهة النشاط ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(" "),
-                  Text(
-                    _events[position].eventEntityName,
-                    textDirection: TextDirection.rtl,
-                  ),
-                ],
-              ),
-              Wrap(
-                textDirection: _rtlTextDirection,
-                children: <Widget>[
-                  Text(
-                    ": الـمـوضـــوع ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(" "),
-                  Text(
-                    _events[position].subject,
-                    textDirection: TextDirection.rtl,
-                  ),
-                ],
-              ),
-              Row(
-                textDirection: _rtlTextDirection,
-                children: <Widget>[
-                  Text(
-                    ": الـتـاريـــخ ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(" "),
-                  Text(_events[position].eventDate),
-                  Container(margin: EdgeInsets.only(right: 5),),
-                  Text(" / "),
-                  Container(margin: EdgeInsets.only(right: 5),),
-                  Text(
-                    ": الــــوقـــت ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(" "),
-                  Text(_events[position].time),
-                ],
-              ),
-              Row(
-                textDirection: _rtlTextDirection,
-                children: <Widget>[
-                  Text(
-                    ": مكان الاجتماع ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(" "),
-                  Text(eventPlace),
-                ],
-              ),
-            ],
+          margin: EdgeInsets.only(top: 7, bottom: 7),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Wrap(
+                  runAlignment: WrapAlignment.spaceAround,
+                  textDirection: _rtlTextDirection,
+                  children: <Widget>[
+                    Text(
+                      ": جهة النشاط ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(" "),
+                    Text(
+                      _events[position].eventEntityName,
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ],
+                ),
+                Wrap(
+                  textDirection: _rtlTextDirection,
+                  children: <Widget>[
+                    Text(
+                      ": الـمـوضـــوع ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(" "),
+                    Text(
+                      _events[position].subject,
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ],
+                ),
+                Row(
+                  textDirection: _rtlTextDirection,
+                  children: <Widget>[
+                    Text(
+                      ": الـتـاريـــخ ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(" "),
+                    Text(_events[position].eventDate),
+                    Container(
+                      margin: EdgeInsets.only(right: 5),
+                    ),
+                    Text(" / "),
+                    Container(
+                      margin: EdgeInsets.only(right: 5),
+                    ),
+                    Text(
+                      ": الــــوقـــت ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(" "),
+                    Text(_events[position].time),
+                  ],
+                ),
+                Row(
+                  textDirection: _rtlTextDirection,
+                  children: <Widget>[
+                    Text(
+                      ": مكان الاجتماع ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(" "),
+                    Text(eventPlace),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       );
