@@ -17,10 +17,14 @@ class Event {
   String _subject;
   String _eventDate;
 
-  //This is the id of the hall the event will happen in it, it will be chosen
-  // from the hall drop down menu in the web app.
-  int _hallId;
-
+  //These two variables (_hallName, _eventPlace) used to store where the event
+  // will behold. The hall name is when the hall is chosen the halls dropdown
+  // menu in the events web app, and the event place will be used if the hall is
+  // not chosen from the drop-down menu instead inserted in the event place text
+  // box in the web app.
+  //
+  //This variable stores the hall name in case the event behold in one of them.
+  String _hallName;
   //This is the name of the place where the event will be held, and it will be
   // typed in the event place textField in the web app.
   String _eventPlace;
@@ -34,7 +38,7 @@ class Event {
     @required eventAppointment,
     @required subject,
     @required eventDate,
-    @required hallId,
+    @required hallName,
     @required eventPlace,
   })  : _id = id,
         _eventEntityName = eventEntityName,
@@ -42,14 +46,14 @@ class Event {
         _eventAppointment = eventAppointment,
         _subject = subject,
         _eventDate = eventDate,
-        _hallId = hallId,
+        _hallName = hallName,
         _eventPlace = eventPlace;
 
   //I'll use just getters because I'll not try to modify the objects in the database,
   // I'll just fetch them from the remote DB and I'll store them in the local DB.
   String get eventPlace => _eventPlace;
 
-  int get hallId => _hallId;
+  String get hallName => _hallName;
 
   String get eventDate => _eventDate;
 
@@ -81,7 +85,7 @@ class Event {
     _eventAppointment = map['eventAppointment'];
     _subject = map['subject'];
     _eventDate = map['event_date'];
-    _hallId = map['hallId'];
-    _eventPlace = map['eventPlace'];
+    _hallName = map['hall_name'];
+    _eventPlace = map['event_place'];
   }
 }

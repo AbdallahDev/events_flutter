@@ -19,7 +19,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //This is the API base URL.
-  var apiURL = "http://193.188.88.148/events/mobile/apis/";
+  var apiURL = "http://193.188.88.148/apps/myapps/events/mobile/apis/";
 
   //This list to store the category objects.
   List<Category> _categories;
@@ -30,6 +30,10 @@ class _HomeState extends State<Home> {
   Entity _selectedEntity;
   bool _entityVisibility;
   List<Event> _events;
+
+  //This variable will store the status that based on it will be decided to view
+  // the events of the current date or all the dates.
+  bool _eventsDateStatus;
 
   //Message notification related fields (firebase, local notification)
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
@@ -64,7 +68,7 @@ class _HomeState extends State<Home> {
 
     //I'll initialize some of the fields with values so the app doesn't face an
     // error for the first time it runs.
-    _categories = [Category(id: 0, name: "جميع الفئات")];
+    _categories = [Category(id: 0, name: "الكل")];
     _selectedCategory = _categories[0];
     //This function will fill the category list with values from the API.
     _fillCategories();
@@ -78,13 +82,18 @@ class _HomeState extends State<Home> {
           eventAppointment: "",
           subject: "",
           eventDate: "",
-          hallId: 0,
+          hallName: "",
           eventPlace: "")
     ];
+    //Here I've initialized the instance with the value "false" because the
+    // default state will be to show the events of the current date, not all the
+    // dates.
+    _eventsDateStatus = false;
     //I'll call this method to fill the listView with all the events in the
     // remote DB for all the categories and that just for the first time the
     // app runs.
-    _fillEventList(categoryId: _selectedCategory.id);
+    _fillEventList(
+        categoryId: _selectedCategory.id, eventsDateStatus: _eventsDateStatus);
 
     //firebase related code.
     _firebaseMessaging.configure(
@@ -176,9 +185,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text("نشاطات مجلس النواب"),
-      ),
+          centerTitle: true,
+          title: Text("نشاطات مجلس النواب"),
+          backgroundColor: Color.fromRGBO(196, 0, 0, 1)),
       body: Container(
         child: Column(
           children: <Widget>[
@@ -196,7 +205,9 @@ class _HomeState extends State<Home> {
                     // new category.
                     _selectedCategory = category;
                     _showEntityMenu(categoryId: category.id);
-                    _fillEventList(categoryId: _selectedCategory.id);
+                    _fillEventList(
+                        categoryId: _selectedCategory.id,
+                        eventsDateStatus: _eventsDateStatus);
                   });
                 },
                 value: _selectedCategory,
@@ -220,12 +231,35 @@ class _HomeState extends State<Home> {
                         // and that based on its id.
                         _fillEventList(
                             categoryId: _selectedCategory.id,
-                            entityId: entity.id);
+                            entityId: entity.id,
+                            eventsDateStatus: _eventsDateStatus);
                       });
                     },
                     value: _selectedEntity,
                   ),
                 )),
+            Center(
+              child: Container(
+                width: 240,
+                child: CheckboxListTile(
+                  title: const Text('اظهار نشاطات جميع الايام'),
+                  value: _eventsDateStatus,
+                  onChanged: (bool value) {
+                    setState(() {
+                      if (_eventsDateStatus == false)
+                        _eventsDateStatus = true;
+                      else
+                        _eventsDateStatus = false;
+
+                      _fillEventList(
+                          categoryId: _selectedCategory.id,
+                          entityId: _selectedEntity.id,
+                          eventsDateStatus: _eventsDateStatus);
+                    });
+                  },
+                ),
+              ),
+            ),
             Flexible(
               child: ListView.builder(
                   padding: EdgeInsets.all(11),
@@ -283,10 +317,37 @@ class _HomeState extends State<Home> {
     // from the API.
     List list = json.decode(response.body);
     //I'll initialize the list because I want to view the default first choice
-    // on the list.
-    _entities = _entities = [
-      Entity(id: 0, name: "جميع الجهات", categoryId: 0, rank: 0)
-    ];
+    // on the list, and that value will be based on the selected category id.
+    switch (categoryId) {
+      case 1: //this case when the "اللجان الدائمة" chosen
+      case 3: //this case when the "لجان الاخوة" chosen
+        {
+          _entities = _entities = [
+            //Here I'll set the categoryId and the rank to 0 to make the value
+            // appears as the first one in the array
+            Entity(id: 0, name: "جميع اللجان", categoryId: 0, rank: 0)
+          ];
+          break;
+        }
+      case 2: //this case when the "الكتل" chosen
+        {
+          _entities = _entities = [
+            //Here I'll set the categoryId and the rank to 0 to make the value
+            // appears as the first one in the array
+            Entity(id: 0, name: "جميع الكتل", categoryId: 0, rank: 0)
+          ];
+          break;
+        }
+      case 4: //this case when the "جمعيات الصداقة" chosen
+        {
+          _entities = _entities = [
+            //Here I'll set the categoryId and the rank to 0 to make the value
+            // appears as the first one in the array
+            Entity(id: 0, name: "جميع الجمعيات", categoryId: 0, rank: 0)
+          ];
+          break;
+        }
+    }
     //I'll assign the first element of the list to the _selectedEntity var
     // because I want to show the default value "جميع الجهات" as the first value
     // in the menu.
@@ -299,22 +360,32 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
-  //This method will fill the events list with events from the API to viewed on
-  // the events listView and that based on the id of the selected category and
-  // the selected entity.
-  _fillEventList({@required categoryId, entityId}) async {
+  //This method will fill the events list with the events from the API to be
+  // viewed on the events listView, and that based on the id of the selected
+  // category and the selected entity.
+  _fillEventList(
+      {@required categoryId,
+      entityId,
+      //This parameter will be used to decide to fetch the events of the
+      // current date or all the dates, and I've specified it as a required
+      // because it's needed at all the times because I can't fetch the events
+      // without knowing if that is for the current date or all the dates.
+      @required eventsDateStatus}) async {
     //This is the URL of the required API, I'll concatenate it with the base URL
     // to be valid.
     //I'll provide the category id, to know which events to get based on the
     // id of the selected category.
     //And also I'll provide the entityId to get the events for that entity if
     // it's chosen.
-    var url =
-        apiURL + "get_events.php?categoryId=$categoryId&entityId=$entityId";
+    //And I've concatenated the eventsDateStatus value to decide to fetch the
+    // events of the current date or for all the dates.
+    var url = apiURL +
+        "get_events.php?categoryId=$categoryId&entityId=$entityId&eventsDateStatus=$eventsDateStatus";
     http.Response response = await http.get(url);
     //This list will contain the JSON list of events as maps that fetched
     // from the API.
     List list = json.decode(response.body);
+
     //I'll initialize the list with a default event object, and that for
     // reinitializing the list from the beginning, because I don't want the new
     // values to be added to the old ones, and also in case I don't get anything
@@ -327,7 +398,7 @@ class _HomeState extends State<Home> {
           eventAppointment: "",
           subject: "",
           eventDate: "",
-          hallId: 0,
+          hallName: "",
           eventPlace: "")
     ];
     //I'll loop over each event map in the list to create an event object
@@ -342,6 +413,13 @@ class _HomeState extends State<Home> {
   //I've created it because I don't want to view the first element in the event
   // list because it has empty values because it is a default element.
   Widget _eventWidget(position) {
+    //This local variable stores the event place where the event will behold,
+    // and I'll make the default value of it the value stored in the event place
+    // but if that value is empty I'll store in it the values stored in the hall
+    // name.
+    String eventPlace = _events[position].eventPlace;
+    if (_events[position].hallName.isNotEmpty)
+      eventPlace = _events[position].hallName;
     //Here I'll check if the position is not 0, because that position represents
     // the first element in the event list.
     //Here I'll check if the position is not 0, because that position represents
@@ -350,66 +428,81 @@ class _HomeState extends State<Home> {
     // event list element details.
     if (position != 0) {
       return Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Wrap(
-              runAlignment: WrapAlignment.spaceAround,
-              textDirection: _rtlTextDirection,
+        child: Card(
+          elevation: 2,
+          margin: EdgeInsets.only(top: 7, bottom: 7),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Text(
-                  ":جهة النشاط ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Wrap(
+                  runAlignment: WrapAlignment.spaceAround,
+                  textDirection: _rtlTextDirection,
+                  children: <Widget>[
+                    Text(
+                      ": جهة النشاط ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(" "),
+                    Text(
+                      _events[position].eventEntityName,
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ],
                 ),
-                Text(" "),
-                Text(
-                  _events[position].eventEntityName,
-                  textDirection: TextDirection.rtl,
+                Wrap(
+                  textDirection: _rtlTextDirection,
+                  children: <Widget>[
+                    Text(
+                      ": الـمـوضـــوع ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(" "),
+                    Text(
+                      _events[position].subject,
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ],
+                ),
+                Row(
+                  textDirection: _rtlTextDirection,
+                  children: <Widget>[
+                    Text(
+                      ": الـتـاريـــخ ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(" "),
+                    Text(_events[position].eventDate),
+                    Container(
+                      margin: EdgeInsets.only(right: 5),
+                    ),
+                    Text(" / "),
+                    Container(
+                      margin: EdgeInsets.only(right: 5),
+                    ),
+                    Text(
+                      ": الــــوقـــت ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(" "),
+                    Text(_events[position].time),
+                  ],
+                ),
+                Row(
+                  textDirection: _rtlTextDirection,
+                  children: <Widget>[
+                    Text(
+                      ": مكان الاجتماع ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(" "),
+                    Text(eventPlace),
+                  ],
                 ),
               ],
             ),
-            Wrap(
-              textDirection: _rtlTextDirection,
-              children: <Widget>[
-                Text(
-                  ":الـمـوضـــوع ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(" "),
-                Text(
-                  _events[position].subject,
-                  textDirection: TextDirection.rtl,
-                ),
-              ],
-            ),
-            Row(
-              textDirection: _rtlTextDirection,
-              children: <Widget>[
-                Text(
-                  ":الـتـاريـــخ ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(" "),
-                Text(_events[position].eventDate),
-              ],
-            ),
-            Row(
-              textDirection: _rtlTextDirection,
-              children: <Widget>[
-                Text(
-                  ":الــــوقـــت ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(" "),
-                Text(_events[position].time),
-              ],
-            ),
-            Divider(
-              height: 20,
-              color: Colors.black,
-              indent: 20,
-            ),
-          ],
+          ),
         ),
       );
     }
