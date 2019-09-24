@@ -253,6 +253,7 @@ class _HomeState extends State<Home> {
 
                       _fillEventList(
                           categoryId: _selectedCategory.id,
+                          entityId: _selectedEntity.id,
                           eventsDateStatus: _eventsDateStatus);
                     });
                   },
