@@ -5,6 +5,7 @@ import 'package:device_info/device_info.dart';
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
+import 'package:events_flutter/static/static.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +20,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   //This is the API base URL.
-  var apiURL = "http://193.188.88.148/events/mobile/apis/";
+  var apiURL = StaticVars.apiUrl;
 
   //This list to store the category objects.
   List<Category> _categories;
