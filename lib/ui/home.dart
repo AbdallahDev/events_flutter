@@ -5,7 +5,7 @@ import 'package:device_info/device_info.dart';
 import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
-import 'package:events_flutter/static/static.dart';
+import 'package:events_flutter/static/staticVars.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
