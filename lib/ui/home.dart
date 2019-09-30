@@ -448,7 +448,7 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ": جهة النشاط ",
+                      ": جـهـة الـنشـــاط ",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(" "),
@@ -462,7 +462,7 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ": الـمـوضـــوع ",
+                      ": الــمــوضــــــوع ",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(" "),
@@ -476,31 +476,18 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ": الـتـاريـــخ ",
+                      ": التاريخ - الوقت",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(" "),
-                    Text(_events[position].eventDate),
-                    Container(
-                      margin: EdgeInsets.only(right: 5),
-                    ),
-                    Text(" / "),
-                    Container(
-                      margin: EdgeInsets.only(right: 5),
-                    ),
-                    Text(
-                      ": الــــوقـــت ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(" "),
-                    Text(_events[position].time),
+                    Text("${_events[position].time} - ${_events[position].eventDate}"),
                   ],
                 ),
                 Row(
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ": مكان الاجتماع ",
+                      ": مكـان الاجتمـاع ",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(" "),
