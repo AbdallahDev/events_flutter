@@ -336,7 +336,7 @@ class _HomeState extends State<Home> {
           ];
           break;
         }
-      case 2: //this case when the "الكتل" chosen
+      case 2: //this case when the "الكتل النيابية" chosen
         {
           _entities = _entities = [
             //Here I'll set the categoryId and the rank to 0 to make the value
