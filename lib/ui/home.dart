@@ -457,7 +457,7 @@ class _HomeState extends State<Home> {
                     Flexible(
                       child: Text(
                         _events[position].eventEntityName,
-                        textDirection: TextDirection.rtl,
+                        textDirection: _rtlTextDirection,
                       ),
                     ),
                   ],
@@ -476,7 +476,7 @@ class _HomeState extends State<Home> {
                     Flexible(
                       child: Text(
                         _events[position].subject,
-                        textDirection: TextDirection.rtl,
+                        textDirection: _rtlTextDirection,
                       ),
                     ),
                   ],
@@ -507,7 +507,7 @@ class _HomeState extends State<Home> {
                     Flexible(
                       child: Text(
                         eventPlace,
-                        textDirection: TextDirection.rtl,
+                        textDirection: _rtlTextDirection,
                       ),
                     ),
                   ],
