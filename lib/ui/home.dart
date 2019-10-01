@@ -458,7 +458,8 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
-                Wrap(
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
@@ -466,9 +467,14 @@ class _HomeState extends State<Home> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(" "),
-                    Text(
-                      _events[position].subject,
-                      textDirection: TextDirection.rtl,
+                    //I've wrapped the text in a container because I want the
+                    // text to flow on multi-lines.
+                    Container(
+                      width: 250,
+                      child: Text(
+                        _events[position].subject,
+                        textDirection: TextDirection.rtl,
+                      ),
                     ),
                   ],
                 ),
@@ -480,7 +486,8 @@ class _HomeState extends State<Home> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(" "),
-                    Text("${_events[position].time} - ${_events[position].eventDate}"),
+                    Text(
+                        "${_events[position].time} - ${_events[position].eventDate}"),
                   ],
                 ),
                 Row(
