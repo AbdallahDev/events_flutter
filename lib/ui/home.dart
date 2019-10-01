@@ -494,6 +494,7 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
@@ -501,7 +502,14 @@ class _HomeState extends State<Home> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(" "),
-                    Text(eventPlace),
+                    //I've wrapped the text in a Flexible widget because I want the
+                    // text to flow on multi-lines.
+                    Flexible(
+                      child: Text(
+                        eventPlace,
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ),
                   ],
                 ),
               ],
