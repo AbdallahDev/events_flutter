@@ -443,18 +443,22 @@ class _HomeState extends State<Home> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Wrap(
-                  runAlignment: WrapAlignment.spaceAround,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ": جـهـة الـنشـــاط ",
+                      ":جـهــة الــنشــاط ",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(" "),
-                    Text(
-                      _events[position].eventEntityName,
-                      textDirection: TextDirection.rtl,
+                    //I've wrapped the text in a Flexible widget because I want the
+                    // text to flow on multi-lines.
+                    Flexible(
+                      child: Text(
+                        _events[position].eventEntityName,
+                        textDirection: TextDirection.rtl,
+                      ),
                     ),
                   ],
                 ),
@@ -463,14 +467,13 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ": الــمــوضــــــوع ",
+                      ":الــمــــوضــــــوع ",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(" "),
-                    //I've wrapped the text in a container because I want the
+                    //I've wrapped the text in a Flexible widget because I want the
                     // text to flow on multi-lines.
-                    Container(
-                      width: 250,
+                    Flexible(
                       child: Text(
                         _events[position].subject,
                         textDirection: TextDirection.rtl,
@@ -482,7 +485,7 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ": التاريخ - الوقت",
+                      ":التاريخ - الوقت ",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(" "),
@@ -494,7 +497,7 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ": مكـان الاجتمـاع ",
+                      ":مكـان الاجتمـاع ",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(" "),
