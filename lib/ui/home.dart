@@ -25,7 +25,8 @@ class _HomeState extends State<Home> {
   //This list to store the category objects.
   List<Category> _categories;
 
-  //This field to store the selected category object from the category dropdown menu.
+  //This field to store the selected category object from the category dropdown
+  // menu.
   Category _selectedCategory;
   List<Entity> _entities;
   Entity _selectedEntity;
@@ -448,12 +449,12 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ":جـهــة الــنشــاط ",
+                      "جـهــة الــنشــاط : ",
+                      textDirection: _rtlTextDirection,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Text(" "),
-                    //I've wrapped the text in a Flexible widget because I want the
-                    // text to flow on multi-lines.
+                    //I've wrapped the text in a Flexible widget because I want
+                    // the text to flow on multi-lines.
                     Flexible(
                       child: Text(
                         _events[position].eventEntityName,
@@ -467,12 +468,12 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ":الــمــــوضــــــوع ",
+                      "الــمــــوضــــــوع : ",
+                      textDirection: _rtlTextDirection,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Text(" "),
-                    //I've wrapped the text in a Flexible widget because I want the
-                    // text to flow on multi-lines.
+                    //I've wrapped the text in a Flexible widget because I want
+                    // the text to flow on multi-lines.
                     Flexible(
                       child: Text(
                         _events[position].subject,
@@ -482,15 +483,22 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ":التاريخ - الوقت ",
+                      "التاريخ - الوقت : ",
                       style: TextStyle(fontWeight: FontWeight.bold),
+                      textDirection: _rtlTextDirection,
                     ),
-                    Text(" "),
-                    Text(
-                        "${_events[position].time} - ${_events[position].eventDate}"),
+                    //I've wrapped the text in a Flexible widget because I want
+                    // the text to flow on multi-lines.
+                    Flexible(
+                      child: Text(
+                        "${_events[position].eventDate} - ${_events[position].time}",
+                        textDirection: _rtlTextDirection,
+                      ),
+                    ),
                   ],
                 ),
                 Row(
@@ -498,12 +506,12 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ":مكـان الاجتمـاع ",
+                      "مكـان الاجتمـاع : ",
+                      textDirection: _rtlTextDirection,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Text(" "),
-                    //I've wrapped the text in a Flexible widget because I want the
-                    // text to flow on multi-lines.
+                    //I've wrapped the text in a Flexible widget because I want
+                    // the text to flow on multi-lines.
                     Flexible(
                       child: Text(
                         eventPlace,
