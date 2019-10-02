@@ -463,7 +463,9 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
-                Container(height: 10,),
+                Container(
+                  height: 10,
+                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   textDirection: _rtlTextDirection,
