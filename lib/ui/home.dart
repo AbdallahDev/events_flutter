@@ -25,7 +25,8 @@ class _HomeState extends State<Home> {
   //This list to store the category objects.
   List<Category> _categories;
 
-  //This field to store the selected category object from the category dropdown menu.
+  //This field to store the selected category object from the category dropdown
+  // menu.
   Category _selectedCategory;
   List<Entity> _entities;
   Entity _selectedEntity;
@@ -76,7 +77,7 @@ class _HomeState extends State<Home> {
     _entities = [Entity(id: 0, name: "جميع الجهات", categoryId: 0, rank: 0)];
     _entityVisibility = false;
     //I've initialized the _selectedEntity instance with the entry from the
-    // _entites list because I want to the _selectedEntity.id to have a value
+    // _entities list because I want to the _selectedEntity.id to have a value
     // the first time the apps run, because if I don't do that its value will
     // be null, and in that case, if the user presses the checkbox the app will
     // not show all the events and an error will occur.
@@ -448,12 +449,32 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ":جـهــة الــنشــاط ",
+                      "التاريخ - الوقت : ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      textDirection: _rtlTextDirection,
+                    ),
+                    //I've wrapped the text in a Flexible widget because I want
+                    // the text to flow on multi-lines.
+                    Flexible(
+                      child: Text(
+                        "${_events[position].eventDate} - ${_events[position].time}",
+                        textDirection: _rtlTextDirection,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(height: 10,),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  textDirection: _rtlTextDirection,
+                  children: <Widget>[
+                    Text(
+                      "جـهــة الــنشــاط : ",
+                      textDirection: _rtlTextDirection,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Text(" "),
-                    //I've wrapped the text in a Flexible widget because I want the
-                    // text to flow on multi-lines.
+                    //I've wrapped the text in a Flexible widget because I want
+                    // the text to flow on multi-lines.
                     Flexible(
                       child: Text(
                         _events[position].eventEntityName,
@@ -467,12 +488,12 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ":الــمــــوضــــــوع ",
+                      "الــمــــوضــــــوع : ",
+                      textDirection: _rtlTextDirection,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Text(" "),
-                    //I've wrapped the text in a Flexible widget because I want the
-                    // text to flow on multi-lines.
+                    //I've wrapped the text in a Flexible widget because I want
+                    // the text to flow on multi-lines.
                     Flexible(
                       child: Text(
                         _events[position].subject,
@@ -482,28 +503,16 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 Row(
-                  textDirection: _rtlTextDirection,
-                  children: <Widget>[
-                    Text(
-                      ":التاريخ - الوقت ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(" "),
-                    Text(
-                        "${_events[position].time} - ${_events[position].eventDate}"),
-                  ],
-                ),
-                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
-                      ":مكـان الاجتمـاع ",
+                      "مكـان الاجتمـاع : ",
+                      textDirection: _rtlTextDirection,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Text(" "),
-                    //I've wrapped the text in a Flexible widget because I want the
-                    // text to flow on multi-lines.
+                    //I've wrapped the text in a Flexible widget because I want
+                    // the text to flow on multi-lines.
                     Flexible(
                       child: Text(
                         eventPlace,

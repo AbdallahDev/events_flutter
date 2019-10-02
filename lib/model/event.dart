@@ -9,6 +9,9 @@ class Event {
   // name of the entity if it's typed as a text in the event entity textField in
   // the web app.
   String _eventEntityName;
+  //This variable will store the time of the event either as clock time or text
+  // time because in the events web system the user sometimes enters the time in
+  // the appointment text box.
   String _time;
 
   //This represents when the event will behold as it's typed as a text in the
@@ -81,7 +84,9 @@ class Event {
     else
       _eventEntityName = map['event_entity_name'];
 
-    _time = map['time'];
+    //I've assigned the value of the field "event_time" because in the API it'll
+    // have the value of the event appointment or the value of the event time.
+    _time = map['event_time'];
     _eventAppointment = map['eventAppointment'];
     _subject = map['subject'];
     _eventDate = map['event_date'];
