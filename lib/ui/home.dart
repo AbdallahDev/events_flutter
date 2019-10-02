@@ -449,6 +449,26 @@ class _HomeState extends State<Home> {
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
                     Text(
+                      "التاريخ - الوقت : ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      textDirection: _rtlTextDirection,
+                    ),
+                    //I've wrapped the text in a Flexible widget because I want
+                    // the text to flow on multi-lines.
+                    Flexible(
+                      child: Text(
+                        "${_events[position].eventDate} - ${_events[position].time}",
+                        textDirection: _rtlTextDirection,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(height: 10,),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  textDirection: _rtlTextDirection,
+                  children: <Widget>[
+                    Text(
                       "جـهــة الــنشــاط : ",
                       textDirection: _rtlTextDirection,
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -477,25 +497,6 @@ class _HomeState extends State<Home> {
                     Flexible(
                       child: Text(
                         _events[position].subject,
-                        textDirection: _rtlTextDirection,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  textDirection: _rtlTextDirection,
-                  children: <Widget>[
-                    Text(
-                      "التاريخ - الوقت : ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                      textDirection: _rtlTextDirection,
-                    ),
-                    //I've wrapped the text in a Flexible widget because I want
-                    // the text to flow on multi-lines.
-                    Flexible(
-                      child: Text(
-                        "${_events[position].eventDate} - ${_events[position].time}",
                         textDirection: _rtlTextDirection,
                       ),
                     ),
