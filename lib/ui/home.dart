@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
     _entities = [Entity(id: 0, name: "جميع الجهات", categoryId: 0, rank: 0)];
     _entityVisibility = false;
     //I've initialized the _selectedEntity instance with the entry from the
-    // _entites list because I want to the _selectedEntity.id to have a value
+    // _entities list because I want to the _selectedEntity.id to have a value
     // the first time the apps run, because if I don't do that its value will
     // be null, and in that case, if the user presses the checkbox the app will
     // not show all the events and an error will occur.
