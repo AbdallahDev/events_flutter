@@ -421,117 +421,134 @@ class _HomeState extends State<Home> {
   //I've created it because I don't want to view the first element in the event
   // list because it has empty values because it is a default element.
   Widget _eventWidget(position) {
-    //This local variable stores the event place where the event will behold,
-    // and I'll make the default value of it the value stored in the event place
-    // but if that value is empty I'll store in it the values stored in the hall
-    // name.
-    String eventPlace = _events[position].eventPlace;
-    if (_events[position].hallName.isNotEmpty)
-      eventPlace = _events[position].hallName;
-    //Here I'll check if the position is not 0, because that position represents
-    // the first element in the event list.
-    //Here I'll check if the position is not 0, because that position represents
-    // the first element in the event list.
-    // In that case, if the condition is true I'll return a container views the
-    // event list element details.
-    if (position != 0) {
-      return Container(
-        child: Card(
-          elevation: 2,
-          margin: EdgeInsets.only(top: 7, bottom: 7),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  textDirection: _rtlTextDirection,
-                  children: <Widget>[
-                    Text(
-                      "التاريخ - الوقت : ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                      textDirection: _rtlTextDirection,
-                    ),
-                    //I've wrapped the text in a Flexible widget because I want
-                    // the text to flow on multi-lines.
-                    Flexible(
-                      child: Text(
-                        "${_events[position].eventDate} - ${_events[position].time}",
+    //Here I'll check for the events list length and that to decide to view the
+    // events list or the message that notify the user that there are no events
+    // for today.
+    //The events length should be greater than 1 to view the events, and not 0
+    // because the list will always have at least one element and that is the
+    // default element.
+    if (_events.length > 1) {
+      //This local variable stores the event place where the event will behold,
+      // and I'll make the default value of it the value stored in the event place
+      // but if that value is empty I'll store in it the values stored in the hall
+      // name.
+      String eventPlace = _events[position].eventPlace;
+      if (_events[position].hallName.isNotEmpty)
+        eventPlace = _events[position].hallName;
+      //Here I'll check if the position is not 0, because that position represents
+      // the first element in the event list.
+      //Here I'll check if the position is not 0, because that position represents
+      // the first element in the event list.
+      // In that case, if the condition is true I'll return a container views the
+      // event list element details.
+      if (position != 0) {
+        return Container(
+          child: Card(
+            elevation: 2,
+            margin: EdgeInsets.only(top: 7, bottom: 7),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    textDirection: _rtlTextDirection,
+                    children: <Widget>[
+                      Text(
+                        "التاريخ - الوقت : ",
+                        style: TextStyle(fontWeight: FontWeight.bold),
                         textDirection: _rtlTextDirection,
                       ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: 10,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  textDirection: _rtlTextDirection,
-                  children: <Widget>[
-                    Text(
-                      "جـهــة الــنشــاط : ",
-                      textDirection: _rtlTextDirection,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    //I've wrapped the text in a Flexible widget because I want
-                    // the text to flow on multi-lines.
-                    Flexible(
-                      child: Text(
-                        _events[position].eventEntityName,
-                        textDirection: _rtlTextDirection,
+                      //I've wrapped the text in a Flexible widget because I want
+                      // the text to flow on multi-lines.
+                      Flexible(
+                        child: Text(
+                          "${_events[position].eventDate} - ${_events[position].time}",
+                          textDirection: _rtlTextDirection,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  textDirection: _rtlTextDirection,
-                  children: <Widget>[
-                    Text(
-                      "الــمــــوضــــــوع : ",
-                      textDirection: _rtlTextDirection,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    //I've wrapped the text in a Flexible widget because I want
-                    // the text to flow on multi-lines.
-                    Flexible(
-                      child: Text(
-                        _events[position].subject,
+                    ],
+                  ),
+                  Container(
+                    height: 10,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    textDirection: _rtlTextDirection,
+                    children: <Widget>[
+                      Text(
+                        "جـهــة الــنشــاط : ",
                         textDirection: _rtlTextDirection,
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  textDirection: _rtlTextDirection,
-                  children: <Widget>[
-                    Text(
-                      "مكـان الاجتمـاع : ",
-                      textDirection: _rtlTextDirection,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    //I've wrapped the text in a Flexible widget because I want
-                    // the text to flow on multi-lines.
-                    Flexible(
-                      child: Text(
-                        eventPlace,
+                      //I've wrapped the text in a Flexible widget because I want
+                      // the text to flow on multi-lines.
+                      Flexible(
+                        child: Text(
+                          _events[position].eventEntityName,
+                          textDirection: _rtlTextDirection,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    textDirection: _rtlTextDirection,
+                    children: <Widget>[
+                      Text(
+                        "الــمــــوضــــــوع : ",
                         textDirection: _rtlTextDirection,
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      //I've wrapped the text in a Flexible widget because I want
+                      // the text to flow on multi-lines.
+                      Flexible(
+                        child: Text(
+                          _events[position].subject,
+                          textDirection: _rtlTextDirection,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    textDirection: _rtlTextDirection,
+                    children: <Widget>[
+                      Text(
+                        "مكـان الاجتمـاع : ",
+                        textDirection: _rtlTextDirection,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      //I've wrapped the text in a Flexible widget because I want
+                      // the text to flow on multi-lines.
+                      Flexible(
+                        child: Text(
+                          eventPlace,
+                          textDirection: _rtlTextDirection,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
+        );
+      }
+      //Here I'll return an empty container because I don't want to view the
+      // default element in the event list that has an empty values.
+      else
+        return Container();
+    } else {
+      return Card(
+        child: Text(
+          "لا يوجد نشاطات",
+          textDirection: _rtlTextDirection,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
       );
     }
-    //Here I'll return an empty container because I don't want to view the
-    // default element in the event list that has an empty values.
-    else
-      return Container();
   }
 }
