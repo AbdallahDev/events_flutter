@@ -203,7 +203,10 @@ class _HomeState extends State<Home> {
               child: DropdownButton<Category>(
                 items: _categories.map((Category category) {
                   return DropdownMenuItem(
-                    child: Text(category.name),
+                    child: Container(
+                      child: Text(category.name),
+                      alignment: Alignment.center,
+                    ),
                     value: category,
                   );
                 }).toList(),
@@ -227,7 +230,10 @@ class _HomeState extends State<Home> {
                   child: DropdownButton(
                     items: _entities.map((Entity entity) {
                       return DropdownMenuItem(
-                        child: Text(entity.name),
+                        child: Container(
+                          child: Text(entity.name),
+                          alignment: Alignment.center,
+                        ),
                         value: entity,
                       );
                     }).toList(),
