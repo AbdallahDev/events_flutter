@@ -543,10 +543,13 @@ class _HomeState extends State<Home> {
     } else {
       return Card(
         child: Text(
-          "لا يوجد نشاطات",
+          "لا يوجد نشاطات لليوم \n لاظهار النشاطات \nاختر \" اظهار نشاطات جميع الايام \" \n او اختر فئة معينة من القائمة",
           textDirection: _rtlTextDirection,
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              fontStyle: FontStyle.italic),
         ),
       );
     }
