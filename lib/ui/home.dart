@@ -460,7 +460,7 @@ class _HomeState extends State<Home> {
     //And I've concatenated the eventsDateStatus value to decide to fetch the
     // events of the current date or for all the dates.
     var url = apiURL +
-        "get_events.php?categoryId=$categoryId&entityId=$entityId&eventsDateStatus=$showAllEvents&eventsDate=$_eventsDate";
+        "get_events.php?categoryId=$categoryId&entityId=$entityId&showAllEvents=$showAllEvents&eventsDate=$_eventsDate";
     http.Response response = await http.get(url);
     //This list will contain the JSON list of events as maps that fetched
     // from the API.
