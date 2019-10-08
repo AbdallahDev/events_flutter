@@ -117,6 +117,10 @@ class _HomeState extends State<Home> {
     // dates.
     _showAllEvents = false;
 
+    //I've made the default value the current date for the variable
+    // _selectedDate that will store the chosen date from the date picker.
+    _selectedDate = DateTime.now();
+
     //I've made the default value the formatting of the current date.
     _eventsDate = _dateFormatter.format(DateTime.now());
 
@@ -304,8 +308,8 @@ class _HomeState extends State<Home> {
                   final List<DateTime> picked =
                       await DateRangePicker.showDatePicker(
                           context: context,
-                          initialFirstDate: new DateTime.now(),
-                          initialLastDate: DateTime.now(),
+                          initialFirstDate: _selectedDate,
+                          initialLastDate: _selectedDate,
                           firstDate: new DateTime(2019),
                           lastDate: new DateTime(2025));
                   if (picked != null) {
