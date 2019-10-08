@@ -11,12 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
-//import 'package:date_range_picker/date_range_picker.dart';
+import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 
 //This import is for the library that deals with dates and their format and
 // I've declared it as intl because I don't want it to conflict with other
 // libraries.
-//import 'package:intl/intl.dart' as intl;
+import 'package:intl/intl.dart' as intl;
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
@@ -47,14 +47,14 @@ class _HomeState extends State<Home> {
   //This variable will store the selected date from the date picker, and I've
   // made its default value the current date, because the default state will be
   // to show the events for the current date.
-//  var _selectedDate;
+  var _selectedDate;
 
   //This variable will store the date formatting.
-//  static var _dateFormatter = intl.DateFormat('yyyy-MM-dd');
+  static var _dateFormatter = intl.DateFormat('yyyy-MM-dd');
 
   //This variable will store the date that I want to show the events for.
   // And I'll make the default value the format of the current date.
-//  String _eventsDate;
+  String _eventsDate;
 
   //Message notification related fields (firebase, local notification)
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
@@ -118,13 +118,13 @@ class _HomeState extends State<Home> {
     _showAllEvents = false;
 
     //I've made the default value the formatting of the current date.
-//    _eventsDate = _dateFormatter.format(DateTime.now());
+    _eventsDate = _dateFormatter.format(DateTime.now());
 
     //I'll call this method to fill the listView with all the events in the
     // remote DB for all the categories and that just for the first time the
     // app runs.
     _fillEventList(
-        categoryId: _selectedCategory.id, eventsDateStatus: _showAllEvents);
+        categoryId: _selectedCategory.id, showAllEvents: _showAllEvents);
 
     //firebase related code.
     _firebaseMessaging.configure(
@@ -241,7 +241,7 @@ class _HomeState extends State<Home> {
                     _showEntityMenu(categoryId: category.id);
                     _fillEventList(
                         categoryId: _selectedCategory.id,
-                        eventsDateStatus: _showAllEvents);
+                        showAllEvents: _showAllEvents);
                   });
                 },
                 value: _selectedCategory,
@@ -269,7 +269,7 @@ class _HomeState extends State<Home> {
                         _fillEventList(
                             categoryId: _selectedCategory.id,
                             entityId: entity.id,
-                            eventsDateStatus: _showAllEvents);
+                            showAllEvents: _showAllEvents);
                       });
                     },
                     value: _selectedEntity,
@@ -292,12 +292,31 @@ class _HomeState extends State<Home> {
                       _fillEventList(
                           categoryId: _selectedCategory.id,
                           entityId: _selectedEntity.id,
-                          eventsDateStatus: _showAllEvents);
+                          showAllEvents: _showAllEvents);
                     });
                   },
                 ),
               ),
             ),
+            MaterialButton(
+                color: Color.fromRGBO(196, 0, 0, 1),
+                onPressed: () async {
+                  final List<DateTime> picked =
+                      await DateRangePicker.showDatePicker(
+                          context: context,
+                          initialFirstDate: new DateTime.now(),
+                          initialLastDate: DateTime.now(),
+                          firstDate: new DateTime(2019),
+                          lastDate: new DateTime(2025));
+                  if (picked != null) {
+                    print(picked);
+                  }
+                },
+                child: new Text(
+                  "اختر يوم محدد لعرض النشاطات",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                )),
             Flexible(
               child: ListView.builder(
                   padding: EdgeInsets.all(11),
@@ -408,7 +427,7 @@ class _HomeState extends State<Home> {
       // current date or all the dates, and I've specified it as a required
       // because it's needed at all the times because I can't fetch the events
       // without knowing if that is for the current date or all the dates.
-      @required eventsDateStatus}) async {
+      @required showAllEvents}) async {
     //This is the URL of the required API, I'll concatenate it with the base URL
     // to be valid.
     //I'll provide the category id, to know which events to get based on the
@@ -418,7 +437,7 @@ class _HomeState extends State<Home> {
     //And I've concatenated the eventsDateStatus value to decide to fetch the
     // events of the current date or for all the dates.
     var url = apiURL +
-        "get_events.php?categoryId=$categoryId&entityId=$entityId&eventsDateStatus=$eventsDateStatus";
+        "get_events.php?categoryId=$categoryId&entityId=$entityId&eventsDateStatus=$showAllEvents";
     http.Response response = await http.get(url);
     //This list will contain the JSON list of events as maps that fetched
     // from the API.
