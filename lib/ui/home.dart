@@ -47,6 +47,8 @@ class _HomeState extends State<Home> {
   //This variable will store the selected date from the date picker, and I've
   // made its default value the current date, because the default state will be
   // to show the events for the current date.
+  //And this instance will be used by date picker to decide which date to select
+  // when it's opened.
   var _selectedDate;
 
   //This variable will store the date formatting.
@@ -313,7 +315,12 @@ class _HomeState extends State<Home> {
                           firstDate: new DateTime(2019),
                           lastDate: new DateTime(2025));
                   if (picked != null) {
-                    print(picked);
+                    setState(() {
+                      //I've assigned the date picked from the date picker in the
+                      // _selectedDate instance. And I've got the first value
+                      // because the pick variable is a list of dates.
+                      _selectedDate = picked[0];
+                    });
                   }
                 },
                 child: new Text(
