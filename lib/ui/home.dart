@@ -13,9 +13,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 //import 'package:date_range_picker/date_range_picker.dart';
 
-//this import is for the library that deals with dates and their format and I've
-// declared it as intl because I don't want it to conflict with other libraries.
-import 'package:intl/intl.dart' as intl;
+//This import is for the library that deals with dates and their format and
+// I've declared it as intl because I don't want it to conflict with other
+// libraries.
+//import 'package:intl/intl.dart' as intl;
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
@@ -46,14 +47,14 @@ class _HomeState extends State<Home> {
   //This variable will store the selected date from the date picker, and I've
   // made its default value the current date, because the default state will be
   // to show the events for the current date.
-  var _selectedDate;
+//  var _selectedDate;
 
   //This variable will store the date formatting.
-  static var _dateFormatter = intl.DateFormat('yyyy-MM-dd');
+//  static var _dateFormatter = intl.DateFormat('yyyy-MM-dd');
 
   //This variable will store the date that I want to show the events for.
   // And I'll make the default value the format of the current date.
-  String _eventsDate;
+//  String _eventsDate;
 
   //Message notification related fields (firebase, local notification)
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
@@ -117,7 +118,7 @@ class _HomeState extends State<Home> {
     _showAllEvents = false;
 
     //I've made the default value the formatting of the current date.
-    _eventsDate = _dateFormatter.format(DateTime.now());
+//    _eventsDate = _dateFormatter.format(DateTime.now());
 
     //I'll call this method to fill the listView with all the events in the
     // remote DB for all the categories and that just for the first time the
