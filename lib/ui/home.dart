@@ -320,6 +320,11 @@ class _HomeState extends State<Home> {
                       // _selectedDate instance. And I've got the first value
                       // because the pick variable is a list of dates.
                       _selectedDate = picked[0];
+
+                      //Here I'll format the date selected from the date picker
+                      // and assign it to the instance _eventsDate to send it
+                      // with the URL to get the events.
+                      _eventsDate = _dateFormatter.format(_selectedDate);
                     });
                   }
                 },
