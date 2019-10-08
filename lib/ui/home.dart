@@ -51,6 +51,9 @@ class _HomeState extends State<Home> {
   //This variable will store the date formatting.
   static var _dateFormatter = intl.DateFormat('yyyy-MM-dd');
 
+  //This variable will store the date that I want to show the events for.
+  // And I'll make the default value the format of the current date.
+  String _eventsDate;
 
   //Message notification related fields (firebase, local notification)
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
@@ -112,6 +115,10 @@ class _HomeState extends State<Home> {
     // default state will be to show the events of the current date, not all the
     // dates.
     _showAllEvents = false;
+
+    //I've made the default value the formatting of the current date.
+    _eventsDate = _dateFormatter.format(DateTime.now());
+
     //I'll call this method to fill the listView with all the events in the
     // remote DB for all the categories and that just for the first time the
     // app runs.
