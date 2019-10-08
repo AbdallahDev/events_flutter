@@ -325,6 +325,13 @@ class _HomeState extends State<Home> {
                       // and assign it to the instance _eventsDate to send it
                       // with the URL to get the events.
                       _eventsDate = _dateFormatter.format(_selectedDate);
+
+                      //Here I'll call the function that fills the list with
+                      // the events for the date selected form the picker.
+                      _fillEventList(
+                          categoryId: _selectedCategory.id,
+                          entityId: _selectedEntity.id,
+                          showAllEvents: _showAllEvents);
                     });
                   }
                 },
