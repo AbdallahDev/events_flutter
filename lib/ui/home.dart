@@ -11,6 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:date_range_picker/date_range_picker.dart';
+//this import is for the library that deals with dates and their format and I've
+// declared it as intl because I don't want it to conflict with other libraries.
+import 'package:intl/intl.dart' as intl;
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
