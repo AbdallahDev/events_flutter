@@ -11,7 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
-import 'package:date_range_picker/date_range_picker.dart';
+//import 'package:date_range_picker/date_range_picker.dart';
+
 //this import is for the library that deals with dates and their format and I've
 // declared it as intl because I don't want it to conflict with other libraries.
 import 'package:intl/intl.dart' as intl;
@@ -41,6 +42,15 @@ class _HomeState extends State<Home> {
   // view all the events of all the dates or for a specific date like the
   // current date.
   bool _showAllEvents;
+
+  //This variable will store the selected date from the date picker, and I've
+  // made its default value the current date, because the default state will be
+  // to show the events for the current date.
+  var _selectedDate;
+
+  //This variable will store the date formatting.
+  static var _dateFormatter = intl.DateFormat('yyyy-MM-dd');
+
 
   //Message notification related fields (firebase, local notification)
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
