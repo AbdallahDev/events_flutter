@@ -278,6 +278,7 @@ class _HomeState extends State<Home> {
               child: Container(
                 width: 240,
                 child: CheckboxListTile(
+                  activeColor: Color.fromRGBO(196, 0, 0, 1),
                   title: const Text('اظهار نشاطات جميع الايام'),
                   value: _showAllEvents,
                   onChanged: (bool value) {
