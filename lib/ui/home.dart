@@ -37,9 +37,10 @@ class _HomeState extends State<Home> {
   bool _entityVisibility;
   List<Event> _events;
 
-  //This variable will store the status that based on it will be decided to view
-  // the events of the current date or all the dates.
-  bool _eventsDateStatus;
+  //This variable will store the status that based on it will be decided to
+  // view all the events of all the dates or for a specific date like the
+  // current date.
+  bool _showAllEvents;
 
   //Message notification related fields (firebase, local notification)
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
@@ -100,12 +101,12 @@ class _HomeState extends State<Home> {
     //Here I've initialized the instance with the value "false" because the
     // default state will be to show the events of the current date, not all the
     // dates.
-    _eventsDateStatus = false;
+    _showAllEvents = false;
     //I'll call this method to fill the listView with all the events in the
     // remote DB for all the categories and that just for the first time the
     // app runs.
     _fillEventList(
-        categoryId: _selectedCategory.id, eventsDateStatus: _eventsDateStatus);
+        categoryId: _selectedCategory.id, eventsDateStatus: _showAllEvents);
 
     //firebase related code.
     _firebaseMessaging.configure(
@@ -222,7 +223,7 @@ class _HomeState extends State<Home> {
                     _showEntityMenu(categoryId: category.id);
                     _fillEventList(
                         categoryId: _selectedCategory.id,
-                        eventsDateStatus: _eventsDateStatus);
+                        eventsDateStatus: _showAllEvents);
                   });
                 },
                 value: _selectedCategory,
@@ -250,7 +251,7 @@ class _HomeState extends State<Home> {
                         _fillEventList(
                             categoryId: _selectedCategory.id,
                             entityId: entity.id,
-                            eventsDateStatus: _eventsDateStatus);
+                            eventsDateStatus: _showAllEvents);
                       });
                     },
                     value: _selectedEntity,
@@ -261,18 +262,18 @@ class _HomeState extends State<Home> {
                 width: 240,
                 child: CheckboxListTile(
                   title: const Text('اظهار نشاطات جميع الايام'),
-                  value: _eventsDateStatus,
+                  value: _showAllEvents,
                   onChanged: (bool value) {
                     setState(() {
-                      if (_eventsDateStatus == false)
-                        _eventsDateStatus = true;
+                      if (_showAllEvents == false)
+                        _showAllEvents = true;
                       else
-                        _eventsDateStatus = false;
+                        _showAllEvents = false;
 
                       _fillEventList(
                           categoryId: _selectedCategory.id,
                           entityId: _selectedEntity.id,
-                          eventsDateStatus: _eventsDateStatus);
+                          eventsDateStatus: _showAllEvents);
                     });
                   },
                 ),
