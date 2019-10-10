@@ -325,45 +325,42 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
+                    IconButton(
+                        icon: Icon(Icons.calendar_today),
+                        onPressed: () async {
+                          final List<DateTime> picked =
+                          await DateRangePicker.showDatePicker(
+                              context: context,
+                              initialFirstDate: _selectedDate,
+                              initialLastDate: _selectedDate,
+                              firstDate: new DateTime(2019),
+                              lastDate: new DateTime(2025));
+                          if (picked != null) {
+                            setState(() {
+                              //I've assigned the date picked from the date picker in the
+                              // _selectedDate instance. And I've got the first value
+                              // because the pick variable is a list of dates.
+                              _selectedDate = picked[0];
+
+                              //Here I'll format the date selected from the date picker
+                              // and assign it to the instance _eventsDate to send it
+                              // with the URL to get the events.
+                              _eventsDate = _dateFormatter.format(_selectedDate);
+
+                              //Here I'll call the function that fills the list with
+                              // the events for the date selected form the picker.
+                              _fillEventList(
+                                  categoryId: _selectedCategory.id,
+                                  entityId: _selectedEntity.id,
+                                  showAllEvents: _showAllEvents);
+                            });
+                          }
+                        },
+                    ),
                 ],),
               ],
             ),
-            MaterialButton(
-                color: Color.fromRGBO(196, 0, 0, 1),
-                onPressed: () async {
-                  final List<DateTime> picked =
-                      await DateRangePicker.showDatePicker(
-                          context: context,
-                          initialFirstDate: _selectedDate,
-                          initialLastDate: _selectedDate,
-                          firstDate: new DateTime(2019),
-                          lastDate: new DateTime(2025));
-                  if (picked != null) {
-                    setState(() {
-                      //I've assigned the date picked from the date picker in the
-                      // _selectedDate instance. And I've got the first value
-                      // because the pick variable is a list of dates.
-                      _selectedDate = picked[0];
 
-                      //Here I'll format the date selected from the date picker
-                      // and assign it to the instance _eventsDate to send it
-                      // with the URL to get the events.
-                      _eventsDate = _dateFormatter.format(_selectedDate);
-
-                      //Here I'll call the function that fills the list with
-                      // the events for the date selected form the picker.
-                      _fillEventList(
-                          categoryId: _selectedCategory.id,
-                          entityId: _selectedEntity.id,
-                          showAllEvents: _showAllEvents);
-                    });
-                  }
-                },
-                child: new Text(
-                  "اختر يوم محدد لعرض النشاطات",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                )),
             Flexible(
               child: ListView.builder(
                   padding: EdgeInsets.all(11),
