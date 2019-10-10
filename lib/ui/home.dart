@@ -232,34 +232,33 @@ class _HomeState extends State<Home> {
               textDirection: _rtlTextDirection,
               children: <Widget>[
                 Column(
-                  children: <Widget>[],
+                  children: <Widget>[
+                    DropdownButton<Category>(
+                      items: _categories.map((Category category) {
+                        return DropdownMenuItem(
+                          child: Container(
+                            child: Text(category.name),
+                            alignment: Alignment.center,
+                          ),
+                          value: category,
+                        );
+                      }).toList(),
+                      onChanged: (Category category) {
+                        setState(() {
+                          //All the below code will run each time the user chooses a
+                          // new category.
+                          _selectedCategory = category;
+                          _showEntityMenu(categoryId: category.id);
+                          _fillEventList(
+                              categoryId: _selectedCategory.id,
+                              showAllEvents: _showAllEvents);
+                        });
+                      },
+                      value: _selectedCategory,
+                    ),
+                  ],
                 ),
               ],
-            ),
-            Center(
-              child: DropdownButton<Category>(
-                items: _categories.map((Category category) {
-                  return DropdownMenuItem(
-                    child: Container(
-                      child: Text(category.name),
-                      alignment: Alignment.center,
-                    ),
-                    value: category,
-                  );
-                }).toList(),
-                onChanged: (Category category) {
-                  setState(() {
-                    //All the below code will run each time the user chooses a
-                    // new category.
-                    _selectedCategory = category;
-                    _showEntityMenu(categoryId: category.id);
-                    _fillEventList(
-                        categoryId: _selectedCategory.id,
-                        showAllEvents: _showAllEvents);
-                  });
-                },
-                value: _selectedCategory,
-              ),
             ),
             Visibility(
                 visible: _entityVisibility,
