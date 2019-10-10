@@ -307,6 +307,7 @@ class _HomeState extends State<Home> {
                           "جميع\nالايام",
                           textDirection: _rtlTextDirection,
                         ),
+                        Container(height: 3.8,),
                         Transform.scale(
                           scale: 1.88,
                           child: Checkbox(
