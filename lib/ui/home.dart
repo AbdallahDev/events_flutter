@@ -238,8 +238,12 @@ class _HomeState extends State<Home> {
                       items: _categories.map((Category category) {
                         return DropdownMenuItem(
                           child: Container(
-                            child: Text(category.name),
-                            alignment: Alignment.center,
+                            width: 180,
+                            child: Text(
+                              category.name,
+                              textDirection: _rtlTextDirection,
+                            ),
+                            alignment: Alignment.centerRight,
                           ),
                           value: category,
                         );
