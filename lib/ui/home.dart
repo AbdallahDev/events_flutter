@@ -294,6 +294,7 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
+                Row(children: <Widget>[],),
               ],
             ),
             Center(
