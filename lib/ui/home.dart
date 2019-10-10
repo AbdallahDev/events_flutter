@@ -228,6 +228,7 @@ class _HomeState extends State<Home> {
       body: Container(
         child: Column(
           children: <Widget>[
+            Row(children: <Widget>[],),
             Center(
               child: DropdownButton<Category>(
                 items: _categories.map((Category category) {
