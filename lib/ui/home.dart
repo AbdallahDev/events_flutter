@@ -379,9 +379,16 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
+            Text(
+              "ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ",
+              style: TextStyle(
+                  color: Color.fromRGBO(196, 0, 0, 1),
+                  fontWeight: FontWeight.bold),
+            ),
+            Container(height: 5,),
             Flexible(
               child: ListView.builder(
-                  padding: EdgeInsets.all(11),
+                  padding: EdgeInsets.only(left: 11, right: 11),
                   itemCount: _events.length,
                   itemBuilder: (context, position) {
                     return _eventWidget(position);
