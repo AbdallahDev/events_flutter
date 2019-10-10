@@ -324,29 +324,6 @@ class _HomeState extends State<Home> {
                 ],),
               ],
             ),
-            Center(
-              child: Container(
-                width: 240,
-                child: CheckboxListTile(
-                  activeColor: Color.fromRGBO(196, 0, 0, 1),
-                  title: const Text('اظهار نشاطات جميع الايام'),
-                  value: _showAllEvents,
-                  onChanged: (bool value) {
-                    setState(() {
-                      if (_showAllEvents == false)
-                        _showAllEvents = true;
-                      else
-                        _showAllEvents = false;
-
-                      _fillEventList(
-                          categoryId: _selectedCategory.id,
-                          entityId: _selectedEntity.id,
-                          showAllEvents: _showAllEvents);
-                    });
-                  },
-                ),
-              ),
-            ),
             MaterialButton(
                 color: Color.fromRGBO(196, 0, 0, 1),
                 onPressed: () async {
