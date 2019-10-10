@@ -263,8 +263,12 @@ class _HomeState extends State<Home> {
                         items: _entities.map((Entity entity) {
                           return DropdownMenuItem(
                             child: Container(
-                              child: Text(entity.name),
-                              alignment: Alignment.center,
+                              width: 180,
+                              child: Text(
+                                entity.name,
+                                textDirection: _rtlTextDirection,
+                              ),
+                              alignment: Alignment.centerRight,
                             ),
                             value: entity,
                           );
