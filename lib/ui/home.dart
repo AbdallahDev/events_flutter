@@ -307,9 +307,11 @@ class _HomeState extends State<Home> {
                           "جميع\nالايام",
                           textDirection: _rtlTextDirection,
                         ),
-                        Container(height: 3.8,),
+                        Container(
+                          height: 3.8,
+                        ),
                         Transform.scale(
-                          scale: 1.88,
+                          scale: 1.85,
                           child: Checkbox(
                             activeColor: Color.fromRGBO(196, 0, 0, 1),
                             onChanged: (bool value) {
@@ -337,42 +339,44 @@ class _HomeState extends State<Home> {
                           textDirection: _rtlTextDirection,
                         ),
                         IconButton(
-                            icon: Icon(Icons.calendar_today),
-                            iconSize: 40,
-                            onPressed: () async {
-                              final List<DateTime> picked =
-                              await DateRangePicker.showDatePicker(
-                                  context: context,
-                                  initialFirstDate: _selectedDate,
-                                  initialLastDate: _selectedDate,
-                                  firstDate: new DateTime(2019),
-                                  lastDate: new DateTime(2025),
-                              );
-                              if (picked != null) {
-                                setState(() {
-                                  //I've assigned the date picked from the date picker in the
-                                  // _selectedDate instance. And I've got the first value
-                                  // because the pick variable is a list of dates.
-                                  _selectedDate = picked[0];
+                          icon: Icon(Icons.calendar_today),
+                          iconSize: 40,
+                          onPressed: () async {
+                            final List<DateTime> picked =
+                                await DateRangePicker.showDatePicker(
+                              context: context,
+                              initialFirstDate: _selectedDate,
+                              initialLastDate: _selectedDate,
+                              firstDate: new DateTime(2019),
+                              lastDate: new DateTime(2025),
+                            );
+                            if (picked != null) {
+                              setState(() {
+                                //I've assigned the date picked from the date picker in the
+                                // _selectedDate instance. And I've got the first value
+                                // because the pick variable is a list of dates.
+                                _selectedDate = picked[0];
 
-                                  //Here I'll format the date selected from the date picker
-                                  // and assign it to the instance _eventsDate to send it
-                                  // with the URL to get the events.
-                                  _eventsDate = _dateFormatter.format(_selectedDate);
+                                //Here I'll format the date selected from the date picker
+                                // and assign it to the instance _eventsDate to send it
+                                // with the URL to get the events.
+                                _eventsDate =
+                                    _dateFormatter.format(_selectedDate);
 
-                                  //Here I'll call the function that fills the list with
-                                  // the events for the date selected form the picker.
-                                  _fillEventList(
-                                      categoryId: _selectedCategory.id,
-                                      entityId: _selectedEntity.id,
-                                      showAllEvents: _showAllEvents);
-                                });
-                              }
-                            },
+                                //Here I'll call the function that fills the list with
+                                // the events for the date selected form the picker.
+                                _fillEventList(
+                                    categoryId: _selectedCategory.id,
+                                    entityId: _selectedEntity.id,
+                                    showAllEvents: _showAllEvents);
+                              });
+                            }
+                          },
                         ),
                       ],
                     ),
-                ],),
+                  ],
+                ),
               ],
             ),
             Flexible(
