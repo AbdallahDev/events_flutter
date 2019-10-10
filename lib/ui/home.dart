@@ -296,22 +296,30 @@ class _HomeState extends State<Home> {
                 ),
                 Row(
                   children: <Widget>[
-                    Checkbox(
-                      activeColor: Color.fromRGBO(196, 0, 0, 1),
-                      onChanged: (bool value) {
-                        setState(() {
-                          if (_showAllEvents == false)
-                            _showAllEvents = true;
-                          else
-                            _showAllEvents = false;
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          "جميع\nالايام",
+                          textDirection: _rtlTextDirection,
+                        ),
+                        Checkbox(
+                          activeColor: Color.fromRGBO(196, 0, 0, 1),
+                          onChanged: (bool value) {
+                            setState(() {
+                              if (_showAllEvents == false)
+                                _showAllEvents = true;
+                              else
+                                _showAllEvents = false;
 
-                          _fillEventList(
-                              categoryId: _selectedCategory.id,
-                              entityId: _selectedEntity.id,
-                              showAllEvents: _showAllEvents);
-                        });
-                      },
-                      value: _showAllEvents,
+                              _fillEventList(
+                                  categoryId: _selectedCategory.id,
+                                  entityId: _selectedEntity.id,
+                                  showAllEvents: _showAllEvents);
+                            });
+                          },
+                          value: _showAllEvents,
+                        ),
+                      ],
                     ),
                 ],),
               ],
