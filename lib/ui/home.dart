@@ -229,6 +229,7 @@ class _HomeState extends State<Home> {
         child: Column(
           children: <Widget>[
             Row(
+              textDirection: _rtlTextDirection,
               children: <Widget>[
                 Column(
                   children: <Widget>[],
