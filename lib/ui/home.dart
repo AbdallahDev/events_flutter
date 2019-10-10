@@ -256,38 +256,37 @@ class _HomeState extends State<Home> {
                       },
                       value: _selectedCategory,
                     ),
+                    Visibility(
+                      visible: _entityVisibility,
+                      child: DropdownButton(
+                        items: _entities.map((Entity entity) {
+                          return DropdownMenuItem(
+                            child: Container(
+                              child: Text(entity.name),
+                              alignment: Alignment.center,
+                            ),
+                            value: entity,
+                          );
+                        }).toList(),
+                        onChanged: (Entity entity) {
+                          setState(() {
+                            _selectedEntity = entity;
+                            //Here I'll call the method that will fill the event
+                            // list with the events that belong to the chosen entity,
+                            // and that based on its id.
+                            _fillEventList(
+                                categoryId: _selectedCategory.id,
+                                entityId: entity.id,
+                                showAllEvents: _showAllEvents);
+                          });
+                        },
+                        value: _selectedEntity,
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
-            Visibility(
-                visible: _entityVisibility,
-                child: Center(
-                  child: DropdownButton(
-                    items: _entities.map((Entity entity) {
-                      return DropdownMenuItem(
-                        child: Container(
-                          child: Text(entity.name),
-                          alignment: Alignment.center,
-                        ),
-                        value: entity,
-                      );
-                    }).toList(),
-                    onChanged: (Entity entity) {
-                      setState(() {
-                        _selectedEntity = entity;
-                        //Here I'll call the method that will fill the event
-                        // list with the events that belong to the chosen entity,
-                        // and that based on its id.
-                        _fillEventList(
-                            categoryId: _selectedCategory.id,
-                            entityId: entity.id,
-                            showAllEvents: _showAllEvents);
-                      });
-                    },
-                    value: _selectedEntity,
-                  ),
-                )),
             Center(
               child: Container(
                 width: 240,
