@@ -301,36 +301,39 @@ class _HomeState extends State<Home> {
                 Row(
                   textDirection: _rtlTextDirection,
                   children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          "جميع\nالايام",
-                          textDirection: _rtlTextDirection,
-                        ),
-                        Container(
-                          height: 3.8,
-                        ),
-                        Transform.scale(
-                          scale: 1.85,
-                          child: Checkbox(
-                            activeColor: Color.fromRGBO(196, 0, 0, 1),
-                            onChanged: (bool value) {
-                              setState(() {
-                                if (_showAllEvents == false)
-                                  _showAllEvents = true;
-                                else
-                                  _showAllEvents = false;
-
-                                _fillEventList(
-                                    categoryId: _selectedCategory.id,
-                                    entityId: _selectedEntity.id,
-                                    showAllEvents: _showAllEvents);
-                              });
-                            },
-                            value: _showAllEvents,
+                    Container(
+                      margin: EdgeInsets.only(bottom: 4),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            "جميع\nالايام",
+                            textDirection: _rtlTextDirection,
                           ),
-                        ),
-                      ],
+                          Container(
+                            height: 3.8,
+                          ),
+                          Transform.scale(
+                            scale: 1.85,
+                            child: Checkbox(
+                              activeColor: Color.fromRGBO(196, 0, 0, 1),
+                              onChanged: (bool value) {
+                                setState(() {
+                                  if (_showAllEvents == false)
+                                    _showAllEvents = true;
+                                  else
+                                    _showAllEvents = false;
+
+                                  _fillEventList(
+                                      categoryId: _selectedCategory.id,
+                                      entityId: _selectedEntity.id,
+                                      showAllEvents: _showAllEvents);
+                                });
+                              },
+                              value: _showAllEvents,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Column(
                       children: <Widget>[
@@ -662,14 +665,17 @@ class _HomeState extends State<Home> {
         return Container();
     } else {
       return Card(
-        child: Text(
-          "لا يوجد نشاطات لليوم \n لاظهار النشاطات \nاختر \" اظهار نشاطات جميع الايام \" \n او اختر فئة معينة من القائمة",
-          textDirection: _rtlTextDirection,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              fontStyle: FontStyle.italic),
+        child: Container(
+          margin: EdgeInsets.all(11),
+          child: Text(
+            "ملاحظة...\nلا يوجد نشاطات لليوم، لاظهارها اختر أيٌ من التالي:\n  - مربع جميع الايام. \n  - يوم آخر من التقويم. \n  - فئة معينة من القائمة.",
+            textDirection: _rtlTextDirection,
+            textAlign: TextAlign.right,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                fontStyle: FontStyle.italic),
+          ),
         ),
       );
     }
