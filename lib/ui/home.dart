@@ -263,6 +263,9 @@ class _HomeState extends State<Home> {
                       value: _selectedCategory,
                     ),
                     Visibility(
+                      replacement: Container(
+                        height: 48,
+                      ),
                       visible: _entityVisibility,
                       child: DropdownButton(
                         items: _entities.map((Entity entity) {
