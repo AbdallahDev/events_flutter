@@ -232,6 +232,7 @@ class _HomeState extends State<Home> {
               textDirection: _rtlTextDirection,
               children: <Widget>[
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     DropdownButton<Category>(
                       items: _categories.map((Category category) {
