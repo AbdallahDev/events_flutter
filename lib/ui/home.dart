@@ -334,6 +334,7 @@ class _HomeState extends State<Home> {
                         ),
                         IconButton(
                             icon: Icon(Icons.calendar_today),
+                            iconSize: 40,
                             onPressed: () async {
                               final List<DateTime> picked =
                               await DateRangePicker.showDatePicker(
@@ -341,7 +342,8 @@ class _HomeState extends State<Home> {
                                   initialFirstDate: _selectedDate,
                                   initialLastDate: _selectedDate,
                                   firstDate: new DateTime(2019),
-                                  lastDate: new DateTime(2025));
+                                  lastDate: new DateTime(2025),
+                              );
                               if (picked != null) {
                                 setState(() {
                                   //I've assigned the date picked from the date picker in the
