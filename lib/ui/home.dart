@@ -265,7 +265,7 @@ class _HomeState extends State<Home> {
                             child: Container(
                               width: 180,
                               child: Text(
-                                entity.name,
+                                "- ${entity.name}",
                                 textDirection: _rtlTextDirection,
                               ),
                               alignment: Alignment.centerRight,
