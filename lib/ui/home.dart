@@ -230,6 +230,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Row(
               textDirection: _rtlTextDirection,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
