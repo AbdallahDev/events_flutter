@@ -339,8 +339,8 @@ class _HomeState extends State<Home> {
                           textDirection: _rtlTextDirection,
                         ),
                         IconButton(
-                          icon: Icon(Icons.calendar_today),
-                          iconSize: 40,
+                          icon: Icon(Icons.event),
+                          iconSize: 44,
                           onPressed: () async {
                             final List<DateTime> picked =
                                 await DateRangePicker.showDatePicker(
