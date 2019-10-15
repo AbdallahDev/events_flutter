@@ -11,7 +11,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'نشاطات مجلس النواب',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
+        //I've set this property to make the checkbox border-color black when
+        // it's not selected.
+        unselectedWidgetColor: Colors.black,
       ),
       home: Home(),
     );

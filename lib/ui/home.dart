@@ -11,6 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
+
+//This import is for the library that deals with dates and their format and
+// I've declared it as intl because I don't want it to conflict with other
+// libraries.
+import 'package:intl/intl.dart' as intl;
 
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
@@ -33,9 +39,24 @@ class _HomeState extends State<Home> {
   bool _entityVisibility;
   List<Event> _events;
 
-  //This variable will store the status that based on it will be decided to view
-  // the events of the current date or all the dates.
-  bool _eventsDateStatus;
+  //This variable will store the status that based on it will be decided to
+  // view all the events of all the dates or for a specific date like the
+  // current date.
+  bool _showAllEvents;
+
+  //This variable will store the selected date from the date picker, and I've
+  // made its default value the current date, because the default state will be
+  // to show the events for the current date.
+  //And this instance will be used by date picker to decide which date to select
+  // when it's opened.
+  var _selectedDate;
+
+  //This variable will store the date formatting.
+  static var _dateFormatter = intl.DateFormat('yyyy-MM-dd');
+
+  //This variable will store the date that I want to show the events for.
+  // And I'll make the default value the format of the current date.
+  String _eventsDate;
 
   //Message notification related fields (firebase, local notification)
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
@@ -96,12 +117,20 @@ class _HomeState extends State<Home> {
     //Here I've initialized the instance with the value "false" because the
     // default state will be to show the events of the current date, not all the
     // dates.
-    _eventsDateStatus = false;
+    _showAllEvents = false;
+
+    //I've made the default value the current date for the variable
+    // _selectedDate that will store the chosen date from the date picker.
+    _selectedDate = DateTime.now();
+
+    //I've made the default value the formatting of the current date.
+    _eventsDate = _dateFormatter.format(DateTime.now());
+
     //I'll call this method to fill the listView with all the events in the
     // remote DB for all the categories and that just for the first time the
     // app runs.
     _fillEventList(
-        categoryId: _selectedCategory.id, eventsDateStatus: _eventsDateStatus);
+        categoryId: _selectedCategory.id, showAllEvents: _showAllEvents);
 
     //firebase related code.
     _firebaseMessaging.configure(
@@ -199,84 +228,172 @@ class _HomeState extends State<Home> {
       body: Container(
         child: Column(
           children: <Widget>[
-            Center(
-              child: DropdownButton<Category>(
-                items: _categories.map((Category category) {
-                  return DropdownMenuItem(
-                    child: Container(
-                      child: Text(category.name),
-                      alignment: Alignment.center,
+            Row(
+              textDirection: _rtlTextDirection,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    DropdownButton<Category>(
+                      items: _categories.map((Category category) {
+                        return DropdownMenuItem(
+                          child: Container(
+                            width: 180,
+                            child: Text(
+                              category.name,
+                              textDirection: _rtlTextDirection,
+                            ),
+                            alignment: Alignment.centerRight,
+                          ),
+                          value: category,
+                        );
+                      }).toList(),
+                      onChanged: (Category category) {
+                        setState(() {
+                          //All the below code will run each time the user chooses a
+                          // new category.
+                          _selectedCategory = category;
+                          _showEntityMenu(categoryId: category.id);
+                          _fillEventList(
+                              categoryId: _selectedCategory.id,
+                              showAllEvents: _showAllEvents);
+                        });
+                      },
+                      value: _selectedCategory,
                     ),
-                    value: category,
-                  );
-                }).toList(),
-                onChanged: (Category category) {
-                  setState(() {
-                    //All the below code will run each time the user chooses a
-                    // new category.
-                    _selectedCategory = category;
-                    _showEntityMenu(categoryId: category.id);
-                    _fillEventList(
-                        categoryId: _selectedCategory.id,
-                        eventsDateStatus: _eventsDateStatus);
-                  });
-                },
-                value: _selectedCategory,
-              ),
-            ),
-            Visibility(
-                visible: _entityVisibility,
-                child: Center(
-                  child: DropdownButton(
-                    items: _entities.map((Entity entity) {
-                      return DropdownMenuItem(
-                        child: Container(
-                          child: Text(entity.name),
-                          alignment: Alignment.center,
-                        ),
-                        value: entity,
-                      );
-                    }).toList(),
-                    onChanged: (Entity entity) {
-                      setState(() {
-                        _selectedEntity = entity;
-                        //Here I'll call the method that will fill the event
-                        // list with the events that belong to the chosen entity,
-                        // and that based on its id.
-                        _fillEventList(
-                            categoryId: _selectedCategory.id,
-                            entityId: entity.id,
-                            eventsDateStatus: _eventsDateStatus);
-                      });
-                    },
-                    value: _selectedEntity,
-                  ),
-                )),
-            Center(
-              child: Container(
-                width: 240,
-                child: CheckboxListTile(
-                  title: const Text('اظهار نشاطات جميع الايام'),
-                  value: _eventsDateStatus,
-                  onChanged: (bool value) {
-                    setState(() {
-                      if (_eventsDateStatus == false)
-                        _eventsDateStatus = true;
-                      else
-                        _eventsDateStatus = false;
-
-                      _fillEventList(
-                          categoryId: _selectedCategory.id,
-                          entityId: _selectedEntity.id,
-                          eventsDateStatus: _eventsDateStatus);
-                    });
-                  },
+                    Visibility(
+                      replacement: Container(
+                        height: 48,
+                      ),
+                      visible: _entityVisibility,
+                      child: DropdownButton(
+                        items: _entities.map((Entity entity) {
+                          return DropdownMenuItem(
+                            child: Container(
+                              width: 180,
+                              child: Text(
+                                "- ${entity.name}",
+                                textDirection: _rtlTextDirection,
+                              ),
+                              alignment: Alignment.centerRight,
+                            ),
+                            value: entity,
+                          );
+                        }).toList(),
+                        onChanged: (Entity entity) {
+                          setState(() {
+                            _selectedEntity = entity;
+                            //Here I'll call the method that will fill the event
+                            // list with the events that belong to the chosen entity,
+                            // and that based on its id.
+                            _fillEventList(
+                                categoryId: _selectedCategory.id,
+                                entityId: entity.id,
+                                showAllEvents: _showAllEvents);
+                          });
+                        },
+                        value: _selectedEntity,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+                Row(
+                  textDirection: _rtlTextDirection,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(bottom: 4),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            "جميع\nالايام",
+                            textDirection: _rtlTextDirection,
+                          ),
+                          Container(
+                            height: 3.8,
+                          ),
+                          Transform.scale(
+                            scale: 1.85,
+                            child: Checkbox(
+                              activeColor: Color.fromRGBO(196, 0, 0, 1),
+                              onChanged: (bool value) {
+                                setState(() {
+                                  if (_showAllEvents == false)
+                                    _showAllEvents = true;
+                                  else
+                                    _showAllEvents = false;
+
+                                  _fillEventList(
+                                      categoryId: _selectedCategory.id,
+                                      entityId: _selectedEntity.id,
+                                      showAllEvents: _showAllEvents);
+                                });
+                              },
+                              value: _showAllEvents,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          "يوم\nمحدد",
+                          textDirection: _rtlTextDirection,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.event),
+                          iconSize: 44,
+                          onPressed: () async {
+                            final List<DateTime> picked =
+                                await DateRangePicker.showDatePicker(
+                              context: context,
+                              initialFirstDate: _selectedDate,
+                              initialLastDate: _selectedDate,
+                              firstDate: new DateTime(2019),
+                              lastDate: new DateTime(2025),
+                            );
+                            if (picked != null) {
+                              setState(() {
+                                //I've assigned the date picked from the date picker in the
+                                // _selectedDate instance. And I've got the first value
+                                // because the pick variable is a list of dates.
+                                _selectedDate = picked[0];
+
+                                //Here I'll format the date selected from the date picker
+                                // and assign it to the instance _eventsDate to send it
+                                // with the URL to get the events.
+                                _eventsDate =
+                                    _dateFormatter.format(_selectedDate);
+
+                                //Here I'll call the function that fills the list with
+                                // the events for the date selected form the picker.
+                                _fillEventList(
+                                    categoryId: _selectedCategory.id,
+                                    entityId: _selectedEntity.id,
+                                    showAllEvents: _showAllEvents);
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Text(
+              "ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ",
+              style: TextStyle(
+                  color: Color.fromRGBO(196, 0, 0, 1),
+                  fontWeight: FontWeight.bold),
+            ),
+            Container(
+              height: 5,
             ),
             Flexible(
               child: ListView.builder(
-                  padding: EdgeInsets.all(11),
+                  padding: EdgeInsets.only(left: 11, right: 11),
                   itemCount: _events.length,
                   itemBuilder: (context, position) {
                     return _eventWidget(position);
@@ -384,7 +501,7 @@ class _HomeState extends State<Home> {
       // current date or all the dates, and I've specified it as a required
       // because it's needed at all the times because I can't fetch the events
       // without knowing if that is for the current date or all the dates.
-      @required eventsDateStatus}) async {
+      @required showAllEvents}) async {
     //This is the URL of the required API, I'll concatenate it with the base URL
     // to be valid.
     //I'll provide the category id, to know which events to get based on the
@@ -394,7 +511,7 @@ class _HomeState extends State<Home> {
     //And I've concatenated the eventsDateStatus value to decide to fetch the
     // events of the current date or for all the dates.
     var url = apiURL +
-        "get_events.php?categoryId=$categoryId&entityId=$entityId&eventsDateStatus=$eventsDateStatus";
+        "get_events.php?categoryId=$categoryId&entityId=$entityId&showAllEvents=$showAllEvents&eventsDate=$_eventsDate";
     http.Response response = await http.get(url);
     //This list will contain the JSON list of events as maps that fetched
     // from the API.
@@ -548,14 +665,17 @@ class _HomeState extends State<Home> {
         return Container();
     } else {
       return Card(
-        child: Text(
-          "لا يوجد نشاطات لليوم \n لاظهار النشاطات \nاختر \" اظهار نشاطات جميع الايام \" \n او اختر فئة معينة من القائمة",
-          textDirection: _rtlTextDirection,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              fontStyle: FontStyle.italic),
+        child: Container(
+          margin: EdgeInsets.all(11),
+          child: Text(
+            "ملاحظة...\nلا يوجد نشاطات لليوم، لاظهارها اختر أيٌ من التالي:\n  - مربع جميع الايام. \n  - يوم آخر من التقويم. \n  - فئة معينة من القائمة.",
+            textDirection: _rtlTextDirection,
+            textAlign: TextAlign.right,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                fontStyle: FontStyle.italic),
+          ),
         ),
       );
     }
