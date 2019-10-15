@@ -28,7 +28,7 @@ dependencies:
   firebase_messaging: ^5.1.6
   flutter_local_notifications: ^0.8.4
   device_info: ^0.4.0+3
-  #This is for the date picker
+  #This is for the date picker1
   date_range_picker: ^1.0.6
   #This is for the Date library, like formatting the date.
   intl: ^0.16.0
