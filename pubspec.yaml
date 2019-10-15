@@ -24,10 +24,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   http: ^0.12.0+2
-  firebase_core: ^0.4.0+3
-  firebase_messaging: ^5.0.2
-  flutter_local_notifications: ^0.7.1+1
-  device_info: ^0.4.0+2
+  firebase_core: ^0.4.0+9
+  firebase_messaging: ^5.1.6
+  flutter_local_notifications: ^0.8.4
+  device_info: ^0.4.0+3
   #This is for the date picker
   date_range_picker: ^1.0.6
   #This is for the Date library, like formatting the date.
