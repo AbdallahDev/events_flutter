@@ -401,12 +401,29 @@ class _HomeState extends State<Home> {
               height: 5,
             ),
             Flexible(
-              child: ListView.builder(
-                  padding: EdgeInsets.only(left: 11, right: 11),
-                  itemCount: _events.length,
-                  itemBuilder: (context, position) {
-                    return _eventWidget(position);
-                  }),
+              child: isLoading
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          CircularProgressIndicator(),
+                          Container(
+                            height: 20,
+                          ),
+                          Text(
+                            "يرجى الانتظار ...",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            textDirection: TextDirection.rtl,
+                          )
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: EdgeInsets.only(left: 11, right: 11),
+                      itemCount: _events.length,
+                      itemBuilder: (context, position) {
+                        return _eventWidget(position);
+                      }),
             ),
           ],
         ),
