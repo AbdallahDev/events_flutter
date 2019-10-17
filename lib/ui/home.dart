@@ -39,6 +39,10 @@ class _HomeState extends State<Home> {
   bool _entityVisibility;
   List<Event> _events;
 
+  //This variable is to indicates if the data is loading or not, I'll use it to
+  // show/hide the circular indicator.
+  var isLoading;
+
   //This variable will store the status that based on it will be decided to
   // view all the events of all the dates or for a specific date like the
   // current date.
