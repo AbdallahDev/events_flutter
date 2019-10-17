@@ -39,6 +39,10 @@ class _HomeState extends State<Home> {
   bool _entityVisibility;
   List<Event> _events;
 
+  //This variable is to indicates if the data is loading or not, I'll use it to
+  // show/hide the circular indicator.
+  var isLoading;
+
   //This variable will store the status that based on it will be decided to
   // view all the events of all the dates or for a specific date like the
   // current date.
@@ -114,6 +118,11 @@ class _HomeState extends State<Home> {
           hallName: "",
           eventPlace: "")
     ];
+
+    //Here I'll initialize the isLoading with the false value because I don't
+    // want to show the circular indicator by default.
+    isLoading = false;
+
     //Here I've initialized the instance with the value "false" because the
     // default state will be to show the events of the current date, not all the
     // dates.
@@ -392,12 +401,29 @@ class _HomeState extends State<Home> {
               height: 5,
             ),
             Flexible(
-              child: ListView.builder(
-                  padding: EdgeInsets.only(left: 11, right: 11),
-                  itemCount: _events.length,
-                  itemBuilder: (context, position) {
-                    return _eventWidget(position);
-                  }),
+              child: isLoading
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          CircularProgressIndicator(),
+                          Container(
+                            height: 20,
+                          ),
+                          Text(
+                            "يرجى الانتظار ...",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            textDirection: TextDirection.rtl,
+                          )
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: EdgeInsets.only(left: 11, right: 11),
+                      itemCount: _events.length,
+                      itemBuilder: (context, position) {
+                        return _eventWidget(position);
+                      }),
             ),
           ],
         ),
@@ -502,6 +528,12 @@ class _HomeState extends State<Home> {
       // because it's needed at all the times because I can't fetch the events
       // without knowing if that is for the current date or all the dates.
       @required showAllEvents}) async {
+    //Here I'll set the value of the isLoading variable to true, and I'll
+    // embrace it in the setState to show the circular indicator.
+    setState(() {
+      isLoading = true;
+    });
+
     //This is the URL of the required API, I'll concatenate it with the base URL
     // to be valid.
     //I'll provide the category id, to know which events to get based on the
@@ -513,31 +545,43 @@ class _HomeState extends State<Home> {
     var url = apiURL +
         "get_events.php?categoryId=$categoryId&entityId=$entityId&showAllEvents=$showAllEvents&eventsDate=$_eventsDate";
     http.Response response = await http.get(url);
-    //This list will contain the JSON list of events as maps that fetched
-    // from the API.
-    List list = json.decode(response.body);
 
-    //I'll initialize the list with a default event object, and that for
-    // reinitializing the list from the beginning, because I don't want the new
-    // values to be added to the old ones, and also in case I don't get anything
-    // from the API I'll view in the listView the default empty event object.
-    _events = [
-      Event(
-          id: 0,
-          eventEntityName: "",
-          time: "",
-          eventAppointment: "",
-          subject: "",
-          eventDate: "",
-          hallName: "",
-          eventPlace: "")
-    ];
-    //I'll loop over each event map in the list to create an event object
-    // from it then add it to events list.
-    list.forEach((map) {
-      _events.add(Event.fromMap(map));
-    });
-    setState(() {});
+    //Here I'll check for the response status code if it's 200 that means the
+    // data has been fetched successfully so I'll hide the circular indicator
+    // and then show the events list.
+    if (response.statusCode == 200) {
+      //Here I'll set the isLoading variable value to false to hide the circular
+      // indicator.
+      isLoading = false;
+
+      //This list will contain the JSON list of events as maps that fetched
+      // from the API.
+      List list = json.decode(response.body);
+
+      //I'll initialize the list with a default event object, and that for
+      // reinitializing the list from the beginning, because I don't want the new
+      // values to be added to the old ones, and also in case I don't get anything
+      // from the API I'll view in the listView the default empty event object.
+      _events = [
+        Event(
+            id: 0,
+            eventEntityName: "",
+            time: "",
+            eventAppointment: "",
+            subject: "",
+            eventDate: "",
+            hallName: "",
+            eventPlace: "")
+      ];
+      //I'll loop over each event map in the list to create an event object
+      // from it then add it to events list.
+      list.forEach((map) {
+        _events.add(Event.fromMap(map));
+      });
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   //This method will return the widget that views the event details.
