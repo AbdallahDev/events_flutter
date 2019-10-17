@@ -533,6 +533,10 @@ class _HomeState extends State<Home> {
     // data has been fetched successfully so I'll hide the circular indicator
     // and then show the events list.
     if (response.statusCode == 200) {
+      //Here I'll set the isLoading variable value to false to hide the circular
+      // indicator.
+      isLoading = false;
+
       //This list will contain the JSON list of events as maps that fetched
       // from the API.
       List list = json.decode(response.body);
