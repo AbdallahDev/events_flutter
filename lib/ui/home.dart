@@ -118,6 +118,11 @@ class _HomeState extends State<Home> {
           hallName: "",
           eventPlace: "")
     ];
+
+    //Here I'll initialize the isLoading with the false value because I don't
+    // want to show the circular indicator by default.
+    isLoading = false;
+
     //Here I've initialized the instance with the value "false" because the
     // default state will be to show the events of the current date, not all the
     // dates.
