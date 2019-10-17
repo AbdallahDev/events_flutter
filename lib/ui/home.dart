@@ -709,16 +709,38 @@ class _HomeState extends State<Home> {
         return Container();
     } else {
       return Card(
-        child: Container(
-          margin: EdgeInsets.all(11),
-          child: Text(
-            "ملاحظة...\nلا يوجد نشاطات لليوم، لاظهارها اختر أيٌ من التالي:\n  - مربع جميع الايام. \n  - يوم آخر من التقويم. \n  - فئة معينة من القائمة.",
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Wrap(
             textDirection: _rtlTextDirection,
-            textAlign: TextAlign.right,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                fontStyle: FontStyle.italic),
+            children: <Widget>[
+              Center(
+                child: Text(
+                  "لا يوجد نشاطات لهذا اليوم ${intl.DateFormat("d-M-y",).format(DateTime.now())}\n",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                  textDirection: _rtlTextDirection,
+                ),
+              ),
+              RichText(
+                  textDirection: _rtlTextDirection,
+                  text: TextSpan(
+                      text: "",
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: "ملاحظة...",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text:
+                              "\nلاظهار النشاطات اختر أيً من التالي:\n  - جميع الايام. \n  - يوم آخر من التقويم. \n  - فئة معينة من القائمة.",
+                          style: TextStyle(fontSize: 18),
+                        )
+                      ])),
+            ],
           ),
         ),
       );
