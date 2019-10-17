@@ -511,6 +511,12 @@ class _HomeState extends State<Home> {
       // because it's needed at all the times because I can't fetch the events
       // without knowing if that is for the current date or all the dates.
       @required showAllEvents}) async {
+    //Here I'll set the value of the isLoading variable to true, and I'll
+    // embrace it in the setState to show the circular indicator.
+    setState(() {
+      isLoading = true;
+    });
+
     //This is the URL of the required API, I'll concatenate it with the base URL
     // to be valid.
     //I'll provide the category id, to know which events to get based on the
