@@ -722,7 +722,7 @@ class _HomeState extends State<Home> {
               Center(
                 child: Text(
                   "لا يوجد نشاطات لهذا اليوم ${intl.DateFormat("d-M-y",).format(DateTime.now())}\n",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   textDirection: _rtlTextDirection,
                 ),
               ),
