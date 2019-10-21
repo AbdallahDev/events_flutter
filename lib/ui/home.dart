@@ -359,7 +359,7 @@ class _HomeState extends State<Home> {
                             iconSize: 44,
                             onPressed: () async {
                               final List<DateTime> picked =
-                              await DateRangePicker.showDatePicker(
+                                  await DateRangePicker.showDatePicker(
                                 context: context,
                                 initialFirstDate: _selectedDate,
                                 initialLastDate: _selectedDate,
@@ -442,15 +442,20 @@ class _HomeState extends State<Home> {
     // to be valid.
     var url = apiURL + "get_categories.php";
     http.Response response = await http.get(url);
-    //This list will contain the JSON list of categories as maps that fetched
-    // from the API.
-    List list = json.decode(response.body);
-    //I'll loop over each category map in the list to create a category object
-    // from it then add it to categories list.
-    list.forEach((map) {
-      _categories.add(Category.fromMap(map));
-    });
-    setState(() {});
+
+    //Here I'll check if the response status is successful, in that case I'll
+    // run the code to create category models from the data that fetched.
+    if (response.statusCode == 200) {
+      //This list will contain the JSON list of categories as maps that fetched
+      // from the API.
+      List list = json.decode(response.body);
+      //I'll loop over each category map in the list to create a category object
+      // from it then add it to categories list.
+      list.forEach((map) {
+        _categories.add(Category.fromMap(map));
+      });
+      setState(() {});
+    }
   }
 
   //This method will view the entity list depending on the selected category.
@@ -721,7 +726,9 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               Center(
                 child: Text(
-                  "لا يوجد نشاطات لهذا اليوم ${intl.DateFormat("d-M-y",).format(DateTime.now())}\n",
+                  "لا يوجد نشاطات لهذا اليوم ${intl.DateFormat(
+                    "d-M-y",
+                  ).format(DateTime.now())}\n",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   textDirection: _rtlTextDirection,
                 ),
