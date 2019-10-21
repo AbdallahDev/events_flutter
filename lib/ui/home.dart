@@ -239,211 +239,228 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          centerTitle: true,
-          title: Text("نشاطات مجلس النواب"),
-          backgroundColor: Color.fromRGBO(196, 0, 0, 1)),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Row(
-              textDirection: _rtlTextDirection,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    DropdownButton<Category>(
-                      items: _categories.map((Category category) {
-                        return DropdownMenuItem(
-                          child: Container(
-                            width: 180,
-                            child: Text(
-                              category.name,
-                              textDirection: _rtlTextDirection,
-                            ),
-                            alignment: Alignment.centerRight,
-                          ),
-                          value: category,
-                        );
-                      }).toList(),
-                      onChanged: (Category category) {
-                        setState(() {
-                          //All the below code will run each time the user chooses a
-                          // new category.
-                          _selectedCategory = category;
-                          _showEntityMenu(categoryId: category.id);
-                          _fillEventList(
-                              categoryId: _selectedCategory.id,
-                              showAllEvents: _showAllEvents);
-                        });
-                      },
-                      value: _selectedCategory,
-                    ),
-                    Visibility(
-                      replacement: Container(
-                        height: 48,
-                      ),
-                      visible: _entityVisibility,
-                      child: DropdownButton(
-                        items: _entities.map((Entity entity) {
-                          return DropdownMenuItem(
-                            child: Container(
-                              width: 180,
-                              child: Text(
-                                "- ${entity.name}",
-                                textDirection: _rtlTextDirection,
-                              ),
-                              alignment: Alignment.centerRight,
-                            ),
-                            value: entity,
-                          );
-                        }).toList(),
-                        onChanged: (Entity entity) {
-                          setState(() {
-                            _selectedEntity = entity;
-                            //Here I'll call the method that will fill the event
-                            // list with the events that belong to the chosen entity,
-                            // and that based on its id.
-                            _fillEventList(
-                                categoryId: _selectedCategory.id,
-                                entityId: entity.id,
-                                showAllEvents: _showAllEvents);
-                          });
-                        },
-                        value: _selectedEntity,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
+    return _splashScreenOn
+        ? Scaffold(
+            body: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/splash.jpg'), fit: BoxFit.cover),
+              ),
+              child: Center(
+                child: Text(
+                  "",
                   textDirection: _rtlTextDirection,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(bottom: 4),
-                      child: Column(
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+                centerTitle: true,
+                title: Text("نشاطات مجلس النواب"),
+                backgroundColor: Color.fromRGBO(196, 0, 0, 1)),
+            body: Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    textDirection: _rtlTextDirection,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Text(
-                            "جميع الايام",
-                            textDirection: _rtlTextDirection,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          DropdownButton<Category>(
+                            items: _categories.map((Category category) {
+                              return DropdownMenuItem(
+                                child: Container(
+                                  width: 180,
+                                  child: Text(
+                                    category.name,
+                                    textDirection: _rtlTextDirection,
+                                  ),
+                                  alignment: Alignment.centerRight,
+                                ),
+                                value: category,
+                              );
+                            }).toList(),
+                            onChanged: (Category category) {
+                              setState(() {
+                                //All the below code will run each time the user chooses a
+                                // new category.
+                                _selectedCategory = category;
+                                _showEntityMenu(categoryId: category.id);
+                                _fillEventList(
+                                    categoryId: _selectedCategory.id,
+                                    showAllEvents: _showAllEvents);
+                              });
+                            },
+                            value: _selectedCategory,
                           ),
-                          Container(
-                            height: 3.8,
-                          ),
-                          Transform.scale(
-                            scale: 1.85,
-                            child: Checkbox(
-                              activeColor: Color.fromRGBO(196, 0, 0, 1),
-                              onChanged: (bool value) {
+                          Visibility(
+                            replacement: Container(
+                              height: 48,
+                            ),
+                            visible: _entityVisibility,
+                            child: DropdownButton(
+                              items: _entities.map((Entity entity) {
+                                return DropdownMenuItem(
+                                  child: Container(
+                                    width: 180,
+                                    child: Text(
+                                      "- ${entity.name}",
+                                      textDirection: _rtlTextDirection,
+                                    ),
+                                    alignment: Alignment.centerRight,
+                                  ),
+                                  value: entity,
+                                );
+                              }).toList(),
+                              onChanged: (Entity entity) {
                                 setState(() {
-                                  if (_showAllEvents == false)
-                                    _showAllEvents = true;
-                                  else
-                                    _showAllEvents = false;
-
+                                  _selectedEntity = entity;
+                                  //Here I'll call the method that will fill the event
+                                  // list with the events that belong to the chosen entity,
+                                  // and that based on its id.
                                   _fillEventList(
                                       categoryId: _selectedCategory.id,
-                                      entityId: _selectedEntity.id,
+                                      entityId: entity.id,
                                       showAllEvents: _showAllEvents);
                                 });
                               },
-                              value: _showAllEvents,
+                              value: _selectedEntity,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 5),
-                      child: Column(
+                      Row(
+                        textDirection: _rtlTextDirection,
                         children: <Widget>[
-                          Text(
-                            "التقويم",
-                            textDirection: _rtlTextDirection,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.event),
-                            iconSize: 44,
-                            onPressed: () async {
-                              final List<DateTime> picked =
-                                  await DateRangePicker.showDatePicker(
-                                context: context,
-                                initialFirstDate: _selectedDate,
-                                initialLastDate: _selectedDate,
-                                firstDate: new DateTime(2019),
-                                lastDate: new DateTime(2025),
-                              );
-                              if (picked != null) {
-                                setState(() {
-                                  //I've assigned the date picked from the date picker in the
-                                  // _selectedDate instance. And I've got the first value
-                                  // because the pick variable is a list of dates.
-                                  _selectedDate = picked[0];
-
-                                  //Here I'll format the date selected from the date picker
-                                  // and assign it to the instance _eventsDate to send it
-                                  // with the URL to get the events.
-                                  _eventsDate =
-                                      _dateFormatter.format(_selectedDate);
-
-                                  //Here I'll call the function that fills the list with
-                                  // the events for the date selected form the picker.
-                                  _fillEventList(
-                                      categoryId: _selectedCategory.id,
-                                      entityId: _selectedEntity.id,
-                                      showAllEvents: _showAllEvents);
-                                });
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Text(
-              "ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ",
-              style: TextStyle(
-                  color: Color.fromRGBO(196, 0, 0, 1),
-                  fontWeight: FontWeight.bold),
-            ),
-            Container(
-              height: 5,
-            ),
-            Flexible(
-              child: isLoading
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          CircularProgressIndicator(),
                           Container(
-                            height: 20,
+                            margin: EdgeInsets.only(bottom: 4),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  "جميع الايام",
+                                  textDirection: _rtlTextDirection,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                  height: 3.8,
+                                ),
+                                Transform.scale(
+                                  scale: 1.85,
+                                  child: Checkbox(
+                                    activeColor: Color.fromRGBO(196, 0, 0, 1),
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        if (_showAllEvents == false)
+                                          _showAllEvents = true;
+                                        else
+                                          _showAllEvents = false;
+
+                                        _fillEventList(
+                                            categoryId: _selectedCategory.id,
+                                            entityId: _selectedEntity.id,
+                                            showAllEvents: _showAllEvents);
+                                      });
+                                    },
+                                    value: _showAllEvents,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          Text(
-                            "يرجى الانتظار ...",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            textDirection: TextDirection.rtl,
-                          )
+                          Container(
+                            margin: EdgeInsets.only(top: 5),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  "التقويم",
+                                  textDirection: _rtlTextDirection,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.event),
+                                  iconSize: 44,
+                                  onPressed: () async {
+                                    final List<DateTime> picked =
+                                        await DateRangePicker.showDatePicker(
+                                      context: context,
+                                      initialFirstDate: _selectedDate,
+                                      initialLastDate: _selectedDate,
+                                      firstDate: new DateTime(2019),
+                                      lastDate: new DateTime(2025),
+                                    );
+                                    if (picked != null) {
+                                      setState(() {
+                                        //I've assigned the date picked from the date picker in the
+                                        // _selectedDate instance. And I've got the first value
+                                        // because the pick variable is a list of dates.
+                                        _selectedDate = picked[0];
+
+                                        //Here I'll format the date selected from the date picker
+                                        // and assign it to the instance _eventsDate to send it
+                                        // with the URL to get the events.
+                                        _eventsDate = _dateFormatter
+                                            .format(_selectedDate);
+
+                                        //Here I'll call the function that fills the list with
+                                        // the events for the date selected form the picker.
+                                        _fillEventList(
+                                            categoryId: _selectedCategory.id,
+                                            entityId: _selectedEntity.id,
+                                            showAllEvents: _showAllEvents);
+                                      });
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                    )
-                  : ListView.builder(
-                      padding: EdgeInsets.only(left: 11, right: 11),
-                      itemCount: _events.length,
-                      itemBuilder: (context, position) {
-                        return _eventWidget(position);
-                      }),
+                    ],
+                  ),
+                  Text(
+                    "ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ",
+                    style: TextStyle(
+                        color: Color.fromRGBO(196, 0, 0, 1),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Container(
+                    height: 5,
+                  ),
+                  Flexible(
+                    child: isLoading
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                CircularProgressIndicator(),
+                                Container(
+                                  height: 20,
+                                ),
+                                Text(
+                                  "يرجى الانتظار ...",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  textDirection: TextDirection.rtl,
+                                )
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: EdgeInsets.only(left: 11, right: 11),
+                            itemCount: _events.length,
+                            itemBuilder: (context, position) {
+                              return _eventWidget(position);
+                            }),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   //I'll fill the category list directly from the API.
