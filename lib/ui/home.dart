@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -469,6 +470,12 @@ class _HomeState extends State<Home> {
       list.forEach((map) {
         _categories.add(Category.fromMap(map));
       });
+
+      //I've called the sleep function to delay the code execution because the
+      // splash screen disappears very fast so this sleep will delay the splash
+      // screen hiding.
+      sleep(new Duration(seconds: 1));
+
       setState(() {
         //Here I'll set the value of this variable to false to hide the splash
         // screen because the connection is successful.
