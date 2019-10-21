@@ -153,27 +153,17 @@ class _HomeState extends State<Home> {
 
     //firebase related code.
     _firebaseMessaging.configure(
-      onLaunch: (Map<String, dynamic> msg) async {
-        print(" onLaunch called ${(msg)}");
-      },
-      onResume: (Map<String, dynamic> msg) async {
-        print(" onResume called ${(msg)}");
-      },
+      onLaunch: (Map<String, dynamic> msg) async {},
+      onResume: (Map<String, dynamic> msg) async {},
       onMessage: (Map<String, dynamic> msg) async {
         _showNotification(msg);
-        print(" onMessage called ${(msg)}");
       },
     );
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, alert: true, badge: true));
     _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print('IOS Settings Registered: $settings');
-    });
+        .listen((IosNotificationSettings settings) {});
     _firebaseMessaging.getToken().then((deviceToken) {
-      print(deviceToken);
-      print(_deviceIdentifier);
-
       _saveToken(deviceToken, _deviceIdentifier, _deviceName, _deviceModel,
           _deviceIsPhysical);
     });
@@ -203,9 +193,7 @@ class _HomeState extends State<Home> {
         _deviceModel = build.model;
         _deviceIsPhysical = build.isPhysicalDevice.toString();
       }
-    } on PlatformException {
-      print('Failed to get device info');
-    }
+    } on PlatformException {}
   }
 
   //This method will save the device token when the app launched for the first time.
