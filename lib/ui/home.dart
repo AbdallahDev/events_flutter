@@ -25,6 +25,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  //This variable will store the value based on it will be decided to show
+  // the splash screen or not.
+  bool _splashScreenOn;
+
   //This is the API base URL.
   var apiURL = StaticVars.apiUrl;
 
@@ -89,6 +93,12 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+
+    //Here I'll instantiate this variable with true value because the default
+    // case when the app start is to show the splash screen, then if the
+    // connection is successful it's value will be changed to false to hide the
+    // splash screen.
+    _splashScreenOn = true;
 
     //I've called the function that will get the device info.
     getDeviceInfo();
@@ -454,7 +464,11 @@ class _HomeState extends State<Home> {
       list.forEach((map) {
         _categories.add(Category.fromMap(map));
       });
-      setState(() {});
+      setState(() {
+        //Here I'll set the value of this variable to false to hide the splash
+        // screen because the connection is successful.
+        _splashScreenOn = false;
+      });
     }
   }
 
