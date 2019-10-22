@@ -236,11 +236,17 @@ class _HomeState extends State<Home> {
                     image: AssetImage('assets/splash.jpg'), fit: BoxFit.cover),
               ),
               child: Center(
-                child: Text(
-                  "",
-                  textDirection: _rtlTextDirection,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 330),
+                  child: Text(
+                    "نشاطات مجلس النواب",
+                    textDirection: _rtlTextDirection,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
                 ),
               ),
             ),
