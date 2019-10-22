@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -25,6 +26,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  //This variable will store the value based on it will be decided to show
+  // the splash screen or not.
+  bool _splashScreenOn;
+
   //This is the API base URL.
   var apiURL = StaticVars.apiUrl;
 
@@ -90,6 +95,12 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
 
+    //Here I'll instantiate this variable with true value because the default
+    // case when the app start is to show the splash screen, then if the
+    // connection is successful it's value will be changed to false to hide the
+    // splash screen.
+    _splashScreenOn = true;
+
     //I've called the function that will get the device info.
     getDeviceInfo();
 
@@ -143,27 +154,17 @@ class _HomeState extends State<Home> {
 
     //firebase related code.
     _firebaseMessaging.configure(
-      onLaunch: (Map<String, dynamic> msg) async {
-        print(" onLaunch called ${(msg)}");
-      },
-      onResume: (Map<String, dynamic> msg) async {
-        print(" onResume called ${(msg)}");
-      },
+      onLaunch: (Map<String, dynamic> msg) async {},
+      onResume: (Map<String, dynamic> msg) async {},
       onMessage: (Map<String, dynamic> msg) async {
         _showNotification(msg);
-        print(" onMessage called ${(msg)}");
       },
     );
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, alert: true, badge: true));
     _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print('IOS Settings Registered: $settings');
-    });
+        .listen((IosNotificationSettings settings) {});
     _firebaseMessaging.getToken().then((deviceToken) {
-      print(deviceToken);
-      print(_deviceIdentifier);
-
       _saveToken(deviceToken, _deviceIdentifier, _deviceName, _deviceModel,
           _deviceIsPhysical);
     });
@@ -193,9 +194,7 @@ class _HomeState extends State<Home> {
         _deviceModel = build.model;
         _deviceIsPhysical = build.isPhysicalDevice.toString();
       }
-    } on PlatformException {
-      print('Failed to get device info');
-    }
+    } on PlatformException {}
   }
 
   //This method will save the device token when the app launched for the first time.
@@ -229,211 +228,228 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          centerTitle: true,
-          title: Text("نشاطات مجلس النواب"),
-          backgroundColor: Color.fromRGBO(196, 0, 0, 1)),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Row(
-              textDirection: _rtlTextDirection,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    DropdownButton<Category>(
-                      items: _categories.map((Category category) {
-                        return DropdownMenuItem(
-                          child: Container(
-                            width: 180,
-                            child: Text(
-                              category.name,
-                              textDirection: _rtlTextDirection,
-                            ),
-                            alignment: Alignment.centerRight,
-                          ),
-                          value: category,
-                        );
-                      }).toList(),
-                      onChanged: (Category category) {
-                        setState(() {
-                          //All the below code will run each time the user chooses a
-                          // new category.
-                          _selectedCategory = category;
-                          _showEntityMenu(categoryId: category.id);
-                          _fillEventList(
-                              categoryId: _selectedCategory.id,
-                              showAllEvents: _showAllEvents);
-                        });
-                      },
-                      value: _selectedCategory,
-                    ),
-                    Visibility(
-                      replacement: Container(
-                        height: 48,
-                      ),
-                      visible: _entityVisibility,
-                      child: DropdownButton(
-                        items: _entities.map((Entity entity) {
-                          return DropdownMenuItem(
-                            child: Container(
-                              width: 180,
-                              child: Text(
-                                "- ${entity.name}",
-                                textDirection: _rtlTextDirection,
-                              ),
-                              alignment: Alignment.centerRight,
-                            ),
-                            value: entity,
-                          );
-                        }).toList(),
-                        onChanged: (Entity entity) {
-                          setState(() {
-                            _selectedEntity = entity;
-                            //Here I'll call the method that will fill the event
-                            // list with the events that belong to the chosen entity,
-                            // and that based on its id.
-                            _fillEventList(
-                                categoryId: _selectedCategory.id,
-                                entityId: entity.id,
-                                showAllEvents: _showAllEvents);
-                          });
-                        },
-                        value: _selectedEntity,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
+    return _splashScreenOn
+        ? Scaffold(
+            body: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/splash.jpg'), fit: BoxFit.cover),
+              ),
+              child: Center(
+                child: Text(
+                  "",
                   textDirection: _rtlTextDirection,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(bottom: 4),
-                      child: Column(
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+                centerTitle: true,
+                title: Text("نشاطات مجلس النواب"),
+                backgroundColor: Color.fromRGBO(196, 0, 0, 1)),
+            body: Container(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    textDirection: _rtlTextDirection,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Text(
-                            "جميع الايام",
-                            textDirection: _rtlTextDirection,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          DropdownButton<Category>(
+                            items: _categories.map((Category category) {
+                              return DropdownMenuItem(
+                                child: Container(
+                                  width: 180,
+                                  child: Text(
+                                    category.name,
+                                    textDirection: _rtlTextDirection,
+                                  ),
+                                  alignment: Alignment.centerRight,
+                                ),
+                                value: category,
+                              );
+                            }).toList(),
+                            onChanged: (Category category) {
+                              setState(() {
+                                //All the below code will run each time the user chooses a
+                                // new category.
+                                _selectedCategory = category;
+                                _showEntityMenu(categoryId: category.id);
+                                _fillEventList(
+                                    categoryId: _selectedCategory.id,
+                                    showAllEvents: _showAllEvents);
+                              });
+                            },
+                            value: _selectedCategory,
                           ),
-                          Container(
-                            height: 3.8,
-                          ),
-                          Transform.scale(
-                            scale: 1.85,
-                            child: Checkbox(
-                              activeColor: Color.fromRGBO(196, 0, 0, 1),
-                              onChanged: (bool value) {
+                          Visibility(
+                            replacement: Container(
+                              height: 48,
+                            ),
+                            visible: _entityVisibility,
+                            child: DropdownButton(
+                              items: _entities.map((Entity entity) {
+                                return DropdownMenuItem(
+                                  child: Container(
+                                    width: 180,
+                                    child: Text(
+                                      "- ${entity.name}",
+                                      textDirection: _rtlTextDirection,
+                                    ),
+                                    alignment: Alignment.centerRight,
+                                  ),
+                                  value: entity,
+                                );
+                              }).toList(),
+                              onChanged: (Entity entity) {
                                 setState(() {
-                                  if (_showAllEvents == false)
-                                    _showAllEvents = true;
-                                  else
-                                    _showAllEvents = false;
-
+                                  _selectedEntity = entity;
+                                  //Here I'll call the method that will fill the event
+                                  // list with the events that belong to the chosen entity,
+                                  // and that based on its id.
                                   _fillEventList(
                                       categoryId: _selectedCategory.id,
-                                      entityId: _selectedEntity.id,
+                                      entityId: entity.id,
                                       showAllEvents: _showAllEvents);
                                 });
                               },
-                              value: _showAllEvents,
+                              value: _selectedEntity,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 5),
-                      child: Column(
+                      Row(
+                        textDirection: _rtlTextDirection,
                         children: <Widget>[
-                          Text(
-                            "التقويم",
-                            textDirection: _rtlTextDirection,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.event),
-                            iconSize: 44,
-                            onPressed: () async {
-                              final List<DateTime> picked =
-                              await DateRangePicker.showDatePicker(
-                                context: context,
-                                initialFirstDate: _selectedDate,
-                                initialLastDate: _selectedDate,
-                                firstDate: new DateTime(2019),
-                                lastDate: new DateTime(2025),
-                              );
-                              if (picked != null) {
-                                setState(() {
-                                  //I've assigned the date picked from the date picker in the
-                                  // _selectedDate instance. And I've got the first value
-                                  // because the pick variable is a list of dates.
-                                  _selectedDate = picked[0];
-
-                                  //Here I'll format the date selected from the date picker
-                                  // and assign it to the instance _eventsDate to send it
-                                  // with the URL to get the events.
-                                  _eventsDate =
-                                      _dateFormatter.format(_selectedDate);
-
-                                  //Here I'll call the function that fills the list with
-                                  // the events for the date selected form the picker.
-                                  _fillEventList(
-                                      categoryId: _selectedCategory.id,
-                                      entityId: _selectedEntity.id,
-                                      showAllEvents: _showAllEvents);
-                                });
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Text(
-              "ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ",
-              style: TextStyle(
-                  color: Color.fromRGBO(196, 0, 0, 1),
-                  fontWeight: FontWeight.bold),
-            ),
-            Container(
-              height: 5,
-            ),
-            Flexible(
-              child: isLoading
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          CircularProgressIndicator(),
                           Container(
-                            height: 20,
+                            margin: EdgeInsets.only(bottom: 4),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  "جميع الايام",
+                                  textDirection: _rtlTextDirection,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                  height: 3.8,
+                                ),
+                                Transform.scale(
+                                  scale: 1.85,
+                                  child: Checkbox(
+                                    activeColor: Color.fromRGBO(196, 0, 0, 1),
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        if (_showAllEvents == false)
+                                          _showAllEvents = true;
+                                        else
+                                          _showAllEvents = false;
+
+                                        _fillEventList(
+                                            categoryId: _selectedCategory.id,
+                                            entityId: _selectedEntity.id,
+                                            showAllEvents: _showAllEvents);
+                                      });
+                                    },
+                                    value: _showAllEvents,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          Text(
-                            "يرجى الانتظار ...",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            textDirection: TextDirection.rtl,
-                          )
+                          Container(
+                            margin: EdgeInsets.only(top: 5),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  "التقويم",
+                                  textDirection: _rtlTextDirection,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.event),
+                                  iconSize: 44,
+                                  onPressed: () async {
+                                    final List<DateTime> picked =
+                                        await DateRangePicker.showDatePicker(
+                                      context: context,
+                                      initialFirstDate: _selectedDate,
+                                      initialLastDate: _selectedDate,
+                                      firstDate: new DateTime(2019),
+                                      lastDate: new DateTime(2025),
+                                    );
+                                    if (picked != null) {
+                                      setState(() {
+                                        //I've assigned the date picked from the date picker in the
+                                        // _selectedDate instance. And I've got the first value
+                                        // because the pick variable is a list of dates.
+                                        _selectedDate = picked[0];
+
+                                        //Here I'll format the date selected from the date picker
+                                        // and assign it to the instance _eventsDate to send it
+                                        // with the URL to get the events.
+                                        _eventsDate = _dateFormatter
+                                            .format(_selectedDate);
+
+                                        //Here I'll call the function that fills the list with
+                                        // the events for the date selected form the picker.
+                                        _fillEventList(
+                                            categoryId: _selectedCategory.id,
+                                            entityId: _selectedEntity.id,
+                                            showAllEvents: _showAllEvents);
+                                      });
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                    )
-                  : ListView.builder(
-                      padding: EdgeInsets.only(left: 11, right: 11),
-                      itemCount: _events.length,
-                      itemBuilder: (context, position) {
-                        return _eventWidget(position);
-                      }),
+                    ],
+                  ),
+                  Text(
+                    "ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ",
+                    style: TextStyle(
+                        color: Color.fromRGBO(196, 0, 0, 1),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Container(
+                    height: 5,
+                  ),
+                  Flexible(
+                    child: isLoading
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                CircularProgressIndicator(),
+                                Container(
+                                  height: 20,
+                                ),
+                                Text(
+                                  "يرجى الانتظار ...",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  textDirection: TextDirection.rtl,
+                                )
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: EdgeInsets.only(left: 11, right: 11),
+                            itemCount: _events.length,
+                            itemBuilder: (context, position) {
+                              return _eventWidget(position);
+                            }),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   //I'll fill the category list directly from the API.
@@ -442,15 +458,30 @@ class _HomeState extends State<Home> {
     // to be valid.
     var url = apiURL + "get_categories.php";
     http.Response response = await http.get(url);
-    //This list will contain the JSON list of categories as maps that fetched
-    // from the API.
-    List list = json.decode(response.body);
-    //I'll loop over each category map in the list to create a category object
-    // from it then add it to categories list.
-    list.forEach((map) {
-      _categories.add(Category.fromMap(map));
-    });
-    setState(() {});
+
+    //Here I'll check if the response status is successful, in that case I'll
+    // run the code to create category models from the data that fetched.
+    if (response.statusCode == 200) {
+      //This list will contain the JSON list of categories as maps that fetched
+      // from the API.
+      List list = json.decode(response.body);
+      //I'll loop over each category map in the list to create a category object
+      // from it then add it to categories list.
+      list.forEach((map) {
+        _categories.add(Category.fromMap(map));
+      });
+
+      //I've called the sleep function to delay the code execution because the
+      // splash screen disappears very fast so this sleep will delay the splash
+      // screen hiding.
+      sleep(new Duration(seconds: 1));
+
+      setState(() {
+        //Here I'll set the value of this variable to false to hide the splash
+        // screen because the connection is successful.
+        _splashScreenOn = false;
+      });
+    }
   }
 
   //This method will view the entity list depending on the selected category.
@@ -721,7 +752,9 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               Center(
                 child: Text(
-                  "لا يوجد نشاطات لهذا اليوم ${intl.DateFormat("d-M-y",).format(DateTime.now())}\n",
+                  "لا يوجد نشاطات لهذا اليوم ${intl.DateFormat(
+                    "d-M-y",
+                  ).format(DateTime.now())}\n",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   textDirection: _rtlTextDirection,
                 ),
