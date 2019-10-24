@@ -740,7 +740,14 @@ class _HomeState extends State<Home> {
                 child: Text(
                   "لا يوجد نشاطات لهذا اليوم ${intl.DateFormat(
                     "d-M-y",
-                  ).format(DateTime.now())}\n",
+                  ).
+                      //Here I've shown the selected date from the calendar
+                      // instead of the current date (DateTime.now()) because if
+                      // the user chooses a date from the calendar another than the
+                      // current day it will no be shown in the message but the
+                      // date that will be shown is the date of the current day and
+                      // that is not right.
+                      format(_selectedDate)}\n",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   textDirection: _rtlTextDirection,
                 ),
