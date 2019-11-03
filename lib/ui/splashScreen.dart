@@ -14,7 +14,7 @@ class SplashScreen extends StatelessWidget {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: 330),
+            padding: const EdgeInsets.only(top: 250),
             child: Text(
               "نشاطات مجلس النواب",
               textDirection: TextDirection.rtl,
