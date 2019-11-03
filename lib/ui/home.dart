@@ -7,6 +7,7 @@ import 'package:events_flutter/model/category.dart';
 import 'package:events_flutter/model/entity.dart';
 import 'package:events_flutter/model/event.dart';
 import 'package:events_flutter/static/staticVars.dart';
+import 'package:events_flutter/ui/splashScreen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +29,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   //This variable will store the value based on it will be decided to show
   // the splash screen or not.
-  bool _splashScreenOn;
+  bool _showSplashScreen;
 
   //This is the API base URL.
   var apiURL = StaticVars.apiUrl;
@@ -99,7 +100,7 @@ class _HomeState extends State<Home> {
     // case when the app start is to show the splash screen, then if the
     // connection is successful it's value will be changed to false to hide the
     // splash screen.
-    _splashScreenOn = true;
+    _showSplashScreen = true;
 
     //I've called the function that will get the device info.
     getDeviceInfo();
@@ -228,29 +229,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return _splashScreenOn
-        ? Scaffold(
-            body: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/splash.jpg'), fit: BoxFit.cover),
-              ),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 330),
-                  child: Text(
-                    "نشاطات مجلس النواب",
-                    textDirection: _rtlTextDirection,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-          )
+    return _showSplashScreen
+        ? SplashScreen()
         : Scaffold(
             appBar: AppBar(
                 centerTitle: true,
@@ -485,7 +465,7 @@ class _HomeState extends State<Home> {
       setState(() {
         //Here I'll set the value of this variable to false to hide the splash
         // screen because the connection is successful.
-        _splashScreenOn = false;
+        _showSplashScreen = false;
       });
     }
   }
@@ -760,7 +740,14 @@ class _HomeState extends State<Home> {
                 child: Text(
                   "لا يوجد نشاطات لهذا اليوم ${intl.DateFormat(
                     "d-M-y",
-                  ).format(DateTime.now())}\n",
+                  ).
+                      //Here I've shown the selected date from the calendar
+                      // instead of the current date (DateTime.now()) because if
+                      // the user chooses a date from the calendar another than the
+                      // current day it will no be shown in the message but the
+                      // date that will be shown is the date of the current day and
+                      // that is not right.
+                      format(_selectedDate)}\n",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   textDirection: _rtlTextDirection,
                 ),
