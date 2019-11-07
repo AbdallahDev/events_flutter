@@ -313,7 +313,7 @@ class _HomeState extends State<Home> {
                         textDirection: _rtlTextDirection,
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(bottom: 4),
+                            margin: EdgeInsets.only(bottom: 2),
                             child: Column(
                               children: <Widget>[
                                 Text(
@@ -322,7 +322,7 @@ class _HomeState extends State<Home> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Container(
-                                  height: 3.8,
+                                  height: 7,
                                 ),
                                 Transform.scale(
                                   scale: 1.85,
