@@ -409,6 +409,8 @@ class _HomeState extends State<Home> {
                   ),
                   Flexible(
                     child: RefreshIndicator(
+                      color: Colors.white,
+                      displacement: 0,
                       onRefresh: () {
                         return _fillEventList(
                             categoryId: _selectedCategory.id,
