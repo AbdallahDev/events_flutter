@@ -27,6 +27,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  //This global key is for the refresh indicator widget.
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+
   //This variable will store the value based on it will be decided to show
   // the splash screen or not.
   bool _showSplashScreen;
