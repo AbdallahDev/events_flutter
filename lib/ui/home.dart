@@ -313,7 +313,7 @@ class _HomeState extends State<Home> {
                         textDirection: _rtlTextDirection,
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(bottom: 4),
+                            margin: EdgeInsets.only(bottom: 2),
                             child: Column(
                               children: <Widget>[
                                 Text(
@@ -322,7 +322,7 @@ class _HomeState extends State<Home> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Container(
-                                  height: 3.8,
+                                  height: 7,
                                 ),
                                 Transform.scale(
                                   scale: 1.85,
@@ -408,29 +408,40 @@ class _HomeState extends State<Home> {
                     height: 5,
                   ),
                   Flexible(
-                    child: isLoading
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                CircularProgressIndicator(),
-                                Container(
-                                  height: 20,
-                                ),
-                                Text(
-                                  "يرجى الانتظار ...",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                  textDirection: TextDirection.rtl,
-                                )
-                              ],
-                            ),
-                          )
-                        : ListView.builder(
-                            padding: EdgeInsets.only(left: 11, right: 11),
-                            itemCount: _events.length,
-                            itemBuilder: (context, position) {
-                              return _eventWidget(position);
-                            }),
+                    child: RefreshIndicator(
+                      color: Colors.white,
+                      displacement: 0,
+                      onRefresh: () {
+                        return _fillEventList(
+                            categoryId: _selectedCategory.id,
+                            entityId: _selectedEntity.id,
+                            showAllEvents: _showAllEvents);
+                      },
+                      child: isLoading
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  CircularProgressIndicator(),
+                                  Container(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    "يرجى الانتظار ...",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                    textDirection: TextDirection.rtl,
+                                  )
+                                ],
+                              ),
+                            )
+                          : ListView.builder(
+                              padding: EdgeInsets.only(left: 11, right: 11),
+                              itemCount: _events.length,
+                              itemBuilder: (context, position) {
+                                return _eventWidget(position);
+                              }),
+                    ),
                   ),
                 ],
               ),
