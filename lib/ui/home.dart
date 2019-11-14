@@ -716,7 +716,7 @@ class _HomeState extends State<Home> {
                     textDirection: _rtlTextDirection,
                     children: <Widget>[
                       Text(
-                        "مكـان الاجتمـاع : ",
+                        "مكـان الاجـتمـاع : ",
                         textDirection: _rtlTextDirection,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
