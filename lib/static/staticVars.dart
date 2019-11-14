@@ -3,7 +3,7 @@
 class StaticVars {
   //I've made the API URL variable as static because I want to access it
   // globally and I don't want to change it every time in the home file.
-  static final apiUrl = url0;
+  static final apiUrl = url;
 
   //API IPs,
   //This is the IP of the remote server I'll use it when I want to test the app
