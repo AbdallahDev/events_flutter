@@ -90,6 +90,11 @@ class _HomeState extends State<Home> {
   // physical one or not (simulator).
   String _deviceIsPhysical = "unknown";
 
+  //This instance will identify if the OS of the device that the app is
+  // installed on is IOS by the value 1. And I've set the first value to 0
+  // because not all the devices has IOS.
+  int _deviceIsIOS = 0;
+
   //I need the initState function to run some of the code just at the first time
   // the app runs.
   @override
