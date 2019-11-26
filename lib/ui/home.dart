@@ -199,6 +199,9 @@ class _HomeState extends State<Home> {
         _deviceName = build.name;
         _deviceModel = build.model;
         _deviceIsPhysical = build.isPhysicalDevice.toString();
+        //Here I'll set the instance _deviceIsIOS value to 1 to indicate that
+        // this device has IOS.
+        _deviceIsIOS = 1;
       }
     } on PlatformException {}
   }
