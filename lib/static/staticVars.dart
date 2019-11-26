@@ -9,9 +9,8 @@ class StaticVars {
   // the API URL of the working web system and the testing one.
   static var url = "http://$ip/events/mobile/apis/";
   static var url0 = "http://$ip/apps/myapps/events/mobile/apis/";
-  //API IPs,
-  //This is the IP of the remote server I'll use it when I want to test the app
-  // on the remote server or publish it.
+  //This is the IP of the remote server that I'll use it when I want to test the
+  // app on the remote server or to publish it.
   static var ip = "193.188.88.148";
 
   //This URL is for the local web system for the testing purposes.
