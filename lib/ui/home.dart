@@ -673,7 +673,7 @@ class _HomeState extends State<Home> {
                     children: <Widget>[
                       Text(
                         "التاريخ - الوقت : ",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: titleStyle,
                         textDirection: _rtlTextDirection,
                       ),
                       //I've wrapped the text in a Flexible widget because I want
@@ -682,6 +682,7 @@ class _HomeState extends State<Home> {
                         child: Text(
                           "${_events[position].eventDate} - ${_events[position].time}",
                           textDirection: _rtlTextDirection,
+                          style: subjectStyle,
                         ),
                       ),
                     ],
@@ -696,7 +697,7 @@ class _HomeState extends State<Home> {
                       Text(
                         "جـهــة الــنشــاط : ",
                         textDirection: _rtlTextDirection,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: titleStyle,
                       ),
                       //I've wrapped the text in a Flexible widget because I want
                       // the text to flow on multi-lines.
@@ -704,6 +705,7 @@ class _HomeState extends State<Home> {
                         child: Text(
                           _events[position].eventEntityName,
                           textDirection: _rtlTextDirection,
+                          style: subjectStyle,
                         ),
                       ),
                     ],
@@ -715,7 +717,7 @@ class _HomeState extends State<Home> {
                       Text(
                         "الــمــــوضــــــوع : ",
                         textDirection: _rtlTextDirection,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: titleStyle,
                       ),
                       //I've wrapped the text in a Flexible widget because I want
                       // the text to flow on multi-lines.
@@ -723,6 +725,7 @@ class _HomeState extends State<Home> {
                         child: Text(
                           _events[position].subject,
                           textDirection: _rtlTextDirection,
+                          style: subjectStyle,
                         ),
                       ),
                     ],
@@ -734,7 +737,7 @@ class _HomeState extends State<Home> {
                       Text(
                         "مكـان الاجـتمـاع : ",
                         textDirection: _rtlTextDirection,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: titleStyle,
                       ),
                       //I've wrapped the text in a Flexible widget because I want
                       // the text to flow on multi-lines.
@@ -742,6 +745,7 @@ class _HomeState extends State<Home> {
                         child: Text(
                           eventPlace,
                           textDirection: _rtlTextDirection,
+                          style: subjectStyle,
                         ),
                       ),
                     ],
