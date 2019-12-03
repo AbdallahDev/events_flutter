@@ -261,7 +261,7 @@ class _HomeState extends State<Home> {
                             items: _categories.map((Category category) {
                               return DropdownMenuItem(
                                 child: Container(
-                                  width: 175,
+                                  width: 178,
                                   child: Text(
                                     category.name,
                                     textDirection: _rtlTextDirection,
@@ -293,7 +293,7 @@ class _HomeState extends State<Home> {
                               items: _entities.map((Entity entity) {
                                 return DropdownMenuItem(
                                   child: Container(
-                                    width: 175,
+                                    width: 178,
                                     child: Text(
                                       "- ${entity.name}",
                                       textDirection: _rtlTextDirection,
