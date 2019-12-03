@@ -90,6 +90,11 @@ class _HomeState extends State<Home> {
   // physical one or not (simulator).
   String _deviceIsPhysical = "unknown";
 
+  //This instance will identify if the OS of the device that the app is
+  // installed on is IOS by the value 1. And I've set the first value to 0
+  // because not all the devices has IOS.
+  int _deviceIsIOS = 0;
+
   //I need the initState function to run some of the code just at the first time
   // the app runs.
   @override
@@ -167,7 +172,7 @@ class _HomeState extends State<Home> {
         .listen((IosNotificationSettings settings) {});
     _firebaseMessaging.getToken().then((deviceToken) {
       _saveToken(deviceToken, _deviceIdentifier, _deviceName, _deviceModel,
-          _deviceIsPhysical);
+          _deviceIsPhysical, _deviceIsIOS);
     });
 
     //local notification related code
@@ -194,17 +199,23 @@ class _HomeState extends State<Home> {
         _deviceName = build.name;
         _deviceModel = build.model;
         _deviceIsPhysical = build.isPhysicalDevice.toString();
+        //Here I'll set the instance _deviceIsIOS value to 1 to indicate that
+        // this device has IOS.
+        _deviceIsIOS = 1;
       }
     } on PlatformException {}
   }
 
-  //This method will save the device token when the app launched for the first time.
+  //This method will save the device token when the app launched for the first
+  // time.
   //And also I'll include the device identifier to distinguish the token, so it
   // will not be duplicated in the DB.
+  //Also, the function will take the parameter deviceIsIOS to send it with the
+  // API to set in the database that this device has IOS.
   void _saveToken(String deviceToken, deviceIdentifier, deviceName, deviceModel,
-      deviceIsPhysical) async {
+      deviceIsPhysical, deviceIsIOS) async {
     var url = apiURL +
-        "save_device_token.php?deviceToken=$deviceToken&deviceIdentifier=$deviceIdentifier&deviceName=$deviceName&deviceModel=$deviceModel&deviceIsPhysical=$deviceIsPhysical";
+        "save_device_token.php?deviceToken=$deviceToken&deviceIdentifier=$deviceIdentifier&deviceName=$deviceName&deviceModel=$deviceModel&deviceIsPhysical=$deviceIsPhysical&deviceIsIOS=$deviceIsIOS";
     await http.get(url);
   }
 
