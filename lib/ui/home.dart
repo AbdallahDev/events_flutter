@@ -632,6 +632,11 @@ class _HomeState extends State<Home> {
   //I've created it because I don't want to view the first element in the event
   // list because it has empty values because it is a default element.
   Widget _eventWidget(position) {
+    //This variable will store the textStyle of the titles.
+    var titleStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 17);
+    //This variable will store the textStyle of the subjects.
+    var subjectStyle = TextStyle(fontSize: 17);
+
     //Here I'll check for the events list length and that to decide to view the
     // events list or the message that notify the user that there are no events
     // for today.
