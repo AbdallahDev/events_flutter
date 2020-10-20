@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "97C146ED1CF9000F007C117D"
-               BuildableName = "&#x646;&#x634;&#x627;&#x637;&#x627;&#x62a; &#x645;&#x62c;&#x644;&#x633; &#x627;&#x644;&#x646;&#x648;&#x627;&#x628; &#x627;&#x644;&#x627;&#x631;&#x62f;&#x646;&#x64a;.app"
+               BuildableName = "Runner.app"
                BlueprintName = "Runner"
                ReferencedContainer = "container:Runner.xcodeproj">
             </BuildableReference>
@@ -31,7 +31,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97C146ED1CF9000F007C117D"
-            BuildableName = "&#x646;&#x634;&#x627;&#x637;&#x627;&#x62a; &#x645;&#x62c;&#x644;&#x633; &#x627;&#x644;&#x646;&#x648;&#x627;&#x628; &#x627;&#x644;&#x627;&#x631;&#x62f;&#x646;&#x64a;.app"
+            BuildableName = "Runner.app"
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -54,7 +54,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97C146ED1CF9000F007C117D"
-            BuildableName = "&#x646;&#x634;&#x627;&#x637;&#x627;&#x62a; &#x645;&#x62c;&#x644;&#x633; &#x627;&#x644;&#x646;&#x648;&#x627;&#x628; &#x627;&#x644;&#x627;&#x631;&#x62f;&#x646;&#x64a;.app"
+            BuildableName = "Runner.app"
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
@@ -71,7 +71,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97C146ED1CF9000F007C117D"
-            BuildableName = "&#x646;&#x634;&#x627;&#x637;&#x627;&#x62a; &#x645;&#x62c;&#x644;&#x633; &#x627;&#x644;&#x646;&#x648;&#x627;&#x628; &#x627;&#x644;&#x627;&#x631;&#x62f;&#x646;&#x64a;.app"
+            BuildableName = "Runner.app"
             BlueprintName = "Runner"
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
