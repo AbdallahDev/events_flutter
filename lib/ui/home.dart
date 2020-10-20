@@ -20,6 +20,8 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 // libraries.
 import 'package:intl/intl.dart' as intl;
 
+import '../screenA.dart';
+
 //This class is to view the dropDown buttons and the events list view.
 class Home extends StatefulWidget {
   @override
@@ -160,10 +162,24 @@ class _HomeState extends State<Home> {
 
     //firebase related code.
     _firebaseMessaging.configure(
-      onLaunch: (Map<String, dynamic> msg) async {},
-      onResume: (Map<String, dynamic> msg) async {},
+      onLaunch: (Map<String, dynamic> msg) async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ScreenA()),
+        );
+      },
+      onResume: (Map<String, dynamic> msg) async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ScreenA()),
+        );
+      },
       onMessage: (Map<String, dynamic> msg) async {
         _showNotification(msg);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ScreenA()),
+        );
       },
     );
     _firebaseMessaging.requestNotificationPermissions(
