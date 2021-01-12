@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'نشاطات مجلس النواب',
+      title: 'نشاطات مجلس الن واب',
       theme: ThemeData(
         primarySwatch: Colors.red,
         //I've set this property to make the checkbox border-color black when
