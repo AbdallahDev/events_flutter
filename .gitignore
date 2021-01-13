@@ -71,3 +71,4 @@
 /android/key.properties
 /ios/Flutter/flutter_export_environment.sh
 /.flutter-plugins-dependencies
+/.tmp.drivedownload/
